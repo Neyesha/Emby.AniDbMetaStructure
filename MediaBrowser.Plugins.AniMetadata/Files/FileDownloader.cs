@@ -41,7 +41,7 @@ namespace Emby.AniDbMetaStructure.Files
         private async Task DownloadAndSaveHttpFileAsync<T>(IRemoteFileSpec<T> fileSpec, CancellationToken cancellationToken)
             where T : class
         {
-            using (var stream = await this.httpClient.GetAsync(fileSpec.Url, cancellationToken).ConfigureAwait(false))
+            using (var stream = await this.httpClient.GetStreamAsync(fileSpec.Url, cancellationToken).ConfigureAwait(false))
             {
                 var unzippedStream = stream;
 

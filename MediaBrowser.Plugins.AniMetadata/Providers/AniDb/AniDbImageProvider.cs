@@ -79,11 +79,7 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
         {
             await this.rateLimiter.TickAsync().ConfigureAwait(false);
 
-            return await this.httpClient.GetResponse(new HttpRequestOptions
-            {
-                CancellationToken = cancellationToken,
-                Url = url
-            })
+            return await this.httpClient.GetAsync(url, cancellationToken)
                 .ConfigureAwait(false);
         }
 

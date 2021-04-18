@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
+using MediaBrowser.Controller.Entities;
+using MediaBrowser.Model.Entities;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using MediaBrowser.Controller.Entities;
-using MediaBrowser.Model.Entities;
 
 namespace Emby.AniDbMetaStructure.AniDb
 {
     internal class AniDbParser : IAniDbParser
     {
-        private readonly Dictionary<string, PersonType> creatorTypeMappings = new Dictionary<string, PersonType>
+        private readonly Dictionary<string, string> creatorTypeMappings = new Dictionary<string, string>
         {
             { "Direction", PersonType.Director },
             { "Music", PersonType.Composer }
@@ -24,7 +24,7 @@ namespace Emby.AniDbMetaStructure.AniDb
 
         public IEnumerable<string> GetGenres(AniDbSeriesData aniDbSeriesData, int maxGenres, bool addAnimeGenre)
         {
-            return this.GetGenreTags(aniDbSeriesData.Tags ?? Enumerable.Empty<TagData>(), addAnimeGenre).Take(maxGenres);
+            return GetGenreTags(aniDbSeriesData.Tags ?? Enumerable.Empty<TagData>(), addAnimeGenre).Take(maxGenres);
         }
 
         public IEnumerable<PersonInfo> GetPeople(AniDbSeriesData aniDbSeriesData)
@@ -65,7 +65,7 @@ namespace Emby.AniDbMetaStructure.AniDb
 
         public IEnumerable<string> GetTags(AniDbSeriesData aniDbSeriesData, int maxGenres, bool addAnimeGenre)
         {
-            return this.GetGenreTags(aniDbSeriesData.Tags ?? Enumerable.Empty<TagData>(), addAnimeGenre).Skip(maxGenres);
+            return GetGenreTags(aniDbSeriesData.Tags ?? Enumerable.Empty<TagData>(), addAnimeGenre).Skip(maxGenres);
         }
 
         private static IEnumerable<TagData> AddAnimeTag(IEnumerable<TagData> tags)
@@ -106,7 +106,7 @@ namespace Emby.AniDbMetaStructure.AniDb
 
         private IEnumerable<TagData> ExcludeIgnoredTags(IEnumerable<TagData> tags)
         {
-            var ignoredTagIds = new[] { 6, 22, 23, 60, 128, 129, 185, 216, 242, 255, 268, 269, 289 };
+            int[] ignoredTagIds = new[] { 6, 22, 23, 60, 128, 129, 185, 216, 242, 255, 268, 269, 289 };
 
             return tags.Where(t => !ignoredTagIds.Contains(t.Id) && !ignoredTagIds.Contains(t.ParentId));
         }
@@ -115,7 +115,7 @@ namespace Emby.AniDbMetaStructure.AniDb
         {
             tags = addAnimeGenre ? AddAnimeTag(tags) : tags;
 
-            return this.ExcludeIgnoredTags(tags)
+            return ExcludeIgnoredTags(tags)
                 .Where(t => t.Weight >= 400)
                 .OrderByDescending(t => t.Weight)
                 .Select(t => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(t.Name));
