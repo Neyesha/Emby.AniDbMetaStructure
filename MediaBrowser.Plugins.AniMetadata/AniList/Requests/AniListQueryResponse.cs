@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniList.Requests
+namespace Jellyfin.AniDbMetaStructure.AniList.Requests
 {
     internal class AniListQueryResponse<TResponseData>
     {

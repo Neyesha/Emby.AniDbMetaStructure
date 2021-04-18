@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Mapping.Data;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Mapping.Data;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using MediaBrowser.Common.Configuration;
 using NSubstitute;

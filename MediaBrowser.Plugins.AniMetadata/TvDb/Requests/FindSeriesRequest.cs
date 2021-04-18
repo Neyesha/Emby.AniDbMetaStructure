@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.JsonApi;
+﻿using Jellyfin.AniDbMetaStructure.JsonApi;
+using System.Collections.Generic;
 
-namespace Emby.AniDbMetaStructure.TvDb.Requests
+namespace Jellyfin.AniDbMetaStructure.TvDb.Requests
 {
     internal class FindSeriesRequest : TvDbRequest<FindSeriesRequest.Response>, IGetRequest<FindSeriesRequest.Response>
     {
@@ -13,7 +13,7 @@ namespace Emby.AniDbMetaStructure.TvDb.Requests
         {
             public Response(IEnumerable<MatchingSeries> data)
             {
-                this.MatchingSeries = data ?? new List<MatchingSeries>();
+                MatchingSeries = data ?? new List<MatchingSeries>();
             }
 
             public IEnumerable<MatchingSeries> MatchingSeries { get; }
@@ -23,9 +23,9 @@ namespace Emby.AniDbMetaStructure.TvDb.Requests
         {
             public MatchingSeries(int id, string seriesName, string[] aliases)
             {
-                this.Id = id;
-                this.SeriesName = seriesName;
-                this.Aliases = aliases;
+                Id = id;
+                SeriesName = seriesName;
+                Aliases = aliases;
             }
 
             public int Id { get; }

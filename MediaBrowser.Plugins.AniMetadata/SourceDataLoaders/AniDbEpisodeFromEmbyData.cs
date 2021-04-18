@@ -1,14 +1,14 @@
-﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.Providers.AniDb;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.Providers.AniDb;
 using LanguageExt;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads episode data from AniDb based on the data provided by Emby

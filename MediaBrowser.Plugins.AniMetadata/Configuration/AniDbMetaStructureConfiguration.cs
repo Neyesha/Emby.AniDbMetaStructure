@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.PropertyMapping;
+﻿using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 using LanguageExt;
-using MediaBrowser.Controller.Entities.TV;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Emby.AniDbMetaStructure.Configuration
+namespace Jellyfin.AniDbMetaStructure.Configuration
 {
     internal class AniDbMetaStructureConfiguration : IPluginConfiguration, ITitlePreferenceConfiguration, IAnilistConfiguration
     {
@@ -23,10 +22,10 @@ namespace Emby.AniDbMetaStructure.Configuration
             this.sources = sources;
         }
 
-        public bool IsLinked => !string.IsNullOrWhiteSpace(this.AniListAuthorizationCode) ||
+        public bool IsLinked => !string.IsNullOrWhiteSpace(AniListAuthorizationCode) ||
             !string.IsNullOrWhiteSpace(this.pluginConfiguration.AniListAccessToken);
 
-        public string AuthorizationCode => this.AniListAuthorizationCode;
+        public string AuthorizationCode => AniListAuthorizationCode;
 
         public Option<string> AccessToken
         {
@@ -104,22 +103,22 @@ namespace Emby.AniDbMetaStructure.Configuration
 
         public IPropertyMappingCollection GetSeriesMetadataMapping(string metadataLanguage)
         {
-            return this.GetConfiguredPropertyMappings(this.pluginConfiguration.SeriesMappings,
-                this.mappingConfiguration.GetSeriesMappings(this.MaxGenres, this.AddAnimeGenre, this.MoveExcessGenresToTags,
-                    this.TitlePreference, metadataLanguage));
+            return GetConfiguredPropertyMappings(this.pluginConfiguration.SeriesMappings,
+                this.mappingConfiguration.GetSeriesMappings(MaxGenres, AddAnimeGenre, MoveExcessGenresToTags,
+                    TitlePreference, metadataLanguage));
         }
 
         public IPropertyMappingCollection GetSeasonMetadataMapping(string metadataLanguage)
         {
-            return this.GetConfiguredPropertyMappings(this.pluginConfiguration.SeasonMappings,
-                this.mappingConfiguration.GetSeasonMappings(this.MaxGenres, this.AddAnimeGenre, this.TitlePreference, metadataLanguage));
+            return GetConfiguredPropertyMappings(this.pluginConfiguration.SeasonMappings,
+                this.mappingConfiguration.GetSeasonMappings(MaxGenres, AddAnimeGenre, TitlePreference, metadataLanguage));
         }
 
         public IPropertyMappingCollection GetEpisodeMetadataMapping(string metadataLanguage)
         {
-            return this.GetConfiguredPropertyMappings(this.pluginConfiguration.EpisodeMappings,
-                this.mappingConfiguration.GetEpisodeMappings(this.MaxGenres, this.AddAnimeGenre, this.MoveExcessGenresToTags,
-                    this.TitlePreference, metadataLanguage));
+            return GetConfiguredPropertyMappings(this.pluginConfiguration.EpisodeMappings,
+                this.mappingConfiguration.GetEpisodeMappings(MaxGenres, AddAnimeGenre, MoveExcessGenresToTags,
+                    TitlePreference, metadataLanguage));
         }
 
         private IPropertyMappingCollection GetConfiguredPropertyMappings(
@@ -127,7 +126,7 @@ namespace Emby.AniDbMetaStructure.Configuration
             IEnumerable<IPropertyMapping> availableMappings)
         {
             return new PropertyMappingCollection(configuredMappings.SelectMany(cm =>
-                cm.Mappings.Join(availableMappings, this.ToKey, this.ToKey, (configured, available) => available)));
+                cm.Mappings.Join(availableMappings, ToKey, ToKey, (configured, available) => available)));
         }
 
         private string ToKey(IPropertyMapping propertyMapping)

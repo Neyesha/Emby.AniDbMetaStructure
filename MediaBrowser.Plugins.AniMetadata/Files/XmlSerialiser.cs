@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
 
-namespace Emby.AniDbMetaStructure.Files
+namespace Jellyfin.AniDbMetaStructure.Files
 {
     public class XmlSerialiser : IXmlSerialiser
     {

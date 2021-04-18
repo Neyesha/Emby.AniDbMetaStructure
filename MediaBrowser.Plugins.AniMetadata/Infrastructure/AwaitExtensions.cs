@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Infrastructure
+namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     internal static class AwaitExtensions
     {

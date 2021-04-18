@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Emby.AniDbMetaStructure.AniDb.SeriesData
+namespace Jellyfin.AniDbMetaStructure.AniDb.SeriesData
 {
     public class CharacterType
     {

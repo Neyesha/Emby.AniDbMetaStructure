@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.Seiyuu;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     internal interface IAniDbDataCache
     {

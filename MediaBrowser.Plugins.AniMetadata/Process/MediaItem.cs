@@ -5,7 +5,7 @@ using System.Linq;
 using LanguageExt;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal class MediaItem : IMediaItem
     {

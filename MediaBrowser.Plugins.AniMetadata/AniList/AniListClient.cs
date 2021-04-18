@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniList.Data;
-using Emby.AniDbMetaStructure.AniList.Requests;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.AniList.Requests;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.Process;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniList
+namespace Jellyfin.AniDbMetaStructure.AniList
 {
     internal class AniListClient : IAniListClient
     {

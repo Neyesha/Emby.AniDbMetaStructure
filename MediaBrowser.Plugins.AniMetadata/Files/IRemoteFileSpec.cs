@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.Files
+﻿namespace Jellyfin.AniDbMetaStructure.Files
 {
     /// <summary>
     ///     A specification of a remote file which can be downloaded on demand

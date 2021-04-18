@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     internal interface IDefaultSeasonEpisodeMapper
     {

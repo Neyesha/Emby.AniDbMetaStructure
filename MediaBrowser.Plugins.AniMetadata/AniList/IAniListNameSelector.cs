@@ -1,8 +1,8 @@
-﻿using Emby.AniDbMetaStructure.AniList.Data;
-using Emby.AniDbMetaStructure.Configuration;
+﻿using Jellyfin.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.Configuration;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniList
+namespace Jellyfin.AniDbMetaStructure.AniList
 {
     internal interface IAniListNameSelector
     {

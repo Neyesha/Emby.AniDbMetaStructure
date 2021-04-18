@@ -1,7 +1,7 @@
-﻿using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.Seiyuu;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.Process.Sources;
+﻿using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Providers.AniDb
+namespace Jellyfin.AniDbMetaStructure.Providers.AniDb
 {
     public class AniDbPersonProvider
     {

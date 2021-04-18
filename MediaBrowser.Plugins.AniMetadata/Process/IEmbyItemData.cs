@@ -1,7 +1,7 @@
 ﻿using LanguageExt;
 using System.Collections.Generic;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal interface IEmbyItemData
     {

@@ -1,6 +1,6 @@
 ﻿using MediaBrowser.Controller.Entities.TV;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal static class MediaItemTypes
     {

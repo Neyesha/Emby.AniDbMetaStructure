@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Emby.AniDbMetaStructure.TvDb.Data
+namespace Jellyfin.AniDbMetaStructure.TvDb.Data
 {
     internal class TvDbEpisodeCollection
     {

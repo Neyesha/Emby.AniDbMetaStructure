@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Emby.AniDbMetaStructure.TvDb;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
 
 namespace Emby.AniDbMetaStructure.Tests.TestData

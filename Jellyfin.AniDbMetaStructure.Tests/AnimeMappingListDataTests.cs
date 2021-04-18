@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Mapping.Data;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Mapping.Data;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 

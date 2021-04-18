@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Emby.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Files;
 
-namespace Emby.AniDbMetaStructure.AniDb.Titles
+namespace Jellyfin.AniDbMetaStructure.AniDb.Titles
 {
     internal class TitlesFileSpec : IRemoteFileSpec<TitleListData>
     {

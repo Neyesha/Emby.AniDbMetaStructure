@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.TvDb;
-using Emby.AniDbMetaStructure.TvDb.Data;
+﻿using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads series data from TvDb based on the data provided by Emby
@@ -35,7 +35,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
 
             return this.tvDbClient.FindSeriesAsync(embyItemData.Identifier.Name)
                 .ToEitherAsync(resultContext.Failed("Failed to find series in TvDb"))
-                .MapAsync(s => this.CreateSourceData(s, embyItemData));
+                .MapAsync(s => CreateSourceData(s, embyItemData));
         }
 
         private ISourceData CreateSourceData(TvDbSeriesData seriesData, IEmbyItemData embyItemData)

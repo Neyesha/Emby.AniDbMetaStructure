@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.AniList.Data;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;

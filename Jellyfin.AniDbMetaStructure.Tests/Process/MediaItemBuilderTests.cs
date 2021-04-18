@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;

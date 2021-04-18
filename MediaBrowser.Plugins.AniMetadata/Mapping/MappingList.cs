@@ -1,18 +1,18 @@
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Mapping.Data;
+using Jellyfin.AniDbMetaStructure.Process;
+using LanguageExt;
+using MediaBrowser.Common.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Mapping.Data;
-using Emby.AniDbMetaStructure.Process;
-using LanguageExt;
-using MediaBrowser.Common.Configuration;
 using Xem.Api;
 using Xem.Api.Mapping;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     internal class MappingList : IMappingList
     {
@@ -31,11 +31,11 @@ namespace Emby.AniDbMetaStructure.Mapping
             this.mappingsTvDbXemFileSpec = new XemTvDbMappingsFileSpec(applicationPaths.CachePath, xemApiClient);
             this.fileCache = fileCache;
             this.mappingListTaskLazy =
-                new Lazy<Task<IEnumerable<SeriesMapping>>>(() => this.CreateMappingListAsync(CancellationToken.None));
+                new Lazy<Task<IEnumerable<SeriesMapping>>>(() => CreateMappingListAsync(CancellationToken.None));
             this.xemAniDbMappingListTaskLazy =
-                new Lazy<Task<IEnumerable<SeriesMapping>>>(() => this.CreateXemAniDbMappingListAsync(CancellationToken.None));
+                new Lazy<Task<IEnumerable<SeriesMapping>>>(() => CreateXemAniDbMappingListAsync(CancellationToken.None));
             this.xemTvDbMappingListTaskLazy =
-                new Lazy<Task<IEnumerable<SeriesMapping>>>(() => this.CreateXemTvDbMappingListAsync(CancellationToken.None));
+                new Lazy<Task<IEnumerable<SeriesMapping>>>(() => CreateXemTvDbMappingListAsync(CancellationToken.None));
         }
 
         public async Task<Either<ProcessFailedResult, ISeriesMapping>> GetSeriesMappingFromAniDb(int aniDbSeriesId,
@@ -94,7 +94,7 @@ namespace Emby.AniDbMetaStructure.Mapping
                 .Map(matchingSeriesMappings =>
                     matchingSeriesMappings.Any()
                         ? Right<ProcessFailedResult, IEnumerable<ISeriesMapping>>(matchingSeriesMappings)
-                        : this.GetFallbackSeriesMappingFromTvDb(tvDbSeriesId, resultContext).GetAwaiter().GetResult());
+                        : GetFallbackSeriesMappingFromTvDb(tvDbSeriesId, resultContext).GetAwaiter().GetResult());
         }
 
         private async Task<Either<ProcessFailedResult, IEnumerable<ISeriesMapping>>> GetFallbackSeriesMappingFromTvDb(int tvDbSeriesId,

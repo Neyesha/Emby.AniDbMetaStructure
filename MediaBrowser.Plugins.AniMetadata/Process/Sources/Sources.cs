@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Emby.AniDbMetaStructure.Process.Sources
+namespace Jellyfin.AniDbMetaStructure.Process.Sources
 {
     internal class Sources : ISources
     {

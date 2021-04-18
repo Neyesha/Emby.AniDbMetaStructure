@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
-using Emby.AniDbMetaStructure.TvDb;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;

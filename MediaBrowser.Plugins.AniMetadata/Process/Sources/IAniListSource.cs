@@ -1,7 +1,7 @@
-﻿using Emby.AniDbMetaStructure.AniList.Data;
+﻿using Jellyfin.AniDbMetaStructure.AniList.Data;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process.Sources
+namespace Jellyfin.AniDbMetaStructure.Process.Sources
 {
     internal interface IAniListSource : ISource
     {

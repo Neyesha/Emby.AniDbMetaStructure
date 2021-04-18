@@ -1,6 +1,6 @@
-﻿using Emby.AniDbMetaStructure.Process.Sources;
+﻿using Jellyfin.AniDbMetaStructure.Process.Sources;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal interface ISources
     {

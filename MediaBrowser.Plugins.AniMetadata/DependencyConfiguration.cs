@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.Titles;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.EntryPoints;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Providers;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.Providers.AniDb;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
-using Emby.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.EntryPoints;
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Providers;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.Providers.AniDb;
+using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
+using Jellyfin.AniDbMetaStructure.TvDb;
 using MediaBrowser.Common;
 using Newtonsoft.Json;
 using SimpleInjector;
 using Xem.Api;
 
-namespace Emby.AniDbMetaStructure
+namespace Jellyfin.AniDbMetaStructure
 {
     public class DependencyConfiguration
     {

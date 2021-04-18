@@ -1,8 +1,8 @@
-﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.TvDb.Data;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     internal interface IEpisodeMapper
     {

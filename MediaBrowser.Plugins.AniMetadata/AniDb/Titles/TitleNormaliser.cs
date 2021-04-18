@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Emby.AniDbMetaStructure.AniDb.Titles
+namespace Jellyfin.AniDbMetaStructure.AniDb.Titles
 {
     internal class TitleNormaliser : ITitleNormaliser
     {

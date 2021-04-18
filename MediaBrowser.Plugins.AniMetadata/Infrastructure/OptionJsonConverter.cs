@@ -5,7 +5,7 @@ using LanguageExt;
 using LanguageExt.UnsafeValueAccess;
 using Newtonsoft.Json;
 
-namespace Emby.AniDbMetaStructure.Infrastructure
+namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     internal class OptionJsonConverter : JsonConverter
     {

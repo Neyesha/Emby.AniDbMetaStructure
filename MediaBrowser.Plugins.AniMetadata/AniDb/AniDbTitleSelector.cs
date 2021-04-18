@@ -1,11 +1,11 @@
-﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Configuration;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Configuration;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     internal class AniDbTitleSelector : IAniDbTitleSelector
     {

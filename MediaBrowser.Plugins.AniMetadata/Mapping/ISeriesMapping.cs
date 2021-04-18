@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     public interface ISeriesMapping
     {

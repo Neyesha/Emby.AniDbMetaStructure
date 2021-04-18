@@ -1,6 +1,6 @@
-﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.AniDb.Titles;
-using Emby.AniDbMetaStructure.Providers.AniDb;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.Providers.AniDb;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;

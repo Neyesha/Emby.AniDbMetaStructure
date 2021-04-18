@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.TvDb;
+﻿using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.TvDb;
 using MediaBrowser.Model.Plugins;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Emby.AniDbMetaStructure.Configuration
+namespace Jellyfin.AniDbMetaStructure.Configuration
 {
     public class PluginConfiguration : BasePluginConfiguration
     {
@@ -16,14 +16,14 @@ namespace Emby.AniDbMetaStructure.Configuration
 
         public PluginConfiguration()
         {
-            this.TitlePreference = TitleType.Localized;
-            this.MaxGenres = 5;
-            this.MoveExcessGenresToTags = true;
-            this.AddAnimeGenre = true;
-            this.ExcludedSeriesNames = string.Empty;
-            this.AniListAuthorisationCode = string.Empty;
-            this.LibraryStructureSourceName = SourceNames.AniDb;
-            this.FileStructureSourceName = SourceNames.AniDb;
+            TitlePreference = TitleType.Localized;
+            MaxGenres = 5;
+            MoveExcessGenresToTags = true;
+            AddAnimeGenre = true;
+            ExcludedSeriesNames = string.Empty;
+            AniListAuthorisationCode = string.Empty;
+            LibraryStructureSourceName = SourceNames.AniDb;
+            FileStructureSourceName = SourceNames.AniDb;
 
             var mappingConfiguration = new MappingConfiguration(new ISourceMappingConfiguration[]
             {
@@ -32,9 +32,9 @@ namespace Emby.AniDbMetaStructure.Configuration
                 new AniListSourceMappingConfiguration(null)
             });
 
-            this.seriesMappings = this.GetDefaultSeriesMappings(mappingConfiguration);
-            this.seasonMappings = this.GetDefaultSeasonMappings(mappingConfiguration);
-            this.episodeMappings = this.GetDefaultEpisodeMappings(mappingConfiguration);
+            this.seriesMappings = GetDefaultSeriesMappings(mappingConfiguration);
+            this.seasonMappings = GetDefaultSeasonMappings(mappingConfiguration);
+            this.episodeMappings = GetDefaultEpisodeMappings(mappingConfiguration);
         }
 
         public string LibraryStructureSourceName { get; set; }
@@ -58,19 +58,19 @@ namespace Emby.AniDbMetaStructure.Configuration
         public PropertyMappingDefinitionCollection[] SeriesMappings
         {
             get => this.seriesMappings;
-            set => this.seriesMappings = this.MergeMappings(this.seriesMappings, value);
+            set => this.seriesMappings = MergeMappings(this.seriesMappings, value);
         }
 
         public PropertyMappingDefinitionCollection[] SeasonMappings
         {
             get => this.seasonMappings;
-            set => this.seasonMappings = this.MergeMappings(this.seasonMappings, value);
+            set => this.seasonMappings = MergeMappings(this.seasonMappings, value);
         }
 
         public PropertyMappingDefinitionCollection[] EpisodeMappings
         {
             get => this.episodeMappings;
-            set => this.episodeMappings = this.MergeMappings(this.episodeMappings, value);
+            set => this.episodeMappings = MergeMappings(this.episodeMappings, value);
         }
 
         public TitleType TitlePreference { get; set; }
@@ -80,7 +80,7 @@ namespace Emby.AniDbMetaStructure.Configuration
         {
             var propertyMappings = mappingConfiguration.GetSeriesMappingDefinitions();
 
-            return this.ToCollection(propertyMappings);
+            return ToCollection(propertyMappings);
         }
 
         private PropertyMappingDefinitionCollection[] GetDefaultSeasonMappings(
@@ -88,7 +88,7 @@ namespace Emby.AniDbMetaStructure.Configuration
         {
             var propertyMappings = mappingConfiguration.GetSeasonMappingDefinitions();
 
-            return this.ToCollection(propertyMappings);
+            return ToCollection(propertyMappings);
         }
 
         private PropertyMappingDefinitionCollection[] GetDefaultEpisodeMappings(
@@ -96,7 +96,7 @@ namespace Emby.AniDbMetaStructure.Configuration
         {
             var propertyMappings = mappingConfiguration.GetEpisodeMappingDefinitions();
 
-            return this.ToCollection(propertyMappings);
+            return ToCollection(propertyMappings);
         }
 
         private PropertyMappingDefinitionCollection[] ToCollection(
@@ -116,19 +116,19 @@ namespace Emby.AniDbMetaStructure.Configuration
                 return defaults;
             }
 
-            return configured.Where(m => defaults.Any(dm => this.AreEquivalent(dm, m)))
+            return configured.Where(m => defaults.Any(dm => AreEquivalent(dm, m)))
                 .Concat(defaults.Where(dm =>
-                    !configured.Any(m => this.AreEquivalent(dm, m))))
-                .Select(m => this.MergeMappings(defaults.Single(d => this.AreEquivalent(d, m)), m))
+                    !configured.Any(m => AreEquivalent(dm, m))))
+                .Select(m => MergeMappings(defaults.Single(d => AreEquivalent(d, m)), m))
                 .ToArray();
         }
 
         private PropertyMappingDefinitionCollection MergeMappings(PropertyMappingDefinitionCollection defaults,
             PropertyMappingDefinitionCollection configured)
         {
-            var mergedMappings = configured.Mappings.Where(m => defaults.Mappings.Any(dm => this.AreEquivalent(dm, m)))
+            var mergedMappings = configured.Mappings.Where(m => defaults.Mappings.Any(dm => AreEquivalent(dm, m)))
                 .Concat(defaults.Mappings.Where(dm =>
-                    !configured.Mappings.Any(m => this.AreEquivalent(dm, m))));
+                    !configured.Mappings.Any(m => AreEquivalent(dm, m))));
 
             configured.Mappings = mergedMappings.ToArray();
 

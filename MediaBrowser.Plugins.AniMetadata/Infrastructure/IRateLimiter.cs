@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Infrastructure
+namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     public interface IRateLimiter
     {

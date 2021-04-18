@@ -1,6 +1,6 @@
-﻿using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.PropertyMapping;
+﻿using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal class MediaItemType<TEmbyItem> : IMediaItemType<TEmbyItem> where TEmbyItem : BaseItem, new()
     {

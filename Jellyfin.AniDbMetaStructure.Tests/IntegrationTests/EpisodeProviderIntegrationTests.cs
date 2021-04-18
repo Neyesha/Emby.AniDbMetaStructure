@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.EntryPoints;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.EntryPoints;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Controller.Providers;

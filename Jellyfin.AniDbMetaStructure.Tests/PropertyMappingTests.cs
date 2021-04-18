@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.PropertyMapping;
+﻿using Jellyfin.AniDbMetaStructure.PropertyMapping;
 using FluentAssertions;
 using MediaBrowser.Controller.Entities;
 using NUnit.Framework;

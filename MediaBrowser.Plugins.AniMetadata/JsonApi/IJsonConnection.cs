@@ -1,10 +1,10 @@
-﻿using Emby.AniDbMetaStructure.Infrastructure;
+﻿using Jellyfin.AniDbMetaStructure.Infrastructure;
 using LanguageExt;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.JsonApi
+namespace Jellyfin.AniDbMetaStructure.JsonApi
 {
     internal interface IJsonConnection
     {

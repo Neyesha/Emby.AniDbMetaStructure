@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.TvDb;
 
-namespace Emby.AniDbMetaStructure.Configuration
+namespace Jellyfin.AniDbMetaStructure.Configuration
 {
     internal class SourceMappingConfigurations : IEnumerable<ISourceMappingConfiguration>
     {

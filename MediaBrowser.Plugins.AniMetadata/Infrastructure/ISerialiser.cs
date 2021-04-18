@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.Infrastructure
+﻿namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     public interface ISerialiser
     {

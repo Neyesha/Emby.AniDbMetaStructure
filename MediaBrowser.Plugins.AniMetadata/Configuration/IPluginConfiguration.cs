@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.PropertyMapping;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 
-namespace Emby.AniDbMetaStructure.Configuration
+namespace Jellyfin.AniDbMetaStructure.Configuration
 {
     internal interface IPluginConfiguration
     {

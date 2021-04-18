@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Mapping.Data;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Mapping.Data;
 using FluentAssertions;
 using LanguageExt.UnsafeValueAccess;
 using NUnit.Framework;

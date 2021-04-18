@@ -1,6 +1,6 @@
-﻿using Emby.AniDbMetaStructure.Infrastructure;
+﻿using Jellyfin.AniDbMetaStructure.Infrastructure;
 
-namespace Emby.AniDbMetaStructure.Files
+namespace Jellyfin.AniDbMetaStructure.Files
 {
     public interface IXmlSerialiser : ISerialiser
     {

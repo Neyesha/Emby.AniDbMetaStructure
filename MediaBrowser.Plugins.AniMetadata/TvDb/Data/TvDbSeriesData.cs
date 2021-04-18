@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.TvDb.Data
+namespace Jellyfin.AniDbMetaStructure.TvDb.Data
 {
     public class TvDbSeriesData
     {

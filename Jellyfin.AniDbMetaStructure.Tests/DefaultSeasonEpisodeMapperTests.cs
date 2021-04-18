@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Tests.TestData;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
-using Emby.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Tests.TestData;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.TvDb;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;

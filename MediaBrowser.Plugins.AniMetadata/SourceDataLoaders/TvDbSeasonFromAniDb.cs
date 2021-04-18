@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Process;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Process;
 using LanguageExt;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads TvDb season data based on existing AniDb series information
@@ -30,7 +30,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
 
             return mediaItem.EmbyData.Identifier.Index
                 .ToEither(resultContext.Failed("No season index provided by Emby"))
-                .Map(this.CreateSourceData)
+                .Map(CreateSourceData)
                 .AsTask();
         }
 

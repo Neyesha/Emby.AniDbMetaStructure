@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.AniList.Data;
 
-namespace Emby.AniDbMetaStructure.AniList.Requests
+namespace Jellyfin.AniDbMetaStructure.AniList.Requests
 {
     internal class FindSeriesRequest : AniListQueryRequest<AniListGraphQlPage<FindSeriesRequest.FindSeriesResponse>>
     {

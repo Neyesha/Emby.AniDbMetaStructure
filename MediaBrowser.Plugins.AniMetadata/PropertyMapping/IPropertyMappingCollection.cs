@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Emby.AniDbMetaStructure.PropertyMapping
+namespace Jellyfin.AniDbMetaStructure.PropertyMapping
 {
     /// <summary>
     ///     A collection of <see cref="IPropertyMapping" />s that can map data from one or more sources to a target object

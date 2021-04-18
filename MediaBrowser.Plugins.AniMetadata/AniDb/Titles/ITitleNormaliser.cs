@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.AniDb.Titles
+﻿namespace Jellyfin.AniDbMetaStructure.AniDb.Titles
 {
     internal interface ITitleNormaliser
     {

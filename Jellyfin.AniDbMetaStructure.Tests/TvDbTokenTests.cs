@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
-using Emby.AniDbMetaStructure.TvDb;
-using Emby.AniDbMetaStructure.TvDb.Requests;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.TvDb.Requests;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;

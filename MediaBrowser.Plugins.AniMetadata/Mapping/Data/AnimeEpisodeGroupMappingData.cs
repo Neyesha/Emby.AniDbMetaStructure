@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Emby.AniDbMetaStructure.Mapping.Data
+namespace Jellyfin.AniDbMetaStructure.Mapping.Data
 {
     [XmlType(AnonymousType = true)]
     public class AnimeEpisodeGroupMappingData

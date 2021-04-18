@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads season data from AniDb based on the data provided by Emby

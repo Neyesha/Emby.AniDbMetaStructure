@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
+﻿using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using LanguageExt;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads series data from AniDb based on the data provided by Emby
@@ -39,7 +39,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
                 {
                     var title = this.sources.AniDb.SelectTitle(s.Titles, embyItemData.Language, resultContext);
 
-                    return title.Map(t => this.CreateSourceData(s, embyItemData, t));
+                    return title.Map(t => CreateSourceData(s, embyItemData, t));
                 });
         }
 

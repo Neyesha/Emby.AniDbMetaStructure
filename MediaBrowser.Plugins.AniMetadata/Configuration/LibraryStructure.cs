@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.Configuration
+﻿namespace Jellyfin.AniDbMetaStructure.Configuration
 {
     public enum LibraryStructure
     { 

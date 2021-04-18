@@ -1,12 +1,12 @@
-﻿using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.TvDb;
-using Emby.AniDbMetaStructure.TvDb.Data;
+﻿using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     /// <summary>
     ///     Maps an AniDb episode to a TvDb episode (and vice versa) using an <see cref="EpisodeGroupMapping" />

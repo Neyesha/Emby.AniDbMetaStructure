@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     internal interface ISourceDataLoader
     {

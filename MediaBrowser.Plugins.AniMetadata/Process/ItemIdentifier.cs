@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal class ItemIdentifier : IItemIdentifier
     {

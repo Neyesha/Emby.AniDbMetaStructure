@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.TvDb.Data;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads TvDb series data based on existing AniDb series information
@@ -37,9 +37,9 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
             return aniDbSourceData.Id.ToEither(
                     resultContext.Failed(
                         "No AniDb Id found on the AniDb data associated with this media item"))
-                .BindAsync(aniDbSeriesId => this.GetMappedTvDbSeriesId(aniDbSeriesId, resultContext))
+                .BindAsync(aniDbSeriesId => GetMappedTvDbSeriesId(aniDbSeriesId, resultContext))
                 .BindAsync(tvDbSeriesId => this.sources.TvDb.GetSeriesData(tvDbSeriesId, resultContext))
-                .MapAsync(this.CreateSourceData);
+                .MapAsync(CreateSourceData);
         }
 
         private Task<Either<ProcessFailedResult, int>> GetMappedTvDbSeriesId(int aniDbSeriesId,

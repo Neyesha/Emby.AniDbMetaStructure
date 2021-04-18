@@ -1,7 +1,7 @@
 ﻿using System;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniList.Data
+namespace Jellyfin.AniDbMetaStructure.AniList.Data
 {
     internal class AniListFuzzyDate
     {

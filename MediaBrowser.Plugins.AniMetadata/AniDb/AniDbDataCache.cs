@@ -1,7 +1,7 @@
-﻿using Emby.AniDbMetaStructure.AniDb.Seiyuu;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.AniDb.Titles;
-using Emby.AniDbMetaStructure.Files;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.Files;
 using LanguageExt;
 using MediaBrowser.Common.Configuration;
 using Microsoft.Extensions.Logging;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     internal class AniDbDataCache : IAniDbDataCache
     {

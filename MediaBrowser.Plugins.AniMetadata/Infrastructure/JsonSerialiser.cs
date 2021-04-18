@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Emby.AniDbMetaStructure.Infrastructure
+namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     /// <summary>
     ///     Uses NewtonSoft.Json which supports deserialisation via constructors

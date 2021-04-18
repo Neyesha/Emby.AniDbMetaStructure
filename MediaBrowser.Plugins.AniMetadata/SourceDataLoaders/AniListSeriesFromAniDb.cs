@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using LanguageExt;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.AniDb.Titles;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.AniList.Data;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using LanguageExt;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads series data from AniList based on data provided by AniDb
@@ -59,17 +59,17 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
                     (lastResult, currentTitle) =>
                     {
                         return lastResult.Bind(e =>
-                            e.IsLeft ? this.FindSingleMatchingSeries(currentTitle, resultContext) : e.AsTask());
+                            e.IsLeft ? FindSingleMatchingSeries(currentTitle, resultContext) : e.AsTask());
                     });
 
-            return sourceDataTask.BindAsync(sd => this.CreateSourceDataWithTitle(mediaItem, sd, resultContext));
+            return sourceDataTask.BindAsync(sd => CreateSourceDataWithTitle(mediaItem, sd, resultContext));
         }
 
         private Either<ProcessFailedResult, ISourceData> CreateSourceDataWithTitle(IMediaItem mediaItem,
             AniListSeriesData seriesData, ProcessResultContext resultContext)
         {
             return this.sources.AniList.SelectTitle(seriesData.Title, mediaItem.EmbyData.Language, resultContext)
-                .Map(t => this.CreateSourceData(seriesData, t));
+                .Map(t => CreateSourceData(seriesData, t));
         }
 
         private Task<Either<ProcessFailedResult, AniListSeriesData>> FindSingleMatchingSeries(string title,

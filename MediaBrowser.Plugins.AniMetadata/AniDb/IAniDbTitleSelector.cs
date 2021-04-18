@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Configuration;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     internal interface IAniDbTitleSelector
     {

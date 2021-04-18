@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.TvDb.Requests;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.TvDb.Requests;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 
-namespace Emby.AniDbMetaStructure.TvDb
+namespace Jellyfin.AniDbMetaStructure.TvDb
 {
     internal class TvDbToken
     {

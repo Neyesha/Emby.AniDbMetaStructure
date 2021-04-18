@@ -1,7 +1,7 @@
 ﻿using System;
-using Emby.AniDbMetaStructure.EntryPoints;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.EntryPoints;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 using SimpleInjector;

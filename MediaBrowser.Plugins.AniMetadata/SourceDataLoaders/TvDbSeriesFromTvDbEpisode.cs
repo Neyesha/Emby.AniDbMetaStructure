@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads series data for an item that already has TvDb episode data loaded

@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Infrastructure;
+﻿using Jellyfin.AniDbMetaStructure.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.IO.Compression;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Files
+namespace Jellyfin.AniDbMetaStructure.Files
 {
     internal class FileDownloader : IFileDownloader
     {

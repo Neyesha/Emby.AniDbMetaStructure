@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 
-namespace Emby.AniDbMetaStructure.TvDb
+namespace Jellyfin.AniDbMetaStructure.TvDb
 {
     internal class TvDbSeriesFileSpec : ILocalFileSpec<TvDbSeriesData>
     {

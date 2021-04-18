@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Process;
+﻿using Jellyfin.AniDbMetaStructure.Process;
 
 namespace Emby.AniDbMetaStructure.Tests.TestHelpers
 {

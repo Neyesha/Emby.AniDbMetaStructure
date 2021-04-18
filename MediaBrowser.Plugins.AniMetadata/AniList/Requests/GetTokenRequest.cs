@@ -1,6 +1,6 @@
-﻿using Emby.AniDbMetaStructure.JsonApi;
+﻿using Jellyfin.AniDbMetaStructure.JsonApi;
 
-namespace Emby.AniDbMetaStructure.AniList.Requests
+namespace Jellyfin.AniDbMetaStructure.AniList.Requests
 {
     internal class GetTokenRequest : Request<GetTokenRequest.TokenData>, IPostRequest<GetTokenRequest.TokenData>
     {

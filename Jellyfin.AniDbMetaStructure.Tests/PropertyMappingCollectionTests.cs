@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.PropertyMapping;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 using FluentAssertions;
 using NUnit.Framework;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using MediaBrowser.Controller.Entities;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     internal interface IAniDbParser
     {

@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 
-namespace Emby.AniDbMetaStructure.AniDb.Titles
+namespace Jellyfin.AniDbMetaStructure.AniDb.Titles
 {
     [XmlType(AnonymousType = true)]
     public class TitleListItemData

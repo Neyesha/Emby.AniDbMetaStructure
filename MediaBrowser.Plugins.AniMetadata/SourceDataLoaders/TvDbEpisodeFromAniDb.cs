@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.TvDb.Data;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
+using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads TvDb episode data based on data from AniDb
@@ -40,7 +40,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
 
             var tvDbEpisodeData =
                 aniDbSeriesData.BindAsync(
-                    seriesData => this.MapEpisodeDataAsync(seriesData, aniDbEpisodeData, resultContext));
+                    seriesData => MapEpisodeDataAsync(seriesData, aniDbEpisodeData, resultContext));
 
             return tvDbEpisodeData.MapAsync(episodeData => (ISourceData)new SourceData<TvDbEpisodeData>(this.sources.TvDb,
                 episodeData.Id,

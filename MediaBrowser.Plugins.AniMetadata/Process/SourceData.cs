@@ -1,7 +1,7 @@
 ﻿using System;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal class SourceData<TData> : ISourceData<TData> where TData : class
     {

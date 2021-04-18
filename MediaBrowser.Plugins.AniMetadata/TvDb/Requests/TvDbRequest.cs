@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Emby.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.JsonApi;
 
-namespace Emby.AniDbMetaStructure.TvDb.Requests
+namespace Jellyfin.AniDbMetaStructure.TvDb.Requests
 {
     internal abstract class TvDbRequest<TResponse> : Request<TResponse>
     {

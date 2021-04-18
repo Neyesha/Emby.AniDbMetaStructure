@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.Seiyuu;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Tests.TestData;
+using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Tests.TestData;
 using FluentAssertions;
 using MediaBrowser.Model.Entities;
 using NUnit.Framework;

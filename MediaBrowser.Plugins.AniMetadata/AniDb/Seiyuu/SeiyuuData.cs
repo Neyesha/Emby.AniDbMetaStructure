@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Emby.AniDbMetaStructure.AniDb.Seiyuu
+namespace Jellyfin.AniDbMetaStructure.AniDb.Seiyuu
 {
     public class SeiyuuData
     {
@@ -14,6 +14,6 @@ namespace Emby.AniDbMetaStructure.AniDb.Seiyuu
         public string Name { get; set; }
 
         [XmlIgnore]
-        public string PictureUrl => $"http://img7.anidb.net/pics/anime/{this.PictureFileName}";
+        public string PictureUrl => $"http://img7.anidb.net/pics/anime/{PictureFileName}";
     }
 }

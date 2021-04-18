@@ -1,8 +1,8 @@
-﻿using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
+﻿using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     /// <summary>
     ///     A source used as the source of additional data (data related to but not directly about the media item being
@@ -16,7 +16,7 @@ namespace Emby.AniDbMetaStructure.Process
         public AdditionalSource(ISource sourceImplementation)
         {
             this.sourceImplementation = sourceImplementation;
-            this.Name = new SourceName(this.sourceImplementation.Name + "_Additional");
+            Name = new SourceName(this.sourceImplementation.Name + "_Additional");
         }
 
         public SourceName Name { get; }

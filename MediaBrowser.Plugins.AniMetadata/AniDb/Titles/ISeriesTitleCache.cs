@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniDb.Titles
+namespace Jellyfin.AniDbMetaStructure.AniDb.Titles
 {
     internal interface ISeriesTitleCache
     {

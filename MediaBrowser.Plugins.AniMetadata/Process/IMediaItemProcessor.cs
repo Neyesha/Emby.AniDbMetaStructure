@@ -4,7 +4,7 @@ using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     /// <summary>
     ///     Coordinates the overall process of retrieving metadata from Emby identification data

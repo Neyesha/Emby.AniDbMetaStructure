@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;

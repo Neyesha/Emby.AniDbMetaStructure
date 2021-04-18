@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.PropertyMapping
+namespace Jellyfin.AniDbMetaStructure.PropertyMapping
 {
     internal class PropertyMapping<TSource, TTarget, TTargetProperty> : IPropertyMapping
         where TSource : class where TTarget : class

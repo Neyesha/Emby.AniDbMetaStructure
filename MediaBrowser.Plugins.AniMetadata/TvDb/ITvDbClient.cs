@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.TvDb
+namespace Jellyfin.AniDbMetaStructure.TvDb
 {
     public interface ITvDbClient
     {

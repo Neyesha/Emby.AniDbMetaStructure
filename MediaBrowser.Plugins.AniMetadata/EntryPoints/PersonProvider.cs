@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Providers.AniDb;
+﻿using Jellyfin.AniDbMetaStructure.Providers.AniDb;
 using MediaBrowser.Common;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.EntryPoints
+namespace Jellyfin.AniDbMetaStructure.EntryPoints
 {
     public class PersonProvider : IRemoteMetadataProvider<Person, PersonLookupInfo>
     {

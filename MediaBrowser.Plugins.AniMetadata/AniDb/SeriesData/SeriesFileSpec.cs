@@ -1,7 +1,7 @@
-﻿using System.IO;
-using Emby.AniDbMetaStructure.Files;
+﻿using Jellyfin.AniDbMetaStructure.Files;
+using System.IO;
 
-namespace Emby.AniDbMetaStructure.AniDb.SeriesData
+namespace Jellyfin.AniDbMetaStructure.AniDb.SeriesData
 {
     internal class SeriesFileSpec : IRemoteFileSpec<AniDbSeriesData>
     {
@@ -15,8 +15,8 @@ namespace Emby.AniDbMetaStructure.AniDb.SeriesData
             const string seriesQueryUrl =
                 "http://api.anidb.net:9001/httpapi?request=anime&client={0}&clientver=1&protover=1&aid={1}";
 
-            this.Url = string.Format(seriesQueryUrl, ClientName, aniDbSeriesId);
-            this.LocalPath = this.GetSeriesCacheFilePath(aniDbSeriesId);
+            Url = string.Format(seriesQueryUrl, ClientName, aniDbSeriesId);
+            LocalPath = GetSeriesCacheFilePath(aniDbSeriesId);
         }
 
         public string Url { get; }

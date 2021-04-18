@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Tests.IntegrationTests;
+using Jellyfin.AniDbMetaStructure.Tests.IntegrationTests;
 using MediaBrowser.Common;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Net;

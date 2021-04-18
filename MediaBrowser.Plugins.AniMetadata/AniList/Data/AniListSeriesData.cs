@@ -2,7 +2,7 @@
 using LanguageExt;
 using Newtonsoft.Json;
 
-namespace Emby.AniDbMetaStructure.AniList.Data
+namespace Jellyfin.AniDbMetaStructure.AniList.Data
 {
     internal class AniListSeriesData
     {

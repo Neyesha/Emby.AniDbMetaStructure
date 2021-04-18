@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Tests.TestData;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Tests.TestData;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Files
+namespace Jellyfin.AniDbMetaStructure.Files
 {
     internal class FileCache : IFileCache
     {

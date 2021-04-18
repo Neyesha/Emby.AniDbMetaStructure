@@ -1,9 +1,9 @@
-﻿using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.TvDb.Data;
-using Emby.AniDbMetaStructure.TvDb.Requests;
+﻿using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.TvDb.Requests;
 using LanguageExt;
 using MediaBrowser.Common.Configuration;
 using Microsoft.Extensions.Logging;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.TvDb
+namespace Jellyfin.AniDbMetaStructure.TvDb
 {
     internal class TvDbClientV2 : ITvDbClient
     {

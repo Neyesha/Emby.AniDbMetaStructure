@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.JsonApi
+﻿namespace Jellyfin.AniDbMetaStructure.JsonApi
 {
     internal interface IPostRequest<TResponse> : IRequest<TResponse>
     {

@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Emby.AniDbMetaStructure.Mapping.Data
+namespace Jellyfin.AniDbMetaStructure.Mapping.Data
 {
     /// <summary>
     ///     Additional data about an anime series

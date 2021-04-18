@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.PropertyMapping;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 
-namespace Emby.AniDbMetaStructure.Configuration
+namespace Jellyfin.AniDbMetaStructure.Configuration
 {
     /// <summary>
     ///     The global mapping configuration, provides mappings that map data based on all available sources

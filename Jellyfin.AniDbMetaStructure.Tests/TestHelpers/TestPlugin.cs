@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Configuration;
+﻿using Jellyfin.AniDbMetaStructure.Configuration;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Model.Serialization;
 using NSubstitute;

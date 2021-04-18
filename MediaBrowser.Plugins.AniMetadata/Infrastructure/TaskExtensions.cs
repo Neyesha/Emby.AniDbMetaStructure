@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Infrastructure
+namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     internal static class TaskExtensions
     {

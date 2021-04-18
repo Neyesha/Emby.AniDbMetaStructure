@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Model.Entities;
 using System;
@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     internal class AniDbParser : IAniDbParser
     {

@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.TvDb.Data
+﻿namespace Jellyfin.AniDbMetaStructure.TvDb.Data
 {
     internal class TvDbSeasonData
     {

@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Files;
+﻿using Jellyfin.AniDbMetaStructure.Files;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xem.Api;
 using Xem.Api.Mapping;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     internal class XemTvDbMappingsFileSpec : IRemoteFileSpec<IDictionary<string, string[]>>, ICustomDownload<IDictionary<string, string[]>>
     {

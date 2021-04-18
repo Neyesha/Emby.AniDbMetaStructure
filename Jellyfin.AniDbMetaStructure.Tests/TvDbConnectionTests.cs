@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.TvDb.Data;
-using Emby.AniDbMetaStructure.TvDb.Requests;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.TvDb.Requests;
 using FluentAssertions;
 using LanguageExt;
 using MediaBrowser.Common.Net;

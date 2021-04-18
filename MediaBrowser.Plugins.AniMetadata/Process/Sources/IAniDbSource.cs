@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process.Sources
+namespace Jellyfin.AniDbMetaStructure.Process.Sources
 {
     internal interface IAniDbSource : ISource
     {

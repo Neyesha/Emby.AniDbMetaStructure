@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace Emby.AniDbMetaStructure.AniDb.SeriesData
+namespace Jellyfin.AniDbMetaStructure.AniDb.SeriesData
 {
     [XmlType(AnonymousType = true)]
     [XmlRoot("anime", Namespace = "", IsNullable = false)]

@@ -1,7 +1,7 @@
-﻿using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.TvDb.Data;
+﻿using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 
-namespace Emby.AniDbMetaStructure.TvDb.Requests
+namespace Jellyfin.AniDbMetaStructure.TvDb.Requests
 {
     internal class GetEpisodeDetailsRequest
         : TvDbRequest<GetEpisodeDetailsRequest.Response>, IGetRequest<GetEpisodeDetailsRequest.Response>

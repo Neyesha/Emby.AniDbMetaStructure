@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Emby.AniDbMetaStructure.Infrastructure
+namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     internal static class Streams
     {

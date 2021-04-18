@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.PropertyMapping
+namespace Jellyfin.AniDbMetaStructure.PropertyMapping
 {
     /// <summary>
     ///     A mapping that sets a target property based on a source property

@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Process;
+﻿using Jellyfin.AniDbMetaStructure.Process;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;

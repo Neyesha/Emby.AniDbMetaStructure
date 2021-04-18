@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Emby.AniDbMetaStructure.Infrastructure
+namespace Jellyfin.AniDbMetaStructure.Infrastructure
 {
     public static class DictionaryExtensions
     {

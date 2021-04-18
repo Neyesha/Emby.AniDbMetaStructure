@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 

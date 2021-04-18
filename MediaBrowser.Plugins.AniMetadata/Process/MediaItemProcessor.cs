@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Configuration;
+﻿using Jellyfin.AniDbMetaStructure.Configuration;
 using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal class MediaItemProcessor : IMediaItemProcessor
     {

@@ -1,22 +1,22 @@
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
+using MediaBrowser.Controller.Entities.TV;
+using MediaBrowser.Controller.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.PropertyMapping;
-using Emby.AniDbMetaStructure.TvDb.Data;
-using MediaBrowser.Controller.Entities.TV;
-using MediaBrowser.Controller.Providers;
 
-namespace Emby.AniDbMetaStructure.TvDb
+namespace Jellyfin.AniDbMetaStructure.TvDb
 {
     internal class TvDbSourceMappingConfiguration : ISourceMappingConfiguration
     {
         public IEnumerable<PropertyMappingDefinition> GetSeriesMappingDefinitions()
         {
-            return this.GetSeriesMappings(0, false, false, TitleType.Localized, string.Empty)
+            return GetSeriesMappings(0, false, false, TitleType.Localized, string.Empty)
                 .Select(m => new PropertyMappingDefinition(m.FriendlyName, m.SourceName, m.TargetPropertyName));
         }
 
@@ -53,7 +53,7 @@ namespace Emby.AniDbMetaStructure.TvDb
 
         public IEnumerable<PropertyMappingDefinition> GetSeasonMappingDefinitions()
         {
-            return this.GetSeasonMappings(0, false, TitleType.Localized, string.Empty)
+            return GetSeasonMappings(0, false, TitleType.Localized, string.Empty)
                 .Select(m => new PropertyMappingDefinition(m.FriendlyName, m.SourceName, m.TargetPropertyName));
         }
 
@@ -70,7 +70,7 @@ namespace Emby.AniDbMetaStructure.TvDb
 
         public IEnumerable<PropertyMappingDefinition> GetEpisodeMappingDefinitions()
         {
-            return this.GetEpisodeMappings(0, false, false, TitleType.Localized, string.Empty)
+            return GetEpisodeMappings(0, false, false, TitleType.Localized, string.Empty)
                 .Select(m => new PropertyMappingDefinition(m.FriendlyName, m.SourceName, m.TargetPropertyName));
         }
 

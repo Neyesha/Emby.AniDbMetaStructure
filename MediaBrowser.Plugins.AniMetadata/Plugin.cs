@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Emby.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Configuration;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
 
-namespace Emby.AniDbMetaStructure
+namespace Jellyfin.AniDbMetaStructure
 {
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {

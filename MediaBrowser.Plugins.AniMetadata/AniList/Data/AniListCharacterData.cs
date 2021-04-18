@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Emby.AniDbMetaStructure.AniList.Data
+namespace Jellyfin.AniDbMetaStructure.AniList.Data
 {
     internal class AniListCharacterData
     {

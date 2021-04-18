@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.PropertyMapping
+namespace Jellyfin.AniDbMetaStructure.PropertyMapping
 {
     internal class PropertyMappingCollection : IPropertyMappingCollection
     {

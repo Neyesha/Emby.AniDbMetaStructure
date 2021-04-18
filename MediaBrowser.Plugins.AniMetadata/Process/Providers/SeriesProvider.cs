@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Configuration;
+﻿using Jellyfin.AniDbMetaStructure.Configuration;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Process.Providers
+namespace Jellyfin.AniDbMetaStructure.Process.Providers
 {
     internal class SeriesProvider
     {

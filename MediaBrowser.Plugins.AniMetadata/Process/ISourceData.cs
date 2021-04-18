@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     /// <summary>
     ///     The metadata for an item from a single source

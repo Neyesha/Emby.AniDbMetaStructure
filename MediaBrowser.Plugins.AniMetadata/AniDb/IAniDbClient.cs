@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.Seiyuu;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     public interface IAniDbClient
     {

@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Process.Providers;
+﻿using Jellyfin.AniDbMetaStructure.Process.Providers;
 using MediaBrowser.Common;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.EntryPoints
+namespace Jellyfin.AniDbMetaStructure.EntryPoints
 {
     public class SeasonProviderEntryPoint : IRemoteMetadataProvider<Season, SeasonInfo>
     {

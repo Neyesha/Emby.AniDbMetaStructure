@@ -1,6 +1,6 @@
 ﻿using System;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using FluentAssertions;
 using LanguageExt.UnsafeValueAccess;
 using NSubstitute;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using NSubstitute;
 
 namespace Emby.AniDbMetaStructure.Tests.TestHelpers

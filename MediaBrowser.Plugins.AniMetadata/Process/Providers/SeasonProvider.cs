@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Process.Providers
+namespace Jellyfin.AniDbMetaStructure.Process.Providers
 {
     internal class SeasonProvider
     {

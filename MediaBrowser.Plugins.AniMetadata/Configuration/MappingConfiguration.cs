@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Emby.AniDbMetaStructure.PropertyMapping;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 
-namespace Emby.AniDbMetaStructure.Configuration
+namespace Jellyfin.AniDbMetaStructure.Configuration
 {
     internal class MappingConfiguration : IMappingConfiguration
     {

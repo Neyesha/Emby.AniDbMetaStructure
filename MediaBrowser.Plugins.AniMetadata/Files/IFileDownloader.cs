@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Files
+namespace Jellyfin.AniDbMetaStructure.Files
 {
     internal interface IFileDownloader
     {

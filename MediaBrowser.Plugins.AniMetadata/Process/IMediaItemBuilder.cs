@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal interface IMediaItemBuilder
     {

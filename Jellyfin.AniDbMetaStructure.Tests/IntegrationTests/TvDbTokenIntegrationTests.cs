@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
-using Emby.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.TvDb;
 using FluentAssertions;
 using LanguageExt.UnsafeValueAccess;
 using MediaBrowser.Model.Logging;

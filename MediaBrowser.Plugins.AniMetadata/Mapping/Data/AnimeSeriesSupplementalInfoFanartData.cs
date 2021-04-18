@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Emby.AniDbMetaStructure.Mapping.Data
+namespace Jellyfin.AniDbMetaStructure.Mapping.Data
 {
     /// <summary>
     ///     Details of additional Fanart specified as supplemental information

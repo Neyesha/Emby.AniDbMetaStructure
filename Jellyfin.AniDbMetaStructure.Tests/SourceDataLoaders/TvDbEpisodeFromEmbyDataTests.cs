@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.Titles;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
-using Emby.AniDbMetaStructure.Tests.TestData;
-using Emby.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
+using Jellyfin.AniDbMetaStructure.Tests.TestData;
+using Jellyfin.AniDbMetaStructure.TvDb;
 using FluentAssertions;
 using LanguageExt;
 using NSubstitute;

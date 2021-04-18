@@ -1,7 +1,7 @@
-﻿using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.Process.Sources;
+﻿using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;
@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Providers.AniDb
+namespace Jellyfin.AniDbMetaStructure.Providers.AniDb
 {
     public class AniDbImageProvider
     {

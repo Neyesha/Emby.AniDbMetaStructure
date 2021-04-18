@@ -1,5 +1,5 @@
-﻿using Emby.AniDbMetaStructure.AniDb.Seiyuu;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 
 namespace Emby.AniDbMetaStructure.Tests.TestData
 {

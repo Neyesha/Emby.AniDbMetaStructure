@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.Process;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniList
+namespace Jellyfin.AniDbMetaStructure.AniList
 {
     internal interface IAniListToken
     {

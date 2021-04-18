@@ -1,4 +1,4 @@
-namespace Emby.AniDbMetaStructure.Mapping.Data
+namespace Jellyfin.AniDbMetaStructure.Mapping.Data
 {
     /// <summary>
     ///     A mapping between two specific episode numbers.

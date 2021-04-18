@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Process;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Process;
 using LanguageExt;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
     ///     Loads series data for an item that already has AniDb episode data loaded
@@ -33,7 +33,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
                 {
                     var title = this.sources.AniDb.SelectTitle(s.Titles, mediaItem.EmbyData.Language, resultContext);
 
-                    return title.Map(t => this.CreateSourceData(s, mediaItem.EmbyData, t));
+                    return title.Map(t => CreateSourceData(s, mediaItem.EmbyData, t));
                 });
         }
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Configuration;
 using FluentAssertions;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;

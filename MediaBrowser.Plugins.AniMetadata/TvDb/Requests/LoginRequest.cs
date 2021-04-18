@@ -1,12 +1,12 @@
-﻿using Emby.AniDbMetaStructure.JsonApi;
+﻿using Jellyfin.AniDbMetaStructure.JsonApi;
 
-namespace Emby.AniDbMetaStructure.TvDb.Requests
+namespace Jellyfin.AniDbMetaStructure.TvDb.Requests
 {
     internal class LoginRequest : TvDbRequest<GetEpisodesRequest.Response>, IPostRequest<LoginRequest.Response>
     {
         public LoginRequest(string apiKey) : base("login")
         {
-            this.Data = new RequestData(apiKey);
+            Data = new RequestData(apiKey);
         }
 
         public object Data { get; }
@@ -15,7 +15,7 @@ namespace Emby.AniDbMetaStructure.TvDb.Requests
         {
             public RequestData(string apiKey)
             {
-                this.ApiKey = apiKey;
+                ApiKey = apiKey;
             }
 
             public string ApiKey { get; }
@@ -25,7 +25,7 @@ namespace Emby.AniDbMetaStructure.TvDb.Requests
         {
             public Response(string token)
             {
-                this.Token = token;
+                Token = token;
             }
 
             public string Token { get; }

@@ -1,4 +1,4 @@
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     public class TvDbSeason
     {

@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.AniList
+namespace Jellyfin.AniDbMetaStructure.AniList
 {
     internal interface IAnilistConfiguration
     {

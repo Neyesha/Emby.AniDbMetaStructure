@@ -2,7 +2,7 @@
 using System.Linq;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     /// <summary>
     ///     The data supplied by Emby for an item at the start of the process

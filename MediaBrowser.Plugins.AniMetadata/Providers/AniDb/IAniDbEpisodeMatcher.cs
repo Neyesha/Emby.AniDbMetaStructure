@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Providers.AniDb
+namespace Jellyfin.AniDbMetaStructure.Providers.AniDb
 {
     internal interface IAniDbEpisodeMatcher
     {

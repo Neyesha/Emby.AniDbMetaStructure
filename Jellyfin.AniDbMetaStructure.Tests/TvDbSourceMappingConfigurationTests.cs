@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
-using Emby.AniDbMetaStructure.TvDb;
-using Emby.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using FluentAssertions;
 using LanguageExt;
 using MediaBrowser.Controller.Entities.TV;

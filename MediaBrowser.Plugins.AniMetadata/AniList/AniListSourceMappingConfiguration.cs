@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Emby.AniDbMetaStructure.AniList.Data;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.PropertyMapping;
+using Jellyfin.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 
-namespace Emby.AniDbMetaStructure.AniList
+namespace Jellyfin.AniDbMetaStructure.AniList
 {
     internal class AniListSourceMappingConfiguration : ISourceMappingConfiguration
     {

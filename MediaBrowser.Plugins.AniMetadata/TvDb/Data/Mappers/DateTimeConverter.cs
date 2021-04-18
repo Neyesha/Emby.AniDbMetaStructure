@@ -2,7 +2,7 @@
 using LanguageExt;
 using System;
 
-namespace Emby.AniDbMetaStructure.TvDb.Data.Mappers
+namespace Jellyfin.AniDbMetaStructure.TvDb.Data.Mappers
 {
     public class DateTimeConverter : ITypeConverter<string, Option<DateTime>>
     {

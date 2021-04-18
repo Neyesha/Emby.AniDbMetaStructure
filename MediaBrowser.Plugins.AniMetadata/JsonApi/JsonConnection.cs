@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.Infrastructure;
+﻿using Jellyfin.AniDbMetaStructure.Infrastructure;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.JsonApi
+namespace Jellyfin.AniDbMetaStructure.JsonApi
 {
     internal class JsonConnection : IJsonConnection
     {

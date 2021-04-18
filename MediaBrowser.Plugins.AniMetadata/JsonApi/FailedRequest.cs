@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Jellyfin.AniDbMetaStructure.Process;
+using System;
 using System.Net;
-using Emby.AniDbMetaStructure.Process;
 
-namespace Emby.AniDbMetaStructure.JsonApi
+namespace Jellyfin.AniDbMetaStructure.JsonApi
 {
     internal class FailedRequest
     {
         public FailedRequest(HttpStatusCode statusCode, string responseContent)
         {
-            this.StatusCode = statusCode;
-            this.ResponseContent = responseContent;
+            StatusCode = statusCode;
+            ResponseContent = responseContent;
         }
 
         public HttpStatusCode StatusCode { get; }

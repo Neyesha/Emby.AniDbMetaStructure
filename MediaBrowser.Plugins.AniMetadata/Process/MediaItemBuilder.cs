@@ -1,5 +1,5 @@
-﻿using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
+﻿using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal class MediaItemBuilder : IMediaItemBuilder
     {

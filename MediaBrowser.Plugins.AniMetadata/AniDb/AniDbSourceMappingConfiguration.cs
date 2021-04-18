@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
+using MediaBrowser.Controller.Entities.TV;
+using MediaBrowser.Controller.Providers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.PropertyMapping;
-using MediaBrowser.Controller.Entities.TV;
-using MediaBrowser.Controller.Providers;
 
-namespace Emby.AniDbMetaStructure.AniDb
+namespace Jellyfin.AniDbMetaStructure.AniDb
 {
     internal class AniDbSourceMappingConfiguration : ISourceMappingConfiguration
     {
@@ -25,7 +25,7 @@ namespace Emby.AniDbMetaStructure.AniDb
 
         public IEnumerable<PropertyMappingDefinition> GetSeriesMappingDefinitions()
         {
-            return this.GetSeriesMappings(0, false, false, TitleType.Localized, string.Empty)
+            return GetSeriesMappings(0, false, false, TitleType.Localized, string.Empty)
                 .Select(m => new PropertyMappingDefinition(m.FriendlyName, m.SourceName, m.TargetPropertyName));
         }
 
@@ -35,7 +35,7 @@ namespace Emby.AniDbMetaStructure.AniDb
             return new IPropertyMapping[]
             {
                 MapSeries("Name", t => t.Item.Name,
-                    (s, t) => t.Item.Name = this.SelectTitle(s, preferredTitleType, metadataLanguage)),
+                    (s, t) => t.Item.Name = SelectTitle(s, preferredTitleType, metadataLanguage)),
                 MapSeries("Release date", t => t.Item.PremiereDate, (s, t) => t.Item.PremiereDate = s.StartDate,
                     (s, t) => s.StartDate.HasValue),
                 MapSeries("End date", t => t.Item.EndDate, (s, t) => t.Item.EndDate = s.EndDate,
@@ -49,7 +49,7 @@ namespace Emby.AniDbMetaStructure.AniDb
                 MapSeries("Studios", t => t.Item.Studios,
                     (s, t) => t.Item.Studios = this.aniDbParser.GetStudios(s).ToArray()),
                 MapSeries("Genres", t => t.Item.Genres,
-                    (s, t) => t.Item.Genres = this.AddGenres(s, t.Item.Genres, maxGenres, addAnimeGenre)),
+                    (s, t) => t.Item.Genres = AddGenres(s, t.Item.Genres, maxGenres, addAnimeGenre)),
                 MapSeries("Tags", t => t.Item.Tags,
                     (s, t) => t.Item.Tags = this.aniDbParser.GetTags(s, maxGenres, addAnimeGenre).ToArray()),
                 MapSeries("People", t => t.People, (s, t) => t.People = this.aniDbParser.GetPeople(s).ToList())
@@ -58,7 +58,7 @@ namespace Emby.AniDbMetaStructure.AniDb
 
         public IEnumerable<PropertyMappingDefinition> GetSeasonMappingDefinitions()
         {
-            return this.GetSeasonMappings(0, false, TitleType.Localized, string.Empty)
+            return GetSeasonMappings(0, false, TitleType.Localized, string.Empty)
                 .Select(m => new PropertyMappingDefinition(m.FriendlyName, m.SourceName, m.TargetPropertyName));
         }
 
@@ -83,18 +83,18 @@ namespace Emby.AniDbMetaStructure.AniDb
                 MapSeason("Studios", t => t.Item.Studios,
                     (s, t) => t.Item.Studios = this.aniDbParser.GetStudios(s).ToArray()),
                 MapSeason("Genres", t => t.Item.Genres,
-                    (s, t) => t.Item.Genres = this.AddGenres(s, t.Item.Genres, maxGenres, addAnimeGenre)),
+                    (s, t) => t.Item.Genres = AddGenres(s, t.Item.Genres, maxGenres, addAnimeGenre)),
                 MapSeason("Tags", t => t.Item.Tags,
                     (s, t) => t.Item.Tags = this.aniDbParser.GetTags(s, maxGenres, addAnimeGenre).ToArray()),
                 MapSeason("Name", t => t.Item.Name,
-                    (s, t) => t.Item.Name = this.SelectTitle(s, preferredTitleType, metadataLanguage),
+                    (s, t) => t.Item.Name = SelectTitle(s, preferredTitleType, metadataLanguage),
                     (s, t) => s.Titles.Any())
             };
         }
 
         public IEnumerable<PropertyMappingDefinition> GetEpisodeMappingDefinitions()
         {
-            return this.GetEpisodeMappings(0, false, false, TitleType.Localized, string.Empty)
+            return GetEpisodeMappings(0, false, false, TitleType.Localized, string.Empty)
                 .Select(m => new PropertyMappingDefinition(m.FriendlyName, m.SourceName, m.TargetPropertyName));
         }
 
@@ -104,7 +104,7 @@ namespace Emby.AniDbMetaStructure.AniDb
             return new IPropertyMapping[]
             {
                 MapEpisode("Name", t => t.Item.Name,
-                    (s, t) => t.Item.Name = this.SelectTitle(s, preferredTitleType, metadataLanguage)),
+                    (s, t) => t.Item.Name = SelectTitle(s, preferredTitleType, metadataLanguage)),
                 MapEpisode("Release date", t => t.Item.PremiereDate, (s, t) => t.Item.PremiereDate = s.AirDate),
                 MapEpisode("Runtime", t => t.Item.RunTimeTicks,
                     (s, t) => t.Item.RunTimeTicks = new TimeSpan(0, s.TotalMinutes, 0).Ticks,
@@ -117,7 +117,7 @@ namespace Emby.AniDbMetaStructure.AniDb
                 MapEpisodeFromSeriesData("Studios", t => t.Item.Studios,
                     (s, t) => t.Item.Studios = this.aniDbParser.GetStudios(s).ToArray()),
                 MapEpisodeFromSeriesData("Genres", t => t.Item.Genres,
-                    (s, t) =>  t.Item.Genres = this.AddGenres(s, t.Item.Genres, maxGenres, addAnimeGenre)),
+                    (s, t) =>  t.Item.Genres = AddGenres(s, t.Item.Genres, maxGenres, addAnimeGenre)),
                 MapEpisodeFromSeriesData("Tags", t => t.Item.Tags,
                     (s, t) => t.Item.Tags = this.aniDbParser.GetTags(s, maxGenres, addAnimeGenre).ToArray()),
                 MapEpisodeFromSeriesData("People", t => t.People,

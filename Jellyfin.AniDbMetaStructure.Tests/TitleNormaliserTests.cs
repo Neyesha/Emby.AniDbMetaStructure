@@ -1,4 +1,4 @@
-﻿using Emby.AniDbMetaStructure.AniDb.Titles;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.Titles;
 using FluentAssertions;
 using NUnit.Framework;
 

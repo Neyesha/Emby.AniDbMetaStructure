@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.JsonApi;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.JsonApi;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;

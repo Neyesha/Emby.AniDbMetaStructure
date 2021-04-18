@@ -1,12 +1,12 @@
-﻿using Emby.AniDbMetaStructure.AniList.Data;
-using Emby.AniDbMetaStructure.Configuration;
+﻿using Jellyfin.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.Configuration;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Emby.AniDbMetaStructure.AniList
+namespace Jellyfin.AniDbMetaStructure.AniList
 {
     internal class AniListNameSelector : IAniListNameSelector
     {

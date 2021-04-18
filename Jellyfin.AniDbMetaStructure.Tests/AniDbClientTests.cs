@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
 using FluentAssertions;
 using LanguageExt.UnsafeValueAccess;
 using MediaBrowser.Model.Logging;

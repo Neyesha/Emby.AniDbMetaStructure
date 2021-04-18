@@ -1,6 +1,6 @@
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     public class SeriesIds
     {

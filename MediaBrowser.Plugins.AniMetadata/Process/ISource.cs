@@ -1,8 +1,8 @@
-﻿using Emby.AniDbMetaStructure.Process.Sources;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
+﻿using Jellyfin.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     /// <summary>
     ///     A source of metadata

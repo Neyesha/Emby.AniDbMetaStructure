@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Emby.AniDbMetaStructure.AniDb.Titles
+namespace Jellyfin.AniDbMetaStructure.AniDb.Titles
 {
     [XmlType(AnonymousType = true)]
     [XmlRoot("animetitles", Namespace = "", IsNullable = false)]

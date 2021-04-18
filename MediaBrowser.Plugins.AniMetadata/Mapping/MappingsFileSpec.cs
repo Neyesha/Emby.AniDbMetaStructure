@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Mapping.Data;
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Mapping.Data;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     internal class MappingsFileSpec : IRemoteFileSpec<AnimeMappingListData>
     {

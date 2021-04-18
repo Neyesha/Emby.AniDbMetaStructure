@@ -1,13 +1,12 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Mapping;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.TvDb.Data;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Mapping;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using LanguageExt;
 using System.Linq;
-using Emby.AniDbMetaStructure.Process.Sources;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     internal class AniDbSeriesFromTvDb : ISourceDataLoader
     {
@@ -22,7 +21,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
 
         public bool CanLoadFrom(object sourceData)
         {
-            return sourceData is ISourceData<IdentifierOnlySourceData> identifierOnlySourceData && identifierOnlySourceData.ItemType == MediaItemTypes.Season && identifierOnlySourceData.Source.Name == SourceNames.TvDb ;
+            return sourceData is ISourceData<IdentifierOnlySourceData> identifierOnlySourceData && identifierOnlySourceData.ItemType == MediaItemTypes.Season && identifierOnlySourceData.Source.Name == SourceNames.TvDb;
         }
 
         public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IMediaItem mediaItem, object sourceData)
@@ -37,7 +36,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
             var tvDbSeriesId = mediaItem.EmbyData.GetParentId(MediaItemTypes.Series, this.sources.TvDb)
                 .ToEither(resultContext.Failed("Failed to find TvDb series Id"));
 
-            var aniDbSeriesId = tvDbSeriesId.BindAsync(id => this.MapSeriesDataAsync(id, IdentifierOnlySourceData, resultContext));
+            var aniDbSeriesId = tvDbSeriesId.BindAsync(id => MapSeriesDataAsync(id, IdentifierOnlySourceData, resultContext));
 
             return aniDbSeriesId
                 .BindAsync(id => this.sources.AniDb.GetSeriesData(id, resultContext))
@@ -45,7 +44,7 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
                 {
                     var title = this.sources.AniDb.SelectTitle(s.Titles, mediaItem.EmbyData.Language, resultContext);
 
-                    return title.Map(t => this.CreateSourceData(s, mediaItem.EmbyData, t));
+                    return title.Map(t => CreateSourceData(s, mediaItem.EmbyData, t));
                 });
         }
 

@@ -1,7 +1,7 @@
-﻿using Emby.AniDbMetaStructure.AniDb;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Tests.TestHelpers;
-using Emby.AniDbMetaStructure.TvDb;
+﻿using Jellyfin.AniDbMetaStructure.AniDb;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
+using Jellyfin.AniDbMetaStructure.TvDb;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;

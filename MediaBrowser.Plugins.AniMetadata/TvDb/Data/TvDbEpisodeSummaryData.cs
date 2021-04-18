@@ -1,7 +1,7 @@
 ﻿using System;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.TvDb.Data
+namespace Jellyfin.AniDbMetaStructure.TvDb.Data
 {
     public class TvDbEpisodeSummaryData
     {

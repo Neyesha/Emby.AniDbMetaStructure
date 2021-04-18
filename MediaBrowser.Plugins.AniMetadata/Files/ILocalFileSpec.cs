@@ -1,6 +1,6 @@
-﻿using Emby.AniDbMetaStructure.Infrastructure;
+﻿using Jellyfin.AniDbMetaStructure.Infrastructure;
 
-namespace Emby.AniDbMetaStructure.Files
+namespace Jellyfin.AniDbMetaStructure.Files
 {
     /// <summary>
     ///     A specification of a file which is populated by explicitly specifying the data

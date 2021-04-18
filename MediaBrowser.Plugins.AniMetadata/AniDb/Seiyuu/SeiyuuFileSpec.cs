@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using Emby.AniDbMetaStructure.Files;
-using Emby.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.Files;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
 
-namespace Emby.AniDbMetaStructure.AniDb.Seiyuu
+namespace Jellyfin.AniDbMetaStructure.AniDb.Seiyuu
 {
     internal class SeiyuuFileSpec : ILocalFileSpec<SeiyuuListData>
     {

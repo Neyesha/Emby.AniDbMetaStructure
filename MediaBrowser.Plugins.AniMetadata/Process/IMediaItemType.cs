@@ -1,9 +1,9 @@
-﻿using Emby.AniDbMetaStructure.Configuration;
+﻿using Jellyfin.AniDbMetaStructure.Configuration;
 using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using Microsoft.Extensions.Logging;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     public interface IMediaItemType
     {

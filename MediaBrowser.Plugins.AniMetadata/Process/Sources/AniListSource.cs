@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Emby.AniDbMetaStructure.AniList;
-using Emby.AniDbMetaStructure.AniList.Data;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
+﻿using Jellyfin.AniDbMetaStructure.AniList;
+using Jellyfin.AniDbMetaStructure.AniList.Data;
+using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
 using LanguageExt;
+using System.Collections.Generic;
 
-namespace Emby.AniDbMetaStructure.Process.Sources
+namespace Jellyfin.AniDbMetaStructure.Process.Sources
 {
     internal class AniListSource : IAniListSource
     {
@@ -24,8 +24,8 @@ namespace Emby.AniDbMetaStructure.Process.Sources
 
         public Either<ProcessFailedResult, IEmbySourceDataLoader> GetEmbySourceDataLoader(IMediaItemType mediaItemType)
         {
-            return this.embySourceDataLoaders.Find(l => l.SourceName == this.Name && l.CanLoadFrom(mediaItemType))
-                .ToEither(new ProcessFailedResult(this.Name, string.Empty, mediaItemType,
+            return this.embySourceDataLoaders.Find(l => l.SourceName == Name && l.CanLoadFrom(mediaItemType))
+                .ToEither(new ProcessFailedResult(Name, string.Empty, mediaItemType,
                     "No Emby source data loader for this source and media item type"));
         }
 

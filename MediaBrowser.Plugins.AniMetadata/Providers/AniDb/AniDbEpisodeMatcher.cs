@@ -1,11 +1,11 @@
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.AniDb.Titles;
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.AniDb.Titles;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Emby.AniDbMetaStructure.Providers.AniDb
+namespace Jellyfin.AniDbMetaStructure.Providers.AniDb
 {
     internal class AniDbEpisodeMatcher : IAniDbEpisodeMatcher
     {

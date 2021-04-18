@@ -1,7 +1,7 @@
 ﻿using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 
-namespace Emby.AniDbMetaStructure.Process
+namespace Jellyfin.AniDbMetaStructure.Process
 {
     internal class MetadataFoundResult<TEmbyItem> : IMetadataFoundResult<TEmbyItem> where TEmbyItem : BaseItem
     {

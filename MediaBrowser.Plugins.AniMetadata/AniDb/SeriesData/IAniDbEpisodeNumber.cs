@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.AniDb.SeriesData
+﻿namespace Jellyfin.AniDbMetaStructure.AniDb.SeriesData
 {
     public interface IAniDbEpisodeNumber
     {

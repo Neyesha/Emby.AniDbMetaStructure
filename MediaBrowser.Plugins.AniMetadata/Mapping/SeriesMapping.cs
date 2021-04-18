@@ -1,12 +1,12 @@
+using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.Mapping.Data;
+using LanguageExt;
 using System.Collections.Generic;
 using System.Linq;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.Mapping.Data;
-using LanguageExt;
 using Xem.Api.Mapping;
 
-namespace Emby.AniDbMetaStructure.Mapping
+namespace Jellyfin.AniDbMetaStructure.Mapping
 {
     public class SeriesMapping : ISeriesMapping
     {
@@ -14,11 +14,11 @@ namespace Emby.AniDbMetaStructure.Mapping
             IEnumerable<EpisodeGroupMapping> episodeGroupMappings,
             IEnumerable<SpecialEpisodePosition> specialEpisodePositions)
         {
-            this.Ids = ids;
-            this.DefaultTvDbSeason = defaultTvDbSeason;
-            this.DefaultTvDbEpisodeIndexOffset = defaultTvDbEpisodeIndexOffset;
-            this.SpecialEpisodePositions = specialEpisodePositions ?? new List<SpecialEpisodePosition>();
-            this.EpisodeGroupMappings = episodeGroupMappings ?? new List<EpisodeGroupMapping>();
+            Ids = ids;
+            DefaultTvDbSeason = defaultTvDbSeason;
+            DefaultTvDbEpisodeIndexOffset = defaultTvDbEpisodeIndexOffset;
+            SpecialEpisodePositions = specialEpisodePositions ?? new List<SpecialEpisodePosition>();
+            EpisodeGroupMappings = episodeGroupMappings ?? new List<EpisodeGroupMapping>();
         }
 
         public SeriesIds Ids { get; }
@@ -33,7 +33,7 @@ namespace Emby.AniDbMetaStructure.Mapping
 
         public Option<EpisodeGroupMapping> GetEpisodeGroupMapping(IAniDbEpisodeNumber aniDbEpisodeNumber)
         {
-            var mapping = this.EpisodeGroupMappings.FirstOrDefault(m =>
+            var mapping = EpisodeGroupMappings.FirstOrDefault(m =>
                 m.AniDbSeasonIndex == aniDbEpisodeNumber.SeasonNumber &&
                 m.CanMapAniDbEpisode(aniDbEpisodeNumber.Number));
 
@@ -42,7 +42,7 @@ namespace Emby.AniDbMetaStructure.Mapping
 
         public Option<EpisodeGroupMapping> GetEpisodeGroupMapping(int tvDbEpisodeIndex, int tvDbSeasonIndex)
         {
-            var mapping = this.EpisodeGroupMappings.FirstOrDefault(m =>
+            var mapping = EpisodeGroupMappings.FirstOrDefault(m =>
                 m.TvDbSeasonIndex == tvDbSeasonIndex &&
                 m.CanMapTvDbEpisode(tvDbEpisodeIndex));
 
@@ -56,7 +56,7 @@ namespace Emby.AniDbMetaStructure.Mapping
                 return Option<SpecialEpisodePosition>.None;
             }
 
-            return this.SpecialEpisodePositions.FirstOrDefault(m => m.SpecialEpisodeIndex == aniDbEpisodeNumber.Number);
+            return SpecialEpisodePositions.FirstOrDefault(m => m.SpecialEpisodeIndex == aniDbEpisodeNumber.Number);
         }
 
         private static bool IsValidData(AniDbSeriesMappingData data)
@@ -79,7 +79,7 @@ namespace Emby.AniDbMetaStructure.Mapping
                 return new AbsoluteTvDbSeason();
             }
 
-            var seasonIndex = int.Parse(defaultTvDbSeasonIndex);
+            int seasonIndex = int.Parse(defaultTvDbSeasonIndex);
 
             return new TvDbSeason(seasonIndex);
         }
@@ -99,7 +99,7 @@ namespace Emby.AniDbMetaStructure.Mapping
 
             var defaultTvDbSeason = GetTvDbSeasonResult(data.DefaultTvDbSeason);
 
-            var defaultTvDbEpisodeIndexOffset = data.EpisodeOffset;
+            short defaultTvDbEpisodeIndexOffset = data.EpisodeOffset;
 
             var episodeGroupMappings = data.GroupMappingList?.Select(EpisodeGroupMapping.FromData)
                 .Somes()
@@ -147,7 +147,7 @@ namespace Emby.AniDbMetaStructure.Mapping
                 .Where(s => !string.IsNullOrWhiteSpace(s))
                 .Select(s =>
                 {
-                    var mappingComponents = s.Split('-');
+                    string[] mappingComponents = s.Split('-');
 
                     if (mappingComponents.Length != 2)
                     {

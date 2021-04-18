@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Process.Providers;
+using Jellyfin.AniDbMetaStructure.Process.Providers;
 using MediaBrowser.Common;
 using System.Net.Http;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
 
-namespace Emby.AniDbMetaStructure.EntryPoints
+namespace Jellyfin.AniDbMetaStructure.EntryPoints
 {
     public class EpisodeProviderEntryPoint : IRemoteMetadataProvider<Episode, EpisodeInfo>
     {

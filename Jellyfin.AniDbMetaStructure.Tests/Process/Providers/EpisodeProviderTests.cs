@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Process;
-using Emby.AniDbMetaStructure.Process.Providers;
-using Emby.AniDbMetaStructure.Process.Sources;
+using Jellyfin.AniDbMetaStructure.Process;
+using Jellyfin.AniDbMetaStructure.Process.Providers;
+using Jellyfin.AniDbMetaStructure.Process.Sources;
 using FluentAssertions;
 using LanguageExt;
 using MediaBrowser.Controller.Entities.TV;
@@ -15,7 +15,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using static LanguageExt.Prelude;
-using Emby.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
 
 namespace Emby.AniDbMetaStructure.Tests.Process.Providers
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Emby.AniDbMetaStructure.Infrastructure;
-using Emby.AniDbMetaStructure.TvDb;
-using Emby.AniDbMetaStructure.TvDb.Data;
-using Emby.AniDbMetaStructure.TvDb.Requests;
+using Jellyfin.AniDbMetaStructure.Infrastructure;
+using Jellyfin.AniDbMetaStructure.TvDb;
+using Jellyfin.AniDbMetaStructure.TvDb.Data;
+using Jellyfin.AniDbMetaStructure.TvDb.Requests;
 using FluentAssertions;
 using LanguageExt;
 using Newtonsoft.Json;

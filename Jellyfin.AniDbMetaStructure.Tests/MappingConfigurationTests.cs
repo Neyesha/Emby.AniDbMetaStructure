@@ -1,6 +1,6 @@
-﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.PropertyMapping;
+﻿using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
+using Jellyfin.AniDbMetaStructure.Configuration;
+using Jellyfin.AniDbMetaStructure.PropertyMapping;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;

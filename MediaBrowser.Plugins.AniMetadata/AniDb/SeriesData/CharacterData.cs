@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Emby.AniDbMetaStructure.AniDb.Seiyuu;
+using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
 
-namespace Emby.AniDbMetaStructure.AniDb.SeriesData
+namespace Jellyfin.AniDbMetaStructure.AniDb.SeriesData
 {
     public class CharacterData
     {

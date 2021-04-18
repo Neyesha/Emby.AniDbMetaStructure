@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Emby.AniDbMetaStructure.TvDb.Data.Mappers
+namespace Jellyfin.AniDbMetaStructure.TvDb.Data.Mappers
 {
     public class IntFormatter : IValueConverter<string, int>
     {
