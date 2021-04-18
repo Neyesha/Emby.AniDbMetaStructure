@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Providers.AniDb;
+﻿using Emby.AniDbMetaStructure.Providers.AniDb;
 using MediaBrowser.Common;
-using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Entities;
-using Microsoft.Extensions.Logging;
 using MediaBrowser.Model.Providers;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.EntryPoints
 {
@@ -41,14 +41,14 @@ namespace Emby.AniDbMetaStructure.EntryPoints
             return this.imageProvider.GetImages(item, cancellationToken);
         }
 
-        public Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             return this.imageProvider.GetImageResponse(url, cancellationToken);
         }
 
         public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, LibraryOptions libraryOptions, CancellationToken cancellationToken)
         {
-            return this.GetImages(item, cancellationToken);
+            return GetImages(item, cancellationToken);
         }
     }
 }

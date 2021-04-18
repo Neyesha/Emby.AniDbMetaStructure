@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Providers.AniDb;
+﻿using Emby.AniDbMetaStructure.Providers.AniDb;
 using MediaBrowser.Common;
-using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.EntryPoints
 {
@@ -33,7 +33,7 @@ namespace Emby.AniDbMetaStructure.EntryPoints
 
         public string Name => this.personProvider.Name;
 
-        public Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             return this.personProvider.GetImageResponse(url, cancellationToken);
         }

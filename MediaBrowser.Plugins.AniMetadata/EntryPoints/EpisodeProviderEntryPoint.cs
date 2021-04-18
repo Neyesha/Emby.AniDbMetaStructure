@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Emby.AniDbMetaStructure.Process.Providers;
 using MediaBrowser.Common;
-using MediaBrowser.Common.Net;
+using System.Net.Http;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
@@ -32,7 +32,7 @@ namespace Emby.AniDbMetaStructure.EntryPoints
 
         public string Name => this.episodeProvider.Name;
 
-        public Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             return this.episodeProvider.GetImageResponse(url, cancellationToken);
         }

@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb;
+﻿using Emby.AniDbMetaStructure.AniDb;
 using Emby.AniDbMetaStructure.AniDb.SeriesData;
 using Emby.AniDbMetaStructure.Infrastructure;
 using Emby.AniDbMetaStructure.Process.Sources;
 using LanguageExt;
-using Microsoft.AspNetCore.Http;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Model.Entities;
-using Microsoft.Extensions.Logging;
 using MediaBrowser.Model.Providers;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.Providers.AniDb
 {
@@ -48,15 +48,15 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
         {
             var imageInfos = new List<RemoteImageInfo>();
 
-            var embySeries = this.GetEmbySeries(item);
+            var embySeries = GetEmbySeries(item);
 
             var aniDbSeries =
-                await embySeries.Match(this.GetAniDbSeriesAsync, () => Task.FromResult(Option<AniDbSeriesData>.None));
+                await embySeries.Match(GetAniDbSeriesAsync, () => Task.FromResult(Option<AniDbSeriesData>.None));
 
             aniDbSeries
                 .Match(s =>
                     {
-                        var imageUrl = this.GetImageUrl(s.PictureFileName);
+                        var imageUrl = GetImageUrl(s.PictureFileName);
 
                         imageUrl.Match(url =>
                             {
@@ -75,15 +75,15 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
             return imageInfos;
         }
 
-        public async Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public async Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             await this.rateLimiter.TickAsync().ConfigureAwait(false);
 
             return await this.httpClient.GetResponse(new HttpRequestOptions
-                {
-                    CancellationToken = cancellationToken,
-                    Url = url
-                })
+            {
+                CancellationToken = cancellationToken,
+                Url = url
+            })
                 .ConfigureAwait(false);
         }
 

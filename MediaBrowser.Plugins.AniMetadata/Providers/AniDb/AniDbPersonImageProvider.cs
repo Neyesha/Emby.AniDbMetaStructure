@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb;
+﻿using Emby.AniDbMetaStructure.AniDb;
 using Emby.AniDbMetaStructure.Infrastructure;
 using Emby.AniDbMetaStructure.Process.Sources;
-using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
 namespace Emby.AniDbMetaStructure.Providers.AniDb
@@ -16,10 +16,10 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
     public class AniDbPersonImageProvider
     {
         private readonly IAniDbClient aniDbClient;
-        private readonly IHttpClient httpClient;
+        private readonly HttpClient httpClient;
         private readonly IRateLimiter rateLimiter;
 
-        public AniDbPersonImageProvider(IAniDbClient aniDbClient, IRateLimiters rateLimiters, IHttpClient httpClient)
+        public AniDbPersonImageProvider(IAniDbClient aniDbClient, IRateLimiters rateLimiters, HttpClient httpClient)
         {
             this.aniDbClient = aniDbClient;
             this.rateLimiter = rateLimiters.AniDb;
@@ -59,15 +59,11 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
             return Task.FromResult(result);
         }
 
-        public async Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public async Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             await this.rateLimiter.TickAsync().ConfigureAwait(false);
 
-            return await this.httpClient.GetResponse(new HttpRequestOptions
-                {
-                    CancellationToken = cancellationToken,
-                    Url = url
-                })
+            return await this.httpClient.GetAsync(url, cancellationToken)
                 .ConfigureAwait(false);
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Infrastructure;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
@@ -66,7 +66,7 @@ namespace Emby.AniDbMetaStructure.Process.Providers
                                 info.IndexNumber = null;
                                 info.ParentIndexNumber = null;
                                 info.Name = string.Empty;
-                                info.ProviderIds = new Dictionary<string, string>().ToProviderIdDictionary();
+                                info.ProviderIds = new Dictionary<string, string>();
 
                                 return r.EmbyMetadataResult;
                             },
@@ -88,7 +88,7 @@ namespace Emby.AniDbMetaStructure.Process.Providers
             return metadataResult;
         }
 
-        public Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             throw new NotSupportedException();
         }

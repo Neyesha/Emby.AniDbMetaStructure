@@ -4,17 +4,18 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.JsonApi
 {
     internal class JsonConnection : IJsonConnection
     {
-        private readonly IHttpClient httpClient;
+        private readonly HttpClient httpClient;
         private readonly ICustomJsonSerialiser jsonSerialiser;
         private readonly ILogger logger;
 
-        public JsonConnection(IHttpClient httpClient, ICustomJsonSerialiser jsonSerialiser, ILogger logger)
+        public JsonConnection(HttpClient httpClient, ICustomJsonSerialiser jsonSerialiser, ILogger logger)
         {
             this.httpClient = httpClient;
             this.jsonSerialiser = jsonSerialiser;
@@ -35,7 +36,7 @@ namespace Emby.AniDbMetaStructure.JsonApi
 
         public Task<Either<TFailedRequest, Response<TResponseData>>> PostAsync<TFailedRequest, TResponseData>(
             IPostRequest<TResponseData> request, Option<string> oAuthAccessToken,
-            Func<string, ICustomJsonSerialiser, HttpResponseInfo, Either<TFailedRequest, Response<TResponseData>>>
+            Func<string, ICustomJsonSerialiser, HttpResponseMessage, Either<TFailedRequest, Response<TResponseData>>>
                 responseHandler)
         {
             var requestOptions = new HttpRequestOptions
@@ -57,7 +58,7 @@ namespace Emby.AniDbMetaStructure.JsonApi
 
         public Task<Either<TFailedRequest, Response<TResponseData>>> GetAsync<TFailedRequest, TResponseData>(
             IGetRequest<TResponseData> request, Option<string> oAuthAccessToken,
-            Func<string, ICustomJsonSerialiser, HttpResponseInfo, Either<TFailedRequest, Response<TResponseData>>>
+            Func<string, ICustomJsonSerialiser, HttpResponseMessage, Either<TFailedRequest, Response<TResponseData>>>
                 responseHandler)
         {
             var requestOptions = new HttpRequestOptions
@@ -76,8 +77,8 @@ namespace Emby.AniDbMetaStructure.JsonApi
         }
 
         private Either<TFailedRequest, Response<TResponseData>> ApplyResponseHandler<TFailedRequest, TResponseData>(
-            Func<string, ICustomJsonSerialiser, HttpResponseInfo, Either<TFailedRequest, Response<TResponseData>>>
-                responseHandler, HttpResponseInfo response)
+            Func<string, ICustomJsonSerialiser, HttpResponseMessage, Either<TFailedRequest, Response<TResponseData>>>
+                responseHandler, HttpResponseMessage response)
         {
             string responseContent = this.GetStreamText(response.Content);
 
@@ -89,7 +90,7 @@ namespace Emby.AniDbMetaStructure.JsonApi
         }
 
         private Either<FailedRequest, Response<TResponseData>> ParseResponse<TResponseData>(string responseContent,
-            ICustomJsonSerialiser serialiser, HttpResponseInfo response)
+            ICustomJsonSerialiser serialiser, HttpResponseMessage response)
         {
             if (response.StatusCode != HttpStatusCode.OK)
             {

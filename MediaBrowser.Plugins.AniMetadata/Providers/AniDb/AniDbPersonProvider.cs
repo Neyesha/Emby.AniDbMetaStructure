@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb;
+﻿using Emby.AniDbMetaStructure.AniDb;
 using Emby.AniDbMetaStructure.AniDb.Seiyuu;
 using Emby.AniDbMetaStructure.Infrastructure;
 using Emby.AniDbMetaStructure.Process.Sources;
-using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
-using Microsoft.Extensions.Logging;
 using MediaBrowser.Model.Providers;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
 namespace Emby.AniDbMetaStructure.Providers.AniDb
@@ -19,12 +19,11 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
     public class AniDbPersonProvider
     {
         private readonly IAniDbClient aniDbClient;
-        private readonly IHttpClient httpClient;
+        private readonly HttpClient httpClient;
         private readonly ILogger logger;
         private readonly IRateLimiter rateLimiter;
 
-        public AniDbPersonProvider(IAniDbClient aniDbClient, IRateLimiters rateLimiters, IHttpClient httpClient,
-            ILogger logger)
+        public AniDbPersonProvider(IAniDbClient aniDbClient, IRateLimiters rateLimiters, HttpClient httpClient, ILogger logger)
         {
             this.rateLimiter = rateLimiters.AniDb;
             this.aniDbClient = aniDbClient;
@@ -32,8 +31,7 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
             this.logger = logger;
         }
 
-        public Task<IEnumerable<RemoteSearchResult>> GetSearchResults(PersonLookupInfo searchInfo,
-            CancellationToken cancellationToken)
+        public Task<IEnumerable<RemoteSearchResult>> GetSearchResults(PersonLookupInfo searchInfo, CancellationToken cancellationToken)
         {
             this.logger.LogDebug(
                 $"Searching for person name: '{searchInfo.Name}', id: '{searchInfo.ProviderIds.GetOrDefault(SourceNames.AniDb)}'");
@@ -42,18 +40,18 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
 
             if (!string.IsNullOrWhiteSpace(searchInfo.Name))
             {
-                result = this.aniDbClient.FindSeiyuu(searchInfo.Name).Select(this.ToSearchResult);
+                result = this.aniDbClient.FindSeiyuu(searchInfo.Name).Select(ToSearchResult);
             }
             else if (searchInfo.ProviderIds.ContainsKey(SourceNames.AniDb))
             {
-                var aniDbPersonIdString = searchInfo.ProviderIds[SourceNames.AniDb];
+                string aniDbPersonIdString = searchInfo.ProviderIds[SourceNames.AniDb];
 
                 parseInt(aniDbPersonIdString)
                     .Iter(aniDbPersonId =>
                     {
                         this.aniDbClient.GetSeiyuu(aniDbPersonId)
                             .Iter(s =>
-                                result = new[] { this.ToSearchResult(s) }
+                                result = new[] { ToSearchResult(s) }
                             );
                     });
             }
@@ -72,7 +70,7 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
 
             if (info.ProviderIds.ContainsKey(SourceNames.AniDb))
             {
-                var aniDbPersonIdString = info.ProviderIds[SourceNames.AniDb];
+                string aniDbPersonIdString = info.ProviderIds[SourceNames.AniDb];
 
                 parseInt(aniDbPersonIdString)
                     .Iter(aniDbPersonId =>
@@ -89,7 +87,7 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
                                                 new ItemImageInfo { Type = ImageType.Primary, Path = s.PictureUrl }
                                             },
                                         ProviderIds =
-                                            new Dictionary<string, string> { { SourceNames.AniDb, s.Id.ToString() } }.ToProviderIdDictionary()
+                                            new Dictionary<string, string> { { SourceNames.AniDb, s.Id.ToString() } }
                                     };
 
                                     this.logger.LogDebug("Found metadata");
@@ -103,17 +101,13 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
 
         public string Name => SourceNames.AniDb;
 
-        public async Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
+        public async Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             this.logger.LogDebug($"Getting image: '{url}'");
 
             await this.rateLimiter.TickAsync().ConfigureAwait(false);
 
-            return await this.httpClient.GetResponse(new HttpRequestOptions
-                {
-                    CancellationToken = cancellationToken,
-                    Url = url
-                })
+            return await this.httpClient.GetAsync(url, cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -122,9 +116,9 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
             return new RemoteSearchResult
             {
                 Name = seiyuuData.Name,
-                SearchProviderName = this.Name,
+                SearchProviderName = Name,
                 ImageUrl = seiyuuData.PictureUrl,
-                ProviderIds = new Dictionary<string, string> { { SourceNames.AniDb, seiyuuData.Id.ToString() } }.ToProviderIdDictionary()
+                ProviderIds = new Dictionary<string, string> { { SourceNames.AniDb, seiyuuData.Id.ToString() } }
             };
         }
     }

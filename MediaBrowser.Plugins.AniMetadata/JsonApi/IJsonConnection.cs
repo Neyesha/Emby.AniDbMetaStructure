@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Infrastructure;
+﻿using Emby.AniDbMetaStructure.Infrastructure;
 using LanguageExt;
-using MediaBrowser.Common.Net;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.JsonApi
 {
@@ -13,7 +13,7 @@ namespace Emby.AniDbMetaStructure.JsonApi
 
         Task<Either<TFailedRequest, Response<TResponseData>>> PostAsync<TFailedRequest, TResponseData>(
             IPostRequest<TResponseData> request, Option<string> oAuthAccessToken,
-            Func<string, ICustomJsonSerialiser, HttpResponseInfo, Either<TFailedRequest, Response<TResponseData>>>
+            Func<string, ICustomJsonSerialiser, HttpResponseMessage, Either<TFailedRequest, Response<TResponseData>>>
                 responseHandler);
 
         Task<Either<FailedRequest, Response<TResponseData>>> GetAsync<TResponseData>(
@@ -21,7 +21,7 @@ namespace Emby.AniDbMetaStructure.JsonApi
 
         Task<Either<TFailedRequest, Response<TResponseData>>> GetAsync<TFailedRequest, TResponseData>(
             IGetRequest<TResponseData> request, Option<string> oAuthAccessToken,
-            Func<string, ICustomJsonSerialiser, HttpResponseInfo, Either<TFailedRequest, Response<TResponseData>>>
+            Func<string, ICustomJsonSerialiser, HttpResponseMessage, Either<TFailedRequest, Response<TResponseData>>>
                 responseHandler);
     }
 }
