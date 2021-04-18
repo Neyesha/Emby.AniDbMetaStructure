@@ -1,7 +1,7 @@
 ﻿using Jellyfin.AniDbMetaStructure.AniDb.Seiyuu;
 using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 
-namespace Emby.AniDbMetaStructure.Tests.TestData
+namespace Jellyfin.AniDbMetaStructure.Tests.TestData
 {
     internal static class AniDbSeriesTestData
     {

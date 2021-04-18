@@ -12,7 +12,7 @@ using NSubstitute;
 using NUnit.Framework;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Tests.AniList
+namespace Jellyfin.AniDbMetaStructure.Tests.AniList
 {
     [TestFixture]
     public class AniListTokenTests

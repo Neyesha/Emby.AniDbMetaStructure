@@ -5,7 +5,7 @@ using Jellyfin.AniDbMetaStructure.Files;
 using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.Files
+namespace Jellyfin.AniDbMetaStructure.Tests.Files
 {
     [TestFixture]
     public class FileDownloadderTests

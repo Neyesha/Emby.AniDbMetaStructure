@@ -6,7 +6,7 @@ using LanguageExt.UnsafeValueAccess;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.Process
+namespace Jellyfin.AniDbMetaStructure.Tests.Process
 {
     [TestFixture]
     public class MediaItemTests

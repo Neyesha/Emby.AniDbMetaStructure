@@ -8,7 +8,7 @@ using FluentAssertions;
 using MediaBrowser.Model.Entities;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class AniDbParserTests

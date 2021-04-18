@@ -88,7 +88,7 @@ namespace Jellyfin.AniDbMetaStructure.AniDb
                     (s, t) => t.Item.Tags = this.aniDbParser.GetTags(s, maxGenres, addAnimeGenre).ToArray()),
                 MapSeason("Name", t => t.Item.Name,
                     (s, t) => t.Item.Name = SelectTitle(s, preferredTitleType, metadataLanguage),
-                    (s, t) => s.Titles.Any())
+                    (s, t) => s.Titles?.Any() ?? false)
             };
         }
 

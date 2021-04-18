@@ -4,7 +4,7 @@ using Jellyfin.AniDbMetaStructure.TvDb;
 using Jellyfin.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
 
-namespace Emby.AniDbMetaStructure.Tests.TestData
+namespace Jellyfin.AniDbMetaStructure.Tests.TestData
 {
     public static class TvDbTestData
     {

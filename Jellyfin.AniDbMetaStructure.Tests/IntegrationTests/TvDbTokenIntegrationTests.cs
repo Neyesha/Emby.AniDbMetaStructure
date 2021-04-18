@@ -5,10 +5,10 @@ using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using Jellyfin.AniDbMetaStructure.TvDb;
 using FluentAssertions;
 using LanguageExt.UnsafeValueAccess;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
+namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
 {
     [TestFixture]
     [Explicit]
@@ -17,17 +17,17 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [SetUp]
         public void Setup()
         {
-            this.logManager = new ConsoleLogManager();
+            this.logger = new ConsoleLogger();
         }
 
-        private ILogManager logManager;
+        private ILogger logger;
 
         [Test]
         public async Task GetToken_ExistingToken_DoesNotRequestNewToken()
         {
-            var tvDbConnection = new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager);
+            var tvDbConnection = new JsonConnection(new JsonSerialiser(), this.logger);
 
-            var token = new TvDbToken(tvDbConnection, Secrets.TvDbApiKey, this.logManager);
+            var token = new TvDbToken(tvDbConnection, Secrets.TvDbApiKey, this.logger);
 
             var token1 = await token.GetTokenAsync();
 
@@ -40,9 +40,9 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task GetToken_FailedRequest_ReturnsNone()
         {
-            var tvDbConnection = new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager);
+            var tvDbConnection = new JsonConnection(new JsonSerialiser(), this.logger);
 
-            var token = new TvDbToken(tvDbConnection, "NotValid", this.logManager);
+            var token = new TvDbToken(tvDbConnection, "NotValid", this.logger);
 
             var returnedToken = await token.GetTokenAsync();
 
@@ -52,9 +52,9 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task GetToken_NoExistingToken_GetsNewToken()
         {
-            var tvDbConnection = new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager);
+            var tvDbConnection = new JsonConnection(new JsonSerialiser(), this.logger);
 
-            var token = new TvDbToken(tvDbConnection, Secrets.TvDbApiKey, this.logManager);
+            var token = new TvDbToken(tvDbConnection, Secrets.TvDbApiKey, this.logger);
 
             var returnedToken = await token.GetTokenAsync();
 

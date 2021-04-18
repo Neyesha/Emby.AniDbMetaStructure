@@ -15,7 +15,7 @@ using NSubstitute;
 using NUnit.Framework;
 using Jellyfin.AniDbMetaStructure.Infrastructure;
 
-namespace Emby.AniDbMetaStructure.Tests.Process
+namespace Jellyfin.AniDbMetaStructure.Tests.Process
 {
     [TestFixture]
     internal class MediaItemTypeTests
@@ -89,7 +89,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                         return r;
                     });
 
-                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 result.IsRight.Should().BeTrue();
                 result.IfRight(r =>
@@ -102,7 +102,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
             [Test]
             public void AppliesPropertyMappings()
             {
-                this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+                this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 this.PropertyMappings.Received(1)
                     .Apply(Arg.Any<IEnumerable<object>>(), Arg.Any<MetadataResult<Series>>(),
@@ -117,7 +117,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                 this.MediaItem = Substitute.For<IMediaItem>();
                 this.MediaItem.GetAllSourceData().Returns(new ISourceData[] { identifierOnlySourceData });
 
-                this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+                this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 this.PropertyMappings.Received(1)
                     .Apply(Arg.Is<IEnumerable<object>>(e => e.Contains(identifierOnlySourceData)), Arg.Any<MetadataResult<Series>>(),
@@ -138,7 +138,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                         return r;
                     });
 
-                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 result.IsRight.Should().BeTrue();
                 result.IfRight(r => r.EmbyMetadataResult.HasMetadata.Should().BeTrue());
@@ -156,8 +156,8 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                     new PropertyMapping<AniDbSeriesData, MetadataResult<Series>, string>("Name", s => s.Item.Name,
                         (s, t) => t.Item.Name = name, SourceNames.AniDb)
                 }.AsEnumerable().GetEnumerator());
-                
-                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+
+                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 result.IsLeft.Should().BeTrue();
                 result.IfLeft(r => r.Reason.Should().Be("Property mapping failed for the Name property"));
@@ -169,7 +169,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                 this.MediaItem.GetAllSourceData().Returns(new ISourceData[] { });
                 this.MediaItem.GetDataFromSource(null).ReturnsForAnyArgs(Option<ISourceData>.None);
 
-                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 result.IsLeft.Should().BeTrue();
                 result.IfLeft(r => r.Reason.Should().Be("No data returned by library structure source"));
@@ -181,7 +181,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                 this.PropertyMappings.GetEnumerator()
                     .Returns(Enumerable.Empty<IPropertyMapping>().GetEnumerator());
 
-                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 result.IsLeft.Should().BeTrue();
                 result.IfLeft(r => r.Reason.Should().Be("No value for Name property mapped from library source"));
@@ -205,12 +205,12 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                         var r = m.Arg<MetadataResult<Series>>();
 
                         r.Item.Name = "Name";
-                        r.Item.ProviderIds = new Dictionary<string, string> { { "SourceName", "3" } }.ToProviderIdDictionary();
+                        r.Item.ProviderIds = new Dictionary<string, string> { { "SourceName", "3" } };
 
                         return r;
                     });
 
-                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogManager());
+                var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 result.IsRight.Should().BeTrue();
                 result.IfRight(r =>

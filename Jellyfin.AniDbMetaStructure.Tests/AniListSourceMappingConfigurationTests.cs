@@ -13,7 +13,7 @@ using MediaBrowser.Model.Entities;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     [Ignore("Anilist support is not working.")]
@@ -36,7 +36,7 @@ namespace Emby.AniDbMetaStructure.Tests
             };
 
             var aniListSourceMappingConfiguration =
-                new AniListSourceMappingConfiguration(new AniListNameSelector(new ConsoleLogManager()));
+                new AniListSourceMappingConfiguration(new AniListNameSelector(new ConsoleLogger()));
 
             aniListSourceMappingConfiguration.GetSeriesMappings(1, true, true, TitleType.Localized, "en")
                 .Where(m => m.CanApply(source, target))
@@ -117,7 +117,7 @@ namespace Emby.AniDbMetaStructure.Tests
             };
 
             var aniListSourceMappingConfiguration =
-                new AniListSourceMappingConfiguration(new AniListNameSelector(new ConsoleLogManager()));
+                new AniListSourceMappingConfiguration(new AniListNameSelector(new ConsoleLogger()));
 
             aniListSourceMappingConfiguration.GetSeriesMappings(1, true, true, TitleType.Localized, "en")
                 .Select(m => m.CanApply(source, target))

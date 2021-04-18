@@ -1,4 +1,4 @@
-﻿namespace Emby.AniDbMetaStructure.Tests.TestHelpers
+﻿namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
 {
     public static class Secrets
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.TestHelpers
+namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
 {
     internal static class FileCacheHelper
     {

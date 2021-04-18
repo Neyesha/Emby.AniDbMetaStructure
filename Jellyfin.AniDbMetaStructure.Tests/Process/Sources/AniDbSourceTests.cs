@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using FluentAssertions;
 using Jellyfin.AniDbMetaStructure.AniDb;
 using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using Jellyfin.AniDbMetaStructure.Configuration;
@@ -7,12 +6,13 @@ using Jellyfin.AniDbMetaStructure.Process;
 using Jellyfin.AniDbMetaStructure.Process.Sources;
 using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
 using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
-using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Tests.Process.Sources
+namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
 {
     [TestFixture]
     public class AniDbSourceTests
@@ -96,7 +96,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_NoAniDbIdOnParent_ReturnsFailed()
         {
-            var embyItemData = this.EmbyItemData("Name", null);
+            var embyItemData = EmbyItemData("Name", null);
 
             var result = await this.aniDbSource.GetSeriesData(embyItemData, new ProcessResultContext(string.Empty, string.Empty, null));
 
@@ -107,7 +107,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_NoSeriesLoaded_ReturnsFailed()
         {
-            var embyItemData = this.EmbyItemData("Name", 56);
+            var embyItemData = EmbyItemData("Name", 56);
 
             this.aniDbClient.GetSeriesAsync(56).Returns(Option<AniDbSeriesData>.None);
 
@@ -120,7 +120,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_ReturnsSeries()
         {
-            var embyItemData = this.EmbyItemData("Name", 56);
+            var embyItemData = EmbyItemData("Name", 56);
 
             var seriesData = new AniDbSeriesData();
 

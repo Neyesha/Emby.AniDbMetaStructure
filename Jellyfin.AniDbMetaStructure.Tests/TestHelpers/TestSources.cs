@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using Jellyfin.AniDbMetaStructure.Process;
+﻿using Jellyfin.AniDbMetaStructure.Process;
 using Jellyfin.AniDbMetaStructure.Process.Sources;
 using NSubstitute;
+using System;
+using System.Linq;
 
-namespace Emby.AniDbMetaStructure.Tests.TestHelpers
+namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
 {
     internal class TestSources : ISources
     {
@@ -53,7 +53,7 @@ namespace Emby.AniDbMetaStructure.Tests.TestHelpers
 
         public ISource Get(string sourceName)
         {
-            return new ISource[] { this.AniDb, this.TvDb, this.AniList }.Single(s => s.Name == sourceName);
+            return new ISource[] { AniDb, TvDb, AniList }.Single(s => s.Name == sourceName);
         }
     }
 }

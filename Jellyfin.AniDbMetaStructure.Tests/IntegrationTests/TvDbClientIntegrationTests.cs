@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
+namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
 {
     [TestFixture]
     [Explicit]
@@ -25,7 +25,7 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [SetUp]
         public void Setup()
         {
-            this.logManager = new ConsoleLogManager();
+            this.logger = new ConsoleLogger();
             this.applicationPaths = Substitute.For<IApplicationPaths>();
             this.fileCache = Substitute.For<IFileCache>();
 
@@ -35,15 +35,15 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
             };
         }
 
-        private ConsoleLogManager logManager;
+        private ConsoleLogger logger;
         private IApplicationPaths applicationPaths;
         private IFileCache fileCache;
 
         [Test]
         public async Task FindSeriesAsync_MatchingSeriesName_ReturnsSeries()
         {
-            var client = new TvDbClientV2(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV2(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
@@ -64,8 +64,8 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task FindSeriesAsync_NoMatchingSeriesName_ReturnsNone()
         {
-            var client = new TvDbClientV2(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV2(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
@@ -78,8 +78,8 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task GetEpisodesAsync_ValidSeriesId_ReturnsEpisodes()
         {
-            var client = new TvDbClientV2(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV2(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
@@ -101,8 +101,8 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task GetSeriesAsync_ValidSeriesId_ReturnsSeriesData()
         {
-            var client = new TvDbClientV2(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV2(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
@@ -122,8 +122,8 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task FindSeriesAsync3_MatchingSeriesName_ReturnsSeries()
         {
-            var client = new TvDbClientV3(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV3(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
@@ -144,8 +144,8 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task FindSeriesAsync3_NoMatchingSeriesName_ReturnsNone()
         {
-            var client = new TvDbClientV3(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV3(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
@@ -158,8 +158,8 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task GetEpisodesAsync3_ValidSeriesId_ReturnsEpisodes()
         {
-            var client = new TvDbClientV3(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV3(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
@@ -181,8 +181,8 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
         [Test]
         public async Task GetSeriesAsync3_ValidSeriesId_ReturnsSeriesData()
         {
-            var client = new TvDbClientV3(new JsonConnection(new TestHttpClient(), new JsonSerialiser(), this.logManager),
-                this.fileCache, this.applicationPaths, this.logManager, new JsonSerialiser(), new PluginConfiguration
+            var client = new TvDbClientV3(new JsonConnection(new JsonSerialiser(), this.logger),
+                this.fileCache, this.applicationPaths, this.logger, new JsonSerialiser(), new PluginConfiguration
                 {
                     TvDbApiKey = Secrets.TvDbApiKey
                 });

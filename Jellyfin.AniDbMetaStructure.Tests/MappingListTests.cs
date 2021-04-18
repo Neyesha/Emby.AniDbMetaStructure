@@ -1,17 +1,17 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using FluentAssertions;
 using Jellyfin.AniDbMetaStructure.Files;
 using Jellyfin.AniDbMetaStructure.Mapping;
 using Jellyfin.AniDbMetaStructure.Mapping.Data;
 using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
-using FluentAssertions;
 using MediaBrowser.Common.Configuration;
 using NSubstitute;
 using NUnit.Framework;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Xem.Api;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class MappingListTests
@@ -54,7 +54,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             this.mappingListData.AnimeSeriesMapping = new[]
             {
-                this.MappingData(56, 1)
+                MappingData(56, 1)
             };
 
             var result = await this.mappingList.GetSeriesMappingFromAniDb(56, TestProcessResultContext.Instance);
@@ -68,8 +68,8 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             this.mappingListData.AnimeSeriesMapping = new[]
             {
-                this.MappingData(56, 1),
-                this.MappingData(56, 2)
+                MappingData(56, 1),
+                MappingData(56, 2)
             };
 
             var result = await this.mappingList.GetSeriesMappingFromAniDb(56, TestProcessResultContext.Instance);
@@ -83,7 +83,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             this.mappingListData.AnimeSeriesMapping = new[]
             {
-                this.MappingData(5, 1)
+                MappingData(5, 1)
             };
 
             var result = await this.mappingList.GetSeriesMappingFromAniDb(56, TestProcessResultContext.Instance);
@@ -97,7 +97,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             this.mappingListData.AnimeSeriesMapping = new[]
             {
-                this.MappingData(5, 56)
+                MappingData(5, 56)
             };
 
             var result = await this.mappingList.GetSeriesMappingsFromTvDb(56, TestProcessResultContext.Instance);
@@ -111,8 +111,8 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             this.mappingListData.AnimeSeriesMapping = new[]
             {
-                this.MappingData(12, 56),
-                this.MappingData(42, 56)
+                MappingData(12, 56),
+                MappingData(42, 56)
             };
 
             var result = await this.mappingList.GetSeriesMappingsFromTvDb(56, TestProcessResultContext.Instance);
@@ -126,7 +126,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             this.mappingListData.AnimeSeriesMapping = new[]
             {
-                this.MappingData(5, 25)
+                MappingData(5, 25)
             };
 
             var result = await this.mappingList.GetSeriesMappingsFromTvDb(56, TestProcessResultContext.Instance);

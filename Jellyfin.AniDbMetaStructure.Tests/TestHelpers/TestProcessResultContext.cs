@@ -1,6 +1,6 @@
 ﻿using Jellyfin.AniDbMetaStructure.Process;
 
-namespace Emby.AniDbMetaStructure.Tests.TestHelpers
+namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
 {
     internal static class TestProcessResultContext
     {

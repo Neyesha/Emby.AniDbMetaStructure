@@ -10,7 +10,7 @@ using LanguageExt;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 {
     [TestFixture]
     public class AniDbSeriesFromEmbyDataTests

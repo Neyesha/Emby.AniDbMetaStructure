@@ -11,7 +11,7 @@ using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class TvDbSourceMappingConfigurationTests

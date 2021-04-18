@@ -9,7 +9,7 @@ using LanguageExt;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class OptionJsonConverterTests

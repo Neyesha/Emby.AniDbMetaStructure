@@ -10,14 +10,14 @@ using FluentAssertions;
 using LanguageExt;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using static LanguageExt.Prelude;
 using Jellyfin.AniDbMetaStructure.Infrastructure;
 
-namespace Emby.AniDbMetaStructure.Tests.Process.Providers
+namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
 {
     [TestFixture]
     public class SeriesProviderTests
@@ -36,7 +36,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Providers
                     ProviderIds = new Dictionary<string, string>
                     {
                         { "Source", "66" }
-                    }.ToProviderIdDictionary()
+                    }
                 };
                 this.mediaItemProcessorResult = Left<ProcessFailedResult, IMetadataFoundResult<Series>>(
                     new ProcessFailedResult("FailedSource",
@@ -46,21 +46,15 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Providers
                 this.mediaItemProcessor.GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<EmbyItemId>())
                     .Returns(x => this.mediaItemProcessorResult);
 
-                this.logManager = Substitute.For<ILogManager>();
-
                 this.logger = Substitute.For<ILogger>();
-                this.logger.WhenForAnyArgs(l => l.Debug(null, null)).Do(c => Console.WriteLine($"Debug: {c.Arg<string>()}"));
-
-                this.logManager.GetLogger("SeriesProvider").Returns(this.logger);
 
                 this.pluginConfiguration = Substitute.For<IPluginConfiguration>();
                 this.pluginConfiguration.ExcludedSeriesNames.Returns(Enumerable.Empty<string>());
 
-                this.seriesProvider = new SeriesProvider(this.logManager, this.mediaItemProcessor, this.pluginConfiguration);
+                this.seriesProvider = new SeriesProvider(this.logger, this.mediaItemProcessor, this.pluginConfiguration);
             }
 
             private IMediaItemProcessor mediaItemProcessor;
-            private ILogManager logManager;
             private ILogger logger;
             private IPluginConfiguration pluginConfiguration;
             private SeriesProvider seriesProvider;
@@ -83,11 +77,11 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Providers
 
                 if (isExcluded)
                 {
-                    this.logger.Received(1).Info($"Skipping series '{name}' as it is excluded");
+                    this.logger.Received(1).LogInformation($"Skipping series '{name}' as it is excluded");
                 }
                 else
                 {
-                    this.logger.DidNotReceive().Info($"Skipping series '{name}' as it is excluded");
+                    this.logger.DidNotReceive().LogInformation($"Skipping series '{name}' as it is excluded");
                 }
             }
 
@@ -136,7 +130,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Providers
 
                 await this.seriesProvider.GetMetadata(this.seriesInfo, CancellationToken.None);
 
-                this.logger.Received(1).ErrorException("Failed to get data for series 'SeriesName'", exception);
+                this.logger.Received(1).LogError("Failed to get data for series 'SeriesName'", exception);
             }
 
             [Test]
@@ -166,7 +160,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Providers
             {
                 await this.seriesProvider.GetMetadata(this.seriesInfo, CancellationToken.None);
 
-                this.logger.Received(1).Error("Failed to get data for series 'SeriesName': Failure reason");
+                this.logger.Received(1).LogError("Failed to get data for series 'SeriesName': Failure reason");
             }
 
             [Test]
@@ -202,7 +196,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process.Providers
 
                 await this.seriesProvider.GetMetadata(this.seriesInfo, CancellationToken.None);
 
-                this.logger.Received(1).Info("Found data for series 'SeriesName': 'MetadataName'");
+                this.logger.Received(1).LogInformation("Found data for series 'SeriesName': 'MetadataName'");
             }
 
             [Test]

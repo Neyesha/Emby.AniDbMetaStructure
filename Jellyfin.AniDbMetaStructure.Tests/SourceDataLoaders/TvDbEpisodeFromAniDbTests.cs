@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using FluentAssertions;
 using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using Jellyfin.AniDbMetaStructure.Mapping;
 using Jellyfin.AniDbMetaStructure.Process;
@@ -7,14 +6,15 @@ using Jellyfin.AniDbMetaStructure.Process.Sources;
 using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
 using Jellyfin.AniDbMetaStructure.Tests.TestData;
 using Jellyfin.AniDbMetaStructure.TvDb.Data;
-using FluentAssertions;
 using LanguageExt;
 using NSubstitute;
 using NSubstitute.ClearExtensions;
 using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 {
     [TestFixture]
     public class TvDbEpisodeFromAniDbTests
@@ -142,11 +142,11 @@ namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_EpisodeMappingFails_Fails()
         {
-            this.SetUpSeriesMapping(324, 142);
+            SetUpSeriesMapping(324, 142);
 
-            this.SetUpAniDbSeriesData(324);
+            SetUpAniDbSeriesData(324);
 
-            this.SetUpAniDbEpisodeData(33);
+            SetUpAniDbEpisodeData(33);
 
             this.episodeMapper.ClearSubstitute();
 
@@ -160,14 +160,14 @@ namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_HasMappedEpisodeData_ReturnsMappedEpisodeData()
         {
-            this.SetUpAniDbSeriesData(324);
+            SetUpAniDbSeriesData(324);
 
-            var seriesMapping = this.SetUpSeriesMapping(324, 142);
+            var seriesMapping = SetUpSeriesMapping(324, 142);
 
-            var aniDbEpisodeData = this.SetUpAniDbEpisodeData(33);
-            var tvDbEpisodeData = this.CreateTvDbEpisodeData(55, 6);
+            var aniDbEpisodeData = SetUpAniDbEpisodeData(33);
+            var tvDbEpisodeData = CreateTvDbEpisodeData(55, 6);
 
-            this.SetUpEpisodeMapping(aniDbEpisodeData, tvDbEpisodeData, seriesMapping);
+            SetUpEpisodeMapping(aniDbEpisodeData, tvDbEpisodeData, seriesMapping);
 
             var loader = new TvDbEpisodeFromAniDb(this.sources, this.mappingList, this.episodeMapper);
 
@@ -183,11 +183,11 @@ namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_HasSeriesMapping_GetsEpisodeGroupMapping()
         {
-            var seriesMapping = this.SetUpSeriesMapping(324, 142);
+            var seriesMapping = SetUpSeriesMapping(324, 142);
 
-            this.SetUpAniDbSeriesData(324);
+            SetUpAniDbSeriesData(324);
 
-            var aniDbEpisodeData = this.SetUpAniDbEpisodeData(33);
+            var aniDbEpisodeData = SetUpAniDbEpisodeData(33);
 
             var loader = new TvDbEpisodeFromAniDb(this.sources, this.mappingList, this.episodeMapper);
 
@@ -199,11 +199,11 @@ namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoAniDbSeriesData_Fails()
         {
-            this.SetUpSeriesMapping(324, 142);
+            SetUpSeriesMapping(324, 142);
 
-            this.SetUpAniDbSeriesData(324);
+            SetUpAniDbSeriesData(324);
 
-            this.SetUpAniDbEpisodeData(33);
+            SetUpAniDbEpisodeData(33);
 
             this.aniDbSource.ClearSubstitute();
             this.aniDbSource.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
@@ -222,11 +222,11 @@ namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoMappedEpisodeData_Fails()
         {
-            this.SetUpSeriesMapping(324, 142);
+            SetUpSeriesMapping(324, 142);
 
-            this.SetUpAniDbSeriesData(324);
+            SetUpAniDbSeriesData(324);
 
-            this.SetUpAniDbEpisodeData(33);
+            SetUpAniDbEpisodeData(33);
 
             var loader = new TvDbEpisodeFromAniDb(this.sources, this.mappingList, this.episodeMapper);
 
@@ -238,9 +238,9 @@ namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoSeriesMapping_Fails()
         {
-            this.SetUpAniDbSeriesData(324);
+            SetUpAniDbSeriesData(324);
 
-            this.SetUpAniDbEpisodeData(33);
+            SetUpAniDbEpisodeData(33);
 
             var loader = new TvDbEpisodeFromAniDb(this.sources, this.mappingList, this.episodeMapper);
 

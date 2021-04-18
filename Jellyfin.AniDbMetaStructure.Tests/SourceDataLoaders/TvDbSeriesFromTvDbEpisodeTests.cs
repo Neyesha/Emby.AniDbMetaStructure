@@ -10,7 +10,7 @@ using NSubstitute;
 using NUnit.Framework;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Tests.SourceDataLoaders
+namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 {
     [TestFixture]
     public class TvDbSeriesFromTvDbEpisodeTests

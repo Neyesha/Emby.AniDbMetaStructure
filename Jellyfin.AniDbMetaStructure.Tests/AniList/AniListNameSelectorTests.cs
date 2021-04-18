@@ -5,7 +5,7 @@ using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.AniList
+namespace Jellyfin.AniDbMetaStructure.Tests.AniList
 {
     [TestFixture]
     public class AniListNameSelectorTests
@@ -13,7 +13,7 @@ namespace Emby.AniDbMetaStructure.Tests.AniList
         [SetUp]
         public void Setup()
         {
-            this.nameSelector = new AniListNameSelector(new ConsoleLogManager());
+            this.nameSelector = new AniListNameSelector(new ConsoleLogger());
         }
 
         private AniListNameSelector nameSelector;

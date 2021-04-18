@@ -4,11 +4,11 @@ using Jellyfin.AniDbMetaStructure.Providers.AniDb;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class AniDbEpisodeMatcherTests
@@ -16,11 +16,11 @@ namespace Emby.AniDbMetaStructure.Tests
         [SetUp]
         public void Setup()
         {
-            this.logManager = Substitute.For<ILogManager>();
+            this.logger = Substitute.For<ILogger>();
             this.titleNormaliser = new TitleNormaliser();
         }
 
-        private ILogManager logManager;
+        private ILogger logger;
         private ITitleNormaliser titleNormaliser;
 
         [Test]
@@ -66,7 +66,7 @@ namespace Emby.AniDbMetaStructure.Tests
                 }
             };
 
-            var episodeMatcher = new AniDbEpisodeMatcher(this.titleNormaliser, this.logManager);
+            var episodeMatcher = new AniDbEpisodeMatcher(this.titleNormaliser, this.logger);
 
             var foundEpisode =
                 episodeMatcher.FindEpisode(episodes, Option<int>.None, 3, "EpisodeTitle");
@@ -117,7 +117,7 @@ namespace Emby.AniDbMetaStructure.Tests
                 }
             };
 
-            var episodeMatcher = new AniDbEpisodeMatcher(this.titleNormaliser, this.logManager);
+            var episodeMatcher = new AniDbEpisodeMatcher(this.titleNormaliser, this.logger);
 
             var foundEpisode = episodeMatcher.FindEpisode(episodes, Option<int>.None, 3, "Title");
 
@@ -167,7 +167,7 @@ namespace Emby.AniDbMetaStructure.Tests
                 }
             };
 
-            var episodeMatcher = new AniDbEpisodeMatcher(this.titleNormaliser, this.logManager);
+            var episodeMatcher = new AniDbEpisodeMatcher(this.titleNormaliser, this.logger);
 
             var foundEpisode = episodeMatcher.FindEpisode(episodes, 1, 55, Option<string>.None);
 

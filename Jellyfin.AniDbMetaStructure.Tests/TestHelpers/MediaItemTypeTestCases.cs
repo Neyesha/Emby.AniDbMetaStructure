@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Jellyfin.AniDbMetaStructure.Process;
 
-namespace Emby.AniDbMetaStructure.Tests.TestHelpers
+namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
 {
     internal class MediaItemTypeTestCases : IEnumerable
     {

@@ -6,7 +6,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SimpleInjector;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class DependencyConfigurationTests

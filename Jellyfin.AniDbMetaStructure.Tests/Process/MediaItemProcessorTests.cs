@@ -6,12 +6,12 @@ using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Tests.Process
+namespace Jellyfin.AniDbMetaStructure.Tests.Process
 {
     [TestFixture]
     public class MediaItemProcessorTests
@@ -26,14 +26,14 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                 .Returns(x => Right<ProcessFailedResult, IMediaItem>(x.Arg<IMediaItem>()));
 
             this.MediaItemType = Substitute.For<IMediaItemType<Series>>();
-            this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, Arg.Any<IMediaItem>(), Arg.Any<ILogManager>())
+            this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, Arg.Any<IMediaItem>(), Arg.Any<ILogger>())
                 .Returns(x => Right<ProcessFailedResult, IMetadataFoundResult<Series>>(new MetadataFoundResult<Series>(
                     x.Arg<IMediaItem>(), new MetadataResult<Series>
                     {
                         Item = new Series()
                     })));
 
-            this.Processor = new MediaItemProcessor(this.PluginConfiguration, this.MediaItemBuilder, new ConsoleLogManager());
+            this.Processor = new MediaItemProcessor(this.PluginConfiguration, this.MediaItemBuilder, new ConsoleLogger());
         }
 
         internal static class Data

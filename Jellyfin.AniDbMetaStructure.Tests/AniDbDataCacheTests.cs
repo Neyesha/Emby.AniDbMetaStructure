@@ -13,7 +13,7 @@ using MediaBrowser.Common.Configuration;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class AniDbDataCacheTests
@@ -28,7 +28,7 @@ namespace Emby.AniDbMetaStructure.Tests
 
             applicationPaths.CachePath.Returns(rootPath);
 
-            var aniDbDataCache = new AniDbDataCache(applicationPaths, fileCache, new ConsoleLogManager());
+            var aniDbDataCache = new AniDbDataCache(applicationPaths, fileCache, new ConsoleLogger());
 
             aniDbDataCache.GetSeiyuu();
 
@@ -83,7 +83,7 @@ namespace Emby.AniDbMetaStructure.Tests
                     Arg.Any<CancellationToken>())
                 .Returns(seriesWithExtraSeiyuu);
 
-            var aniDbDataCache = new AniDbDataCache(applicationPaths, fileCache, new ConsoleLogManager());
+            var aniDbDataCache = new AniDbDataCache(applicationPaths, fileCache, new ConsoleLogger());
 
             aniDbDataCache.GetSeiyuu().Should().BeEmpty();
 
@@ -118,7 +118,7 @@ namespace Emby.AniDbMetaStructure.Tests
                     Arg.Any<CancellationToken>())
                 .Returns(new AniDbSeriesData().WithStandardData());
 
-            var aniDbDataCache = new AniDbDataCache(applicationPaths, fileCache, new ConsoleLogManager());
+            var aniDbDataCache = new AniDbDataCache(applicationPaths, fileCache, new ConsoleLogger());
 
             await aniDbDataCache.GetSeriesAsync(1, CancellationToken.None);
 

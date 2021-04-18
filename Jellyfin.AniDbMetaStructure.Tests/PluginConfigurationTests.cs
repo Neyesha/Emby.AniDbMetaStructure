@@ -5,7 +5,7 @@ using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class PluginConfigurationTests
@@ -395,7 +395,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             var expected = new PluginConfiguration();
 
-            var actual = new XmlSerialiser(new ConsoleLogManager()).Deserialise<PluginConfiguration>(SerialisedForm);
+            var actual = new XmlSerialiser(new ConsoleLogger()).Deserialise<PluginConfiguration>(SerialisedForm);
 
             actual.Should().BeEquivalentTo(expected);
         }
@@ -405,7 +405,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             var configuration = new PluginConfiguration();
 
-            var serialised = new XmlSerialiser(new ConsoleLogManager()).Serialise(configuration);
+            var serialised = new XmlSerialiser(new ConsoleLogger()).Serialise(configuration);
 
             serialised.Should().Be(SerialisedForm);
         }

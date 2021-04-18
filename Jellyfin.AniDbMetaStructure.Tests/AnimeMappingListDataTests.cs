@@ -5,7 +5,7 @@ using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class AnimeMappingListDataTests
@@ -16,7 +16,7 @@ namespace Emby.AniDbMetaStructure.Tests
         [Test]
         public void CreateMappingListAsync_ParsesFileCorrectly()
         {
-            var fileParser = new XmlSerialiser(new ConsoleLogManager());
+            var fileParser = new XmlSerialiser(new ConsoleLogger());
             var fileContent = File.ReadAllText(MappingsFilePath);
 
             var mappingList = fileParser.Deserialise<AnimeMappingListData>(fileContent);

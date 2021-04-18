@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Jellyfin.AniDbMetaStructure.Tests.IntegrationTests;
+﻿using Jellyfin.AniDbMetaStructure.Tests.IntegrationTests;
 using MediaBrowser.Common;
 using MediaBrowser.Common.Configuration;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Common.Plugins;
-using MediaBrowser.Model.Events;
-using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Serialization;
-using MediaBrowser.Model.Updates;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using SimpleInjector;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
 
-namespace Emby.AniDbMetaStructure.Tests.TestHelpers
+namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
 {
     public class TestApplicationHost : IApplicationHost
     {
@@ -32,12 +28,11 @@ namespace Emby.AniDbMetaStructure.Tests.TestHelpers
             this.Container = new Container();
 
             this.Container.Register(() => applicationPaths);
-            this.Container.Register<IHttpClient>(() => new TestHttpClient());
-            this.Container.Register<ILogManager>(() => new ConsoleLogManager());
+            this.Container.Register<ILogger>(() => new ConsoleLogger());
             this.Container.Register<IApplicationHost>(() => this);
             this.Container.Register<IXmlSerializer>(() => new TestXmlSerializer());
 
-            this.Container.GetInstance(typeof(ILogManager));
+            this.Container.GetInstance(typeof(ILogger));
         }
 
         public void NotifyPendingRestart()
@@ -50,19 +45,17 @@ namespace Emby.AniDbMetaStructure.Tests.TestHelpers
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetExports<T>(bool manageLiftime = true)
+        public IReadOnlyCollection<T> GetExports<T>(bool manageLifetime = true)
         {
             throw new NotImplementedException();
         }
 
-        public Task<CheckForUpdateResult> CheckForApplicationUpdate(CancellationToken cancellationToken,
-            IProgress<double> progress)
+        public IReadOnlyCollection<T> GetExports<T>(CreationDelegate defaultFunc, bool manageLifetime = true)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateApplication(PackageVersionInfo package, CancellationToken cancellationToken,
-            IProgress<double> progress)
+        public IEnumerable<Assembly> GetApiPluginAssemblies()
         {
             throw new NotImplementedException();
         }
@@ -72,17 +65,13 @@ namespace Emby.AniDbMetaStructure.Tests.TestHelpers
             return (T)this.Container.GetInstance(typeof(T));
         }
 
-        public T TryResolve<T>()
-        {
-            throw new NotImplementedException();
-        }
 
         public Task Shutdown()
         {
             throw new NotImplementedException();
         }
 
-        public void RemovePlugin(IPlugin plugin)
+        public IEnumerable<Type> GetExportTypes<T>()
         {
             throw new NotImplementedException();
         }
@@ -92,22 +81,7 @@ namespace Emby.AniDbMetaStructure.Tests.TestHelpers
             throw new NotImplementedException();
         }
 
-        public Task Init(IProgress<double> progress)
-        {
-            throw new NotImplementedException();
-        }
-
         public object CreateInstance(Type type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetValue(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ContainsStartupOption(string name)
         {
             throw new NotImplementedException();
         }
@@ -119,16 +93,15 @@ namespace Emby.AniDbMetaStructure.Tests.TestHelpers
         public bool IsShuttingDown { get; }
         public bool CanSelfRestart { get; }
         public Version ApplicationVersion { get; }
-        public bool CanSelfUpdate { get; }
-        public bool IsFirstRun { get; }
-        public List<string> FailedAssemblies { get; }
-        public Type[] AllConcreteTypes { get; }
-        public IPlugin[] Plugins { get; }
-        public PackageVersionClass SystemUpdateLevel { get; }
 
-        public bool IsStartupComplete { get; } = true;
+        public IServiceProvider ServiceProvider { get; set; }
 
-        public event EventHandler<GenericEventArgs<PackageVersionInfo>> ApplicationUpdated;
+        public string ApplicationVersionString { get; }
+
+        public string ApplicationUserAgent { get; }
+
+        public string ApplicationUserAgentAddress { get; }
+
         public event EventHandler HasPendingRestartChanged;
     }
 }

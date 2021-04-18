@@ -6,11 +6,11 @@ using Jellyfin.AniDbMetaStructure.TvDb;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class DefaultSeasonEpisodeMapperTests
@@ -18,12 +18,12 @@ namespace Emby.AniDbMetaStructure.Tests
         [SetUp]
         public void Setup()
         {
-            this.logManager = new ConsoleLogManager();
+            this.logger = new ConsoleLogger();
             this.tvDbClient = Substitute.For<ITvDbClient>();
             this.seriesMapping = Substitute.For<ISeriesMapping>();
         }
 
-        private ILogManager logManager;
+        private ILogger logger;
         private ITvDbClient tvDbClient;
         private ISeriesMapping seriesMapping;
 
@@ -37,7 +37,7 @@ namespace Emby.AniDbMetaStructure.Tests
 
             this.tvDbClient.GetEpisodeAsync(33, 10).Returns(tvDbEpisodeData);
 
-            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logManager);
+            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logger);
 
             var result = await defaultSeasonEpisodeMapper.MapEpisodeAsync(10, this.seriesMapping);
 
@@ -51,7 +51,7 @@ namespace Emby.AniDbMetaStructure.Tests
             this.seriesMapping.Ids.Returns(new SeriesIds(12, 33, Option<int>.None, Option<int>.None));
             this.seriesMapping.DefaultTvDbSeason.Returns(new AbsoluteTvDbSeason());
 
-            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logManager);
+            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logger);
 
             var result = await defaultSeasonEpisodeMapper.MapEpisodeAsync(10, this.seriesMapping);
 
@@ -69,7 +69,7 @@ namespace Emby.AniDbMetaStructure.Tests
 
             this.tvDbClient.GetEpisodeAsync(33, 54, 17).Returns(tvDbEpisodeData);
 
-            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logManager);
+            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logger);
 
             var result = await defaultSeasonEpisodeMapper.MapEpisodeAsync(10, this.seriesMapping);
 
@@ -84,7 +84,7 @@ namespace Emby.AniDbMetaStructure.Tests
             this.seriesMapping.DefaultTvDbSeason.Returns(new TvDbSeason(54));
             this.seriesMapping.DefaultTvDbEpisodeIndexOffset.Returns(7);
 
-            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logManager);
+            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logger);
 
             var result = await defaultSeasonEpisodeMapper.MapEpisodeAsync(10, this.seriesMapping);
 
@@ -96,7 +96,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             this.seriesMapping.Ids.Returns(new SeriesIds(12, Option<int>.None, Option<int>.None, Option<int>.None));
 
-            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logManager);
+            var defaultSeasonEpisodeMapper = new DefaultSeasonEpisodeMapper(this.tvDbClient, this.logger);
 
             var result = await defaultSeasonEpisodeMapper.MapEpisodeAsync(10, this.seriesMapping);
 

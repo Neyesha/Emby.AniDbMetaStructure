@@ -8,7 +8,7 @@ using Jellyfin.AniDbMetaStructure.Tests.TestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class XmlFileParserTests
@@ -18,7 +18,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             var fileContent = File.ReadAllText(TestContext.CurrentContext.TestDirectory + @"\TestData\anidb\series.xml");
 
-            var xmlFileParser = new XmlSerialiser(new ConsoleLogManager());
+            var xmlFileParser = new XmlSerialiser(new ConsoleLogger());
 
             var series = xmlFileParser.Deserialise<AniDbSeriesData>(fileContent);
 
@@ -316,7 +316,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             var fileContent = File.ReadAllText(TestContext.CurrentContext.TestDirectory + @"\TestData\anidb\series2.xml");
 
-            var xmlFileParser = new XmlSerialiser(new ConsoleLogManager());
+            var xmlFileParser = new XmlSerialiser(new ConsoleLogger());
 
             var series = xmlFileParser.Deserialise<AniDbSeriesData>(fileContent);
 
@@ -328,7 +328,7 @@ namespace Emby.AniDbMetaStructure.Tests
         {
             var fileContent = File.ReadAllText(TestContext.CurrentContext.TestDirectory + @"\TestData\anidb\titles.xml");
 
-            var xmlFileParser = new XmlSerialiser(new ConsoleLogManager());
+            var xmlFileParser = new XmlSerialiser(new ConsoleLogger());
 
             var titleList = xmlFileParser.Deserialise<TitleListData>(fileContent);
 

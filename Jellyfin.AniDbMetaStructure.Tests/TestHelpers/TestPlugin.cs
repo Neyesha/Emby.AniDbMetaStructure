@@ -3,13 +3,13 @@ using MediaBrowser.Common.Configuration;
 using MediaBrowser.Model.Serialization;
 using NSubstitute;
 
-namespace Emby.AniDbMetaStructure.Tests.TestHelpers
+namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
 {
     internal class TestPlugin : Plugin
     {
         public TestPlugin() : base(GetApplicationPaths(), Substitute.For<IXmlSerializer>())
         {
-            this.Configuration = new PluginConfiguration();
+            Configuration = new PluginConfiguration();
         }
 
         public override string ConfigurationFileName => "FileName";

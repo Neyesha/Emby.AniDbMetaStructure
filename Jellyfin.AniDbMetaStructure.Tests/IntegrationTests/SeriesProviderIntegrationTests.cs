@@ -14,7 +14,7 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Serialization;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.IntegrationTests
+namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
 {
     [TestFixture]
     public class SeriesProviderIntegrationTests

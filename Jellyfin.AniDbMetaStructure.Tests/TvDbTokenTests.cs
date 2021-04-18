@@ -10,7 +10,7 @@ using LanguageExt.UnsafeValueAccess;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     internal class TvDbTokenTests
@@ -18,10 +18,10 @@ namespace Emby.AniDbMetaStructure.Tests
         [SetUp]
         public void Setup()
         {
-            this.logManager = new ConsoleLogManager();
+            this.logger = new ConsoleLogger();
         }
 
-        private ConsoleLogManager logManager;
+        private ConsoleLogger logger;
 
         [Test]
         public async Task GetToken_ExistingToken_DoesNotRequestNewToken()
@@ -32,7 +32,7 @@ namespace Emby.AniDbMetaStructure.Tests
                     (r.Data as LoginRequest.RequestData).ApiKey == "apiKey"), Option<string>.None)
                 .Returns(new Response<LoginRequest.Response>(new LoginRequest.Response("TOKEN")));
 
-            var token = new TvDbToken(jsonConnection, "apiKey", this.logManager);
+            var token = new TvDbToken(jsonConnection, "apiKey", this.logger);
 
             await token.GetTokenAsync();
 
@@ -53,7 +53,7 @@ namespace Emby.AniDbMetaStructure.Tests
                     (r.Data as LoginRequest.RequestData).ApiKey == "apiKey"), Option<string>.None)
                 .Returns(new FailedRequest(HttpStatusCode.BadRequest, "Failed"));
 
-            var token = new TvDbToken(jsonConnection, "apiKey", this.logManager);
+            var token = new TvDbToken(jsonConnection, "apiKey", this.logger);
 
             var returnedToken = await token.GetTokenAsync();
 
@@ -69,7 +69,7 @@ namespace Emby.AniDbMetaStructure.Tests
                     (r.Data as LoginRequest.RequestData).ApiKey == "apiKey"), Option<string>.None)
                 .Returns(new Response<LoginRequest.Response>(new LoginRequest.Response("TOKEN")));
 
-            var token = new TvDbToken(jsonConnection, "apiKey", this.logManager);
+            var token = new TvDbToken(jsonConnection, "apiKey", this.logger);
 
             var returnedToken = await token.GetTokenAsync();
 

@@ -4,11 +4,11 @@ using Jellyfin.AniDbMetaStructure.AniDb.SeriesData;
 using Jellyfin.AniDbMetaStructure.AniDb.Titles;
 using FluentAssertions;
 using LanguageExt.UnsafeValueAccess;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class SeriesTitleCacheTests
@@ -40,7 +40,7 @@ namespace Emby.AniDbMetaStructure.Tests
         public void FindSeriesByTitle_ComparableTitleMatch_ReturnsSeries(string replacedCharacter)
         {
             var dataCache = Substitute.For<IAniDbDataCache>();
-            var logManager = Substitute.For<ILogManager>();
+            var logger = Substitute.For<ILogger>();
 
             dataCache.TitleList.Returns(new List<TitleListItemData>
             {
@@ -57,7 +57,7 @@ namespace Emby.AniDbMetaStructure.Tests
                 }
             });
 
-            var seriesTitleCache = new SeriesTitleCache(dataCache, new TitleNormaliser(), logManager);
+            var seriesTitleCache = new SeriesTitleCache(dataCache, new TitleNormaliser(), logger);
 
             var foundTitle = seriesTitleCache.FindSeriesByTitle($"Test{replacedCharacter} ComparableMatch");
 
@@ -69,7 +69,7 @@ namespace Emby.AniDbMetaStructure.Tests
         public void FindSeriesByTitle_YearSuffix_ReturnsCorrectSeries()
         {
             var dataCache = Substitute.For<IAniDbDataCache>();
-            var logManager = Substitute.For<ILogManager>();
+            var logger = Substitute.For<ILogger>();
 
             dataCache.TitleList.Returns(new List<TitleListItemData>
             {
@@ -97,7 +97,7 @@ namespace Emby.AniDbMetaStructure.Tests
                 }
             });
 
-            var seriesTitleCache = new SeriesTitleCache(dataCache, new TitleNormaliser(), logManager);
+            var seriesTitleCache = new SeriesTitleCache(dataCache, new TitleNormaliser(), logger);
 
             var foundTitle = seriesTitleCache.FindSeriesByTitle("Bakuman (2012)");
 

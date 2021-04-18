@@ -12,7 +12,7 @@ using LanguageExt.UnsafeValueAccess;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class GroupMappingEpisodeMapperTests
@@ -59,7 +59,7 @@ namespace Emby.AniDbMetaStructure.Tests
                     Episodes = new[] { this.aniDbEpisodeA, this.aniDbEpisodeB }
                 }));
 
-            this.mapper = new GroupMappingEpisodeMapper(this.tvDbClient, this.aniDbClient, new ConsoleLogManager());
+            this.mapper = new GroupMappingEpisodeMapper(this.tvDbClient, this.aniDbClient, new ConsoleLogger());
         }
 
         [Test]

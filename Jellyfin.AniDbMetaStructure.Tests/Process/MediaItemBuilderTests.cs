@@ -14,7 +14,7 @@ using NSubstitute.ClearExtensions;
 using NUnit.Framework;
 using static LanguageExt.Prelude;
 
-namespace Emby.AniDbMetaStructure.Tests.Process
+namespace Jellyfin.AniDbMetaStructure.Tests.Process
 {
     [TestFixture]
     public class MediaItemBuilderTests
@@ -24,7 +24,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
         {
             this.PluginConfiguration = Substitute.For<IPluginConfiguration>();
 
-            this.Builder = new MediaItemBuilder(this.PluginConfiguration, null, new ConsoleLogManager());
+            this.Builder = new MediaItemBuilder(this.PluginConfiguration, null, new ConsoleLogger());
         }
 
         internal IPluginConfiguration PluginConfiguration;
@@ -137,7 +137,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
                 Data.SourceDataLoader(this.mediaItem, this.initialSourceData, "SourceC")
             }.ToList();
 
-            this.Builder = new MediaItemBuilder(this.PluginConfiguration, this.sourceDataLoaders, new ConsoleLogManager());
+            this.Builder = new MediaItemBuilder(this.PluginConfiguration, this.sourceDataLoaders, new ConsoleLogger());
         }
 
         private IList<ISourceDataLoader> sourceDataLoaders;
@@ -168,7 +168,7 @@ namespace Emby.AniDbMetaStructure.Tests.Process
             existingLoader.CanLoadFrom(existingSourceData).Returns(false);
             newLoaders.Iter(l => l.CanLoadFrom(existingSourceData).Returns(true));
 
-            this.Builder = new MediaItemBuilder(this.PluginConfiguration, this.sourceDataLoaders, new ConsoleLogManager());
+            this.Builder = new MediaItemBuilder(this.PluginConfiguration, this.sourceDataLoaders, new ConsoleLogger());
 
             await this.Builder.BuildMediaItem(this.mediaItem);
 

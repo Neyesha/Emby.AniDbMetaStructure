@@ -11,7 +11,7 @@ using MediaBrowser.Controller.Providers;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class AniDbSourceMappingConfigurationTests
@@ -189,7 +189,8 @@ namespace Emby.AniDbMetaStructure.Tests
                     nameof(target.Item.PremiereDate),
                     nameof(target.Item.EndDate),
                     nameof(target.Item.Overview),
-                    nameof(target.Item.CommunityRating));
+                    nameof(target.Item.CommunityRating),
+                    nameof(target.Item.Name));
         }
 
         [Test]
@@ -206,7 +207,8 @@ namespace Emby.AniDbMetaStructure.Tests
                 nameof(Season.CommunityRating),
                 nameof(Season.Studios),
                 nameof(Season.Genres),
-                nameof(Season.Tags)
+                nameof(Season.Tags),
+                nameof(Season.Name)
             };
 
             var aniDbSourceMappingConfiguration =

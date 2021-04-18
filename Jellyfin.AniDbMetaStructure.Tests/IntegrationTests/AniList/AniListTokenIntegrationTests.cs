@@ -8,7 +8,7 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests.IntegrationTests.AniList
+namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests.AniList
 {
     [TestFixture]
     [Ignore("Anilist support is not working.")]
@@ -25,7 +25,7 @@ namespace Emby.AniDbMetaStructure.Tests.IntegrationTests.AniList
             this.resultContext = TestProcessResultContext.Instance;
 
             this.jsonConnection =
-                new JsonConnection(new TestHttpClient(), new JsonSerialiser(), new ConsoleLogManager());
+                new JsonConnection(new JsonSerialiser(), new ConsoleLogger());
             this.aniListConfiguration = Substitute.For<IAnilistConfiguration>();
 
             this.token = new AniListToken();

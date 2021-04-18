@@ -7,7 +7,7 @@ using LanguageExt.UnsafeValueAccess;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Emby.AniDbMetaStructure.Tests
+namespace Jellyfin.AniDbMetaStructure.Tests
 {
     [TestFixture]
     public class TvDbSeriesDataTests
