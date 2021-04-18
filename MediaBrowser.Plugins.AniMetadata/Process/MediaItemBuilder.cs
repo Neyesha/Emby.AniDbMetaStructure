@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Emby.AniDbMetaStructure.Configuration;
+using Emby.AniDbMetaStructure.SourceDataLoaders;
+using LanguageExt;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.SourceDataLoaders;
-using LanguageExt;
-using MediaBrowser.Model.Logging;
 using static LanguageExt.Prelude;
 
 namespace Emby.AniDbMetaStructure.Process
@@ -14,20 +14,20 @@ namespace Emby.AniDbMetaStructure.Process
     {
         private readonly IPluginConfiguration pluginConfiguration;
         private readonly IEnumerable<ISourceDataLoader> sourceDataLoaders;
-        private readonly ILogger log;
+        private readonly ILogger logger;
 
         public MediaItemBuilder(IPluginConfiguration pluginConfiguration,
-            IEnumerable<ISourceDataLoader> sourceDataLoaders, ILogManager logManager)
+            IEnumerable<ISourceDataLoader> sourceDataLoaders, ILogger logger)
         {
             this.pluginConfiguration = pluginConfiguration;
             this.sourceDataLoaders = sourceDataLoaders;
-            this.log = logManager.GetLogger(nameof(MediaItemBuilder));
+            this.logger = logger;
         }
 
         public Task<Either<ProcessFailedResult, IMediaItem>> Identify(EmbyItemData embyItemData,
             IMediaItemType itemType)
         {
-            return this.IdentifyAsync(embyItemData, itemType).MapAsync(sd => (IMediaItem)new MediaItem(embyItemData, itemType, sd));
+            return IdentifyAsync(embyItemData, itemType).MapAsync(sd => (IMediaItem)new MediaItem(embyItemData, itemType, sd));
         }
 
         public Task<Either<ProcessFailedResult, IMediaItem>> BuildMediaItem(IMediaItem rootMediaItem)
@@ -39,29 +39,29 @@ namespace Emby.AniDbMetaStructure.Process
                 Task<Either<ProcessFailedResult, IMediaItem>> mediaItem,
                 ImmutableList<ISourceDataLoader> sourceDataLoaders)
             {
-                var sourceLoaderCount = sourceDataLoaders.Count;
+                int sourceLoaderCount = sourceDataLoaders.Count;
 
                 var mediaItemTask = sourceDataLoaders.Aggregate(mediaItem,
                     (miTask, l) =>
                         miTask.MapAsync(mi => mi.GetAllSourceData().Find(l.CanLoadFrom)
                             .MatchAsync(sd =>
                                 {
-                                    this.log.Debug($"Loading source data using {l.GetType().FullName}");
+                                    this.logger.LogDebug($"Loading source data using {l.GetType().FullName}");
                                     return l.LoadFrom(mi, sd)
                                         .Map(e => e.Match(
                                             newSourceData =>
                                             {
-                                                this.log.Debug($"Loaded {sd.Source.Name} source data: {sd.Identifier}");
+                                                this.logger.LogDebug($"Loaded {sd.Source.Name} source data: {sd.Identifier}");
                                                 sourceDataLoaders = sourceDataLoaders.Remove(l);
                                                 return mi.AddData(newSourceData).IfLeft(() =>
                                                 {
-                                                    this.log.Warn($"Failed to add source data: {sd.Identifier}");
+                                                    this.logger.LogWarning($"Failed to add source data: {sd.Identifier}");
                                                     return mi;
                                                 });
                                             },
                                             fail =>
                                             {
-                                                this.log.Debug($"Failed to load source data: {fail.Reason}");
+                                                this.logger.LogDebug($"Failed to load source data: {fail.Reason}");
                                                 return mi;
                                             }));
                                 },
@@ -69,7 +69,7 @@ namespace Emby.AniDbMetaStructure.Process
 
                 return mediaItemTask.BindAsync(mi =>
                 {
-                    var wasSourceDataAdded = sourceLoaderCount != sourceDataLoaders.Count;
+                    bool wasSourceDataAdded = sourceLoaderCount != sourceDataLoaders.Count;
 
                     var mediaItemAsEither = Right<ProcessFailedResult, IMediaItem>(mi).AsTask();
 

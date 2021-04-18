@@ -1,31 +1,30 @@
-﻿using System;
+﻿using Emby.AniDbMetaStructure.Configuration;
+using Emby.AniDbMetaStructure.Infrastructure;
+using MediaBrowser.Controller.Entities.TV;
+using MediaBrowser.Controller.Providers;
+using MediaBrowser.Model.Providers;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Configuration;
-using Emby.AniDbMetaStructure.Infrastructure;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Controller.Entities.TV;
-using MediaBrowser.Controller.Providers;
-using MediaBrowser.Model.Logging;
-using MediaBrowser.Model.Providers;
 using static LanguageExt.Prelude;
 
 namespace Emby.AniDbMetaStructure.Process.Providers
 {
     internal class SeriesProvider
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly IMediaItemProcessor mediaItemProcessor;
         private readonly IPluginConfiguration pluginConfiguration;
 
-        public SeriesProvider(ILogManager logManager, IMediaItemProcessor mediaItemProcessor,
+        public SeriesProvider(ILogger logger, IMediaItemProcessor mediaItemProcessor,
             IPluginConfiguration pluginConfiguration)
         {
             this.mediaItemProcessor = mediaItemProcessor;
             this.pluginConfiguration = pluginConfiguration;
-            this.log = logManager.GetLogger(nameof(SeriesProvider));
+            this.logger = logger;
         }
 
         public int Order => -1;
@@ -51,9 +50,9 @@ namespace Emby.AniDbMetaStructure.Process.Providers
                     if (this.pluginConfiguration.ExcludedSeriesNames.Contains(info.Name,
                         StringComparer.InvariantCultureIgnoreCase))
                     {
-                        this.log.Info($"Skipping series '{info.Name}' as it is excluded");
+                        this.logger.LogInformation($"Skipping series '{info.Name}' as it is excluded");
 
-                        return this.EmptyMetadataResult.AsTask();
+                        return EmptyMetadataResult.AsTask();
                     }
 
                     var result =
@@ -62,7 +61,7 @@ namespace Emby.AniDbMetaStructure.Process.Providers
                     return result.Map(either =>
                         either.Match(r =>
                             {
-                                this.log.Info($"Found data for series '{info.Name}': '{r.EmbyMetadataResult.Item.Name}'");
+                                this.logger.LogInformation($"Found data for series '{info.Name}': '{r.EmbyMetadataResult.Item.Name}'");
 
                                 info.IndexNumber = null;
                                 info.ParentIndexNumber = null;
@@ -73,17 +72,17 @@ namespace Emby.AniDbMetaStructure.Process.Providers
                             },
                             failure =>
                             {
-                                this.log.Error($"Failed to get data for series '{info.Name}': {failure.Reason}");
+                                this.logger.LogError($"Failed to get data for series '{info.Name}': {failure.Reason}");
 
-                                return this.EmptyMetadataResult;
+                                return EmptyMetadataResult;
                             })
                     );
                 })
                 .IfFail(e =>
                 {
-                    this.log.ErrorException($"Failed to get data for series '{info.Name}'", e);
+                    this.logger.LogError($"Failed to get data for series '{info.Name}'", e);
 
-                    return this.EmptyMetadataResult.AsTask();
+                    return EmptyMetadataResult.AsTask();
                 });
 
             return metadataResult;

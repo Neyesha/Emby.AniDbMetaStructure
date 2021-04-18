@@ -1,35 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Emby.AniDbMetaStructure.AniList.Data;
+﻿using Emby.AniDbMetaStructure.AniList.Data;
 using Emby.AniDbMetaStructure.Configuration;
 using LanguageExt;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Emby.AniDbMetaStructure.AniList
 {
     internal class AniListNameSelector : IAniListNameSelector
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
 
-        public AniListNameSelector(ILogManager logManager)
+        public AniListNameSelector(ILogger logger)
         {
-            this.log = logManager.GetLogger(nameof(AniListNameSelector));
+            this.logger = logger;
         }
 
         public Option<string> SelectTitle(AniListTitleData titleData, TitleType preferredTitleType,
             string metadataLanguage)
         {
-            this.log.Debug(
+            this.logger.LogDebug(
                 $"Selecting title from {titleData} available, preference for {preferredTitleType}, metadata language '{metadataLanguage}'");
 
             var preferredTitle = FindPreferredTitle(titleData, preferredTitleType, metadataLanguage);
 
-            preferredTitle.IfSome(t => this.log.Debug($"Found title '{t}'"));
+            preferredTitle.IfSome(t => this.logger.LogDebug($"Found title '{t}'"));
 
             if (preferredTitle.IsNone)
             {
-                this.log.Debug("No title found");
+                this.logger.LogDebug("No title found");
             }
 
             return preferredTitle;

@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Emby.AniDbMetaStructure.Configuration;
+﻿using Emby.AniDbMetaStructure.Configuration;
 using Emby.AniDbMetaStructure.Process.Sources;
 using Emby.AniDbMetaStructure.PropertyMapping;
 using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using static LanguageExt.Prelude;
 
 namespace Emby.AniDbMetaStructure.Process
@@ -26,9 +26,8 @@ namespace Emby.AniDbMetaStructure.Process
         }
 
         public Either<ProcessFailedResult, IMetadataFoundResult<TEmbyItem>> CreateMetadataFoundResult(
-            IPluginConfiguration pluginConfiguration, IMediaItem mediaItem, ILogManager logManager)
+            IPluginConfiguration pluginConfiguration, IMediaItem mediaItem, ILogger logger)
         {
-            var logger = logManager.GetLogger(this.GetType().Name);
             var resultContext = new ProcessResultContext("PropertyMapping", mediaItem.EmbyData.Identifier.Name,
                 mediaItem.ItemType);
 
@@ -43,16 +42,16 @@ namespace Emby.AniDbMetaStructure.Process
 
             var mediaItemMetadata = sourceData.Select(sd => sd.GetData<object>()).Somes();
 
-            metadataResult = propertyMappings.Apply(mediaItemMetadata, metadataResult, s => logger.Debug(s));
+            metadataResult = propertyMappings.Apply(mediaItemMetadata, metadataResult, s => logger.LogDebug(s));
 
-            metadataResult = this.UpdateProviderIds(metadataResult, sourceData);
+            metadataResult = UpdateProviderIds(metadataResult, sourceData);
 
             var mappedMetadataResult = Option<MetadataResult<TEmbyItem>>.Some(metadataResult);
 
             return mappedMetadataResult.ToEither(resultContext.Failed("Property mapping returned no data"))
                 .Bind(m => mediaItem.GetDataFromSource(pluginConfiguration.LibraryStructureSource(mediaItem.ItemType))
                     .ToEither(resultContext.Failed("No data returned by library structure source"))
-                    .Bind(sd => this.SetIdentity(sd, m, propertyMappings, pluginConfiguration.LibraryStructureSource(mediaItem.ItemType).Name,
+                    .Bind(sd => SetIdentity(sd, m, propertyMappings, pluginConfiguration.LibraryStructureSource(mediaItem.ItemType).Name,
                         resultContext)))
                 .Match(r => string.IsNullOrWhiteSpace(r.Item.Name)
                         ? Left<ProcessFailedResult, MetadataResult<TEmbyItem>>(
@@ -91,8 +90,8 @@ namespace Emby.AniDbMetaStructure.Process
             MetadataResult<TEmbyItem> target, IPropertyMappingCollection propertyMappings,
             SourceName librarySourceName, ProcessResultContext resultContext)
         {
-            return this.SetIndexes(librarySourceData, target)
-                .Bind(r => this.SetName(librarySourceData.Data, r, propertyMappings, librarySourceName, resultContext));
+            return SetIndexes(librarySourceData, target)
+                .Bind(r => SetName(librarySourceData.Data, r, propertyMappings, librarySourceName, resultContext));
         }
 
         private Either<ProcessFailedResult, MetadataResult<TEmbyItem>> SetIndexes(ISourceData librarySourceData,

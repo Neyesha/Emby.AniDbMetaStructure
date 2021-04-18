@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
 using Emby.AniDbMetaStructure.Mapping;
 using Emby.AniDbMetaStructure.Process;
 using Emby.AniDbMetaStructure.Process.Sources;
 using Emby.AniDbMetaStructure.Providers.AniDb;
 using LanguageExt;
-using MediaBrowser.Model.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.SourceDataLoaders
 {
@@ -46,8 +45,9 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
 
                 if (tvDbSeriesId.IsRight && embyItemData.Identifier.ParentIndex.IsSome)
                 {
-                    var aniDbSeriesId = await tvDbSeriesId.BindAsync(id => this.MapSeriesDataAsync(id, embyItemData.Identifier.ParentIndex.Single(), resultContext));
-                    aniDbSeriesId.IfRight((anidbId) => {
+                    var aniDbSeriesId = await tvDbSeriesId.BindAsync(id => MapSeriesDataAsync(id, embyItemData.Identifier.ParentIndex.Single(), resultContext));
+                    aniDbSeriesId.IfRight((anidbId) =>
+                    {
                         var updatedParentIds = embyItemData.ParentIds.Concat(new List<EmbyItemId> { new EmbyItemId(MediaItemTypes.Series, this.sources.AniDb.Name, anidbId) });
                         embyItemData = new EmbyItemData(embyItemData.ItemType, embyItemData.Identifier, embyItemData.ExistingIds, embyItemData.Language, updatedParentIds);
                     });
@@ -56,12 +56,12 @@ namespace Emby.AniDbMetaStructure.SourceDataLoaders
             }
 
             return await this.sources.AniDb.GetSeriesData(embyItemData, resultContext)
-                .BindAsync(seriesData => this.GetAniDbEpisodeData(seriesData, embyItemData, resultContext))
+                .BindAsync(seriesData => GetAniDbEpisodeData(seriesData, embyItemData, resultContext))
                 .BindAsync(episodeData =>
                 {
                     var title = this.sources.AniDb.SelectTitle(episodeData.Titles, embyItemData.Language, resultContext);
 
-                    return title.Map(t => this.CreateSourceData(episodeData, t, embyItemData.Identifier.ParentIndex.Single()));
+                    return title.Map(t => CreateSourceData(episodeData, t, embyItemData.Identifier.ParentIndex.Single()));
                 });
         }
 

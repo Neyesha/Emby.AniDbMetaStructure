@@ -9,7 +9,7 @@ namespace Emby.AniDbMetaStructure.Infrastructure
         {
             return dict.TryGetValue(key, out var value) ? value : default(T);
         }
-        
+
         public static ProviderIdDictionary ToProviderIdDictionary(this Dictionary<string, string> dict)
         {
             return new ProviderIdDictionary(dict);

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.AniDb.Seiyuu;
+﻿using Emby.AniDbMetaStructure.AniDb.Seiyuu;
 using Emby.AniDbMetaStructure.AniDb.SeriesData;
 using Emby.AniDbMetaStructure.AniDb.Titles;
 using Emby.AniDbMetaStructure.Files;
 using LanguageExt;
 using MediaBrowser.Common.Configuration;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.AniDb
 {
@@ -20,12 +20,12 @@ namespace Emby.AniDbMetaStructure.AniDb
         private readonly SeiyuuFileSpec seiyuuFileSpec;
         private readonly Lazy<IEnumerable<TitleListItemData>> titleListLazy;
 
-        public AniDbDataCache(IApplicationPaths applicationPaths, IFileCache fileCache, ILogManager logManager)
+        public AniDbDataCache(IApplicationPaths applicationPaths, IFileCache fileCache, ILogger logger)
         {
             this.applicationPaths = applicationPaths;
             this.fileCache = fileCache;
             var titlesFileSpec = new TitlesFileSpec(this.applicationPaths.CachePath);
-            this.seiyuuFileSpec = new SeiyuuFileSpec(new XmlSerialiser(logManager), this.applicationPaths.CachePath);
+            this.seiyuuFileSpec = new SeiyuuFileSpec(new XmlSerialiser(logger), this.applicationPaths.CachePath);
 
             this.titleListLazy = new Lazy<IEnumerable<TitleListItemData>>(() =>
             {
@@ -44,7 +44,7 @@ namespace Emby.AniDbMetaStructure.AniDb
 
             var seriesData = await this.fileCache.GetFileContentAsync(fileSpec, cancellationToken);
 
-            seriesData.Iter(this.UpdateSeiyuuList);
+            seriesData.Iter(UpdateSeiyuuList);
 
             return seriesData;
         }
@@ -63,7 +63,7 @@ namespace Emby.AniDbMetaStructure.AniDb
                 return;
             }
 
-            var existingSeiyuu = this.GetSeiyuu();
+            var existingSeiyuu = GetSeiyuu();
             var newSeiyuu = seriesSeiyuu.Except(existingSeiyuu, new SeiyuuComparer());
 
             if (!newSeiyuu.Any())

@@ -10,7 +10,7 @@ using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using MediaBrowser.Model.Providers;
 using static LanguageExt.Prelude;
 
@@ -20,22 +20,22 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
     {
         private readonly IAniDbClient aniDbClient;
         private readonly IHttpClient httpClient;
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly IRateLimiter rateLimiter;
 
         public AniDbPersonProvider(IAniDbClient aniDbClient, IRateLimiters rateLimiters, IHttpClient httpClient,
-            ILogManager logManager)
+            ILogger logger)
         {
             this.rateLimiter = rateLimiters.AniDb;
             this.aniDbClient = aniDbClient;
             this.httpClient = httpClient;
-            this.log = logManager.GetLogger(nameof(AniDbPersonProvider));
+            this.logger = logger;
         }
 
         public Task<IEnumerable<RemoteSearchResult>> GetSearchResults(PersonLookupInfo searchInfo,
             CancellationToken cancellationToken)
         {
-            this.log.Debug(
+            this.logger.LogDebug(
                 $"Searching for person name: '{searchInfo.Name}', id: '{searchInfo.ProviderIds.GetOrDefault(SourceNames.AniDb)}'");
 
             var result = Enumerable.Empty<RemoteSearchResult>();
@@ -58,14 +58,14 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
                     });
             }
 
-            this.log.Debug($"Found {result.Count()} results");
+            this.logger.LogDebug($"Found {result.Count()} results");
 
             return Task.FromResult(result);
         }
 
         public Task<MetadataResult<Person>> GetMetadata(PersonLookupInfo info, CancellationToken cancellationToken)
         {
-            this.log.Debug(
+            this.logger.LogDebug(
                 $"Getting metadata for person name: '{info.Name}', id: '{info.ProviderIds.GetOrDefault(SourceNames.AniDb)}'");
 
             var result = new MetadataResult<Person>();
@@ -92,9 +92,9 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
                                             new Dictionary<string, string> { { SourceNames.AniDb, s.Id.ToString() } }.ToProviderIdDictionary()
                                     };
 
-                                    this.log.Debug("Found metadata");
+                                    this.logger.LogDebug("Found metadata");
                                 },
-                                () => this.log.Debug("Failed to find metadata"));
+                                () => this.logger.LogDebug("Failed to find metadata"));
                     });
             }
 
@@ -105,7 +105,7 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
 
         public async Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
         {
-            this.log.Debug($"Getting image: '{url}'");
+            this.logger.LogDebug($"Getting image: '{url}'");
 
             await this.rateLimiter.TickAsync().ConfigureAwait(false);
 

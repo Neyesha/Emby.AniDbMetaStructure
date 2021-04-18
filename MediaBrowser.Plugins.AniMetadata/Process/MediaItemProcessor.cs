@@ -1,47 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Configuration;
+﻿using Emby.AniDbMetaStructure.Configuration;
 using LanguageExt;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.Process
 {
     internal class MediaItemProcessor : IMediaItemProcessor
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly IMediaItemBuilder mediaItemBuilder;
-        private readonly ILogManager logManager;
         private readonly IPluginConfiguration pluginConfiguration;
 
         public MediaItemProcessor(IPluginConfiguration pluginConfiguration, IMediaItemBuilder mediaItemBuilder,
-            ILogManager logManager)
+            ILogger logger)
         {
             this.pluginConfiguration = pluginConfiguration;
             this.mediaItemBuilder = mediaItemBuilder;
-            this.logManager = logManager;
-            this.log = logManager.GetLogger(nameof(MediaItemProcessor));
+            this.logger = logger;
         }
 
         public Task<Either<ProcessFailedResult, IMetadataFoundResult<TEmbyItem>>> GetResultAsync<TEmbyItem>(
             ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType, IEnumerable<EmbyItemId> parentIds)
             where TEmbyItem : BaseItem
         {
-            var embyItemData = this.ToEmbyItemData(embyInfo, itemType, parentIds);
+            var embyItemData = ToEmbyItemData(embyInfo, itemType, parentIds);
 
-            this.log.Debug($"Finding metadata for {embyItemData}");
+            this.logger.LogDebug($"Finding metadata for {embyItemData}");
 
             var mediaItem = this.mediaItemBuilder.Identify(embyItemData, itemType);
 
             var fullyRecognisedMediaItem = mediaItem.BindAsync(this.mediaItemBuilder.BuildMediaItem);
 
             return fullyRecognisedMediaItem.BindAsync(
-                    mi => itemType.CreateMetadataFoundResult(this.pluginConfiguration, mi, this.logManager))
+                    mi => itemType.CreateMetadataFoundResult(this.pluginConfiguration, mi, this.logger))
                 .MapAsync(r =>
                 {
-                    this.log.Debug(
+                    this.logger.LogDebug(
                         $"Created metadata with provider Ids: {string.Join(", ", r.EmbyMetadataResult.Item.ProviderIds.Select(kvp => $"{kvp.Key}: {kvp.Value}"))}");
                     return r;
                 });

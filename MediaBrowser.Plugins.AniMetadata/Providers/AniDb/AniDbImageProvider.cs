@@ -6,11 +6,11 @@ using Emby.AniDbMetaStructure.AniDb.SeriesData;
 using Emby.AniDbMetaStructure.Infrastructure;
 using Emby.AniDbMetaStructure.Process.Sources;
 using LanguageExt;
-using MediaBrowser.Common.Net;
+using Microsoft.AspNetCore.Http;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using MediaBrowser.Model.Providers;
 
 namespace Emby.AniDbMetaStructure.Providers.AniDb
@@ -18,17 +18,17 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
     public class AniDbImageProvider
     {
         private readonly IAniDbClient aniDbClient;
-        private readonly IHttpClient httpClient;
-        private readonly ILogger log;
+        private readonly HttpClient httpClient;
+        private readonly ILogger logger;
         private readonly IRateLimiter rateLimiter;
 
-        public AniDbImageProvider(IAniDbClient aniDbClient, IRateLimiters rateLimiters, IHttpClient httpClient,
-            ILogManager logManager)
+        public AniDbImageProvider(IAniDbClient aniDbClient, IRateLimiters rateLimiters, HttpClient httpClient,
+            ILogger logger)
         {
             this.aniDbClient = aniDbClient;
             this.httpClient = httpClient;
             this.rateLimiter = rateLimiters.AniDb;
-            this.log = logManager.GetLogger(nameof(AniDbImageProvider));
+            this.logger = logger;
         }
 
         public bool Supports(BaseItem item)
@@ -60,7 +60,7 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
 
                         imageUrl.Match(url =>
                             {
-                                this.log.Debug($"Adding series image: {url}");
+                                this.logger.LogDebug($"Adding series image: {url}");
 
                                 imageInfos.Add(new RemoteImageInfo
                                 {
@@ -68,9 +68,9 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
                                     Url = url
                                 });
                             },
-                            () => this.log.Debug($"No image Url specified for '{item.Name}'"));
+                            () => this.logger.LogDebug($"No image Url specified for '{item.Name}'"));
                     },
-                    () => this.log.Debug($"Failed to find AniDb series for '{item.Name}'"));
+                    () => this.logger.LogDebug($"Failed to find AniDb series for '{item.Name}'"));
 
             return imageInfos;
         }

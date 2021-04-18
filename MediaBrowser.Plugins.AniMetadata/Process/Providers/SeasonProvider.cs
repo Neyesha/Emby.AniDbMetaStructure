@@ -1,28 +1,26 @@
-﻿using System;
+﻿using Emby.AniDbMetaStructure.Infrastructure;
+using MediaBrowser.Controller.Entities.TV;
+using MediaBrowser.Controller.Providers;
+using MediaBrowser.Model.Providers;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Infrastructure;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Controller.Entities.TV;
-using MediaBrowser.Controller.Library;
-using MediaBrowser.Controller.Providers;
-using MediaBrowser.Model.Logging;
-using MediaBrowser.Model.Providers;
 using static LanguageExt.Prelude;
 
 namespace Emby.AniDbMetaStructure.Process.Providers
 {
     internal class SeasonProvider
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly IMediaItemProcessor mediaItemProcessor;
 
-        public SeasonProvider(ILogManager logManager, IMediaItemProcessor mediaItemProcessor)
+        public SeasonProvider(ILogger logger, IMediaItemProcessor mediaItemProcessor)
         {
             this.mediaItemProcessor = mediaItemProcessor;
-            this.log = logManager.GetLogger(nameof(SeasonProvider));
+            this.logger = logger;
         }
 
         private MetadataResult<Season> EmptyMetadataResult => new MetadataResult<Season>
@@ -44,12 +42,12 @@ namespace Emby.AniDbMetaStructure.Process.Providers
             var metadataResult = Try(() =>
                 {
                     var result =
-                        this.mediaItemProcessor.GetResultAsync(info, MediaItemTypes.Season, this.GetParentIds(info));
+                        this.mediaItemProcessor.GetResultAsync(info, MediaItemTypes.Season, GetParentIds(info));
 
                     return result.Map(either =>
                         either.Match(r =>
                             {
-                                this.log.Info($"Found data for season '{info.Name}': '{r.EmbyMetadataResult.Item.Name}'");
+                                this.logger.LogInformation($"Found data for season '{info.Name}': '{r.EmbyMetadataResult.Item.Name}'");
 
                                 info.IndexNumber = null;
                                 info.ParentIndexNumber = null;
@@ -60,17 +58,17 @@ namespace Emby.AniDbMetaStructure.Process.Providers
                             },
                             failure =>
                             {
-                                this.log.Error($"Failed to get data for season '{info.Name}': {failure.Reason}");
+                                this.logger.LogError($"Failed to get data for season '{info.Name}': {failure.Reason}");
 
-                                return this.EmptyMetadataResult;
+                                return EmptyMetadataResult;
                             })
                     );
                 })
                 .IfFail(e =>
                 {
-                    this.log.ErrorException($"Failed to get data for season '{info.Name}'", e);
+                    this.logger.LogError($"Failed to get data for season '{info.Name}'", e);
 
-                    return this.EmptyMetadataResult.AsTask();
+                    return EmptyMetadataResult.AsTask();
                 });
 
             return metadataResult;

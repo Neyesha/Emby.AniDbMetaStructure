@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Emby.AniDbMetaStructure.Infrastructure;
+using LanguageExt;
+using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Infrastructure;
-using LanguageExt;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Model.Logging;
 
 namespace Emby.AniDbMetaStructure.JsonApi
 {
@@ -13,25 +12,25 @@ namespace Emby.AniDbMetaStructure.JsonApi
     {
         private readonly IHttpClient httpClient;
         private readonly ICustomJsonSerialiser jsonSerialiser;
-        private readonly ILogger log;
+        private readonly ILogger logger;
 
-        public JsonConnection(IHttpClient httpClient, ICustomJsonSerialiser jsonSerialiser, ILogManager logManager)
+        public JsonConnection(IHttpClient httpClient, ICustomJsonSerialiser jsonSerialiser, ILogger logger)
         {
             this.httpClient = httpClient;
             this.jsonSerialiser = jsonSerialiser;
-            this.log = logManager.GetLogger(nameof(JsonConnection));
+            this.logger = logger;
         }
 
         public Task<Either<FailedRequest, Response<TResponseData>>> PostAsync<TResponseData>(
             IPostRequest<TResponseData> request, Option<string> oAuthAccessToken)
         {
-            return this.PostAsync(request, oAuthAccessToken, this.ParseResponse<TResponseData>);
+            return PostAsync(request, oAuthAccessToken, ParseResponse<TResponseData>);
         }
 
         public Task<Either<FailedRequest, Response<TResponseData>>> GetAsync<TResponseData>(
             IGetRequest<TResponseData> request, Option<string> oAuthAccessToken)
         {
-            return this.GetAsync(request, oAuthAccessToken, this.ParseResponse<TResponseData>);
+            return GetAsync(request, oAuthAccessToken, ParseResponse<TResponseData>);
         }
 
         public Task<Either<TFailedRequest, Response<TResponseData>>> PostAsync<TFailedRequest, TResponseData>(
@@ -47,9 +46,9 @@ namespace Emby.AniDbMetaStructure.JsonApi
                 RequestContentType = "application/json"
             };
 
-            this.SetToken(requestOptions, oAuthAccessToken);
+            SetToken(requestOptions, oAuthAccessToken);
 
-            this.log.Debug($"Posting: '{requestOptions.RequestContent}' to '{requestOptions.Url}'");
+            this.logger.LogDebug($"Posting: '{requestOptions.RequestContent}' to '{requestOptions.Url}'");
 
             var response = this.httpClient.Post(requestOptions);
 
@@ -67,9 +66,9 @@ namespace Emby.AniDbMetaStructure.JsonApi
                 Url = request.Url
             };
 
-            this.SetToken(requestOptions, oAuthAccessToken);
+            SetToken(requestOptions, oAuthAccessToken);
 
-            this.log.Debug($"Getting: '{requestOptions.Url}'");
+            this.logger.LogDebug($"Getting: '{requestOptions.Url}'");
 
             var response = this.httpClient.GetResponse(requestOptions);
 
@@ -80,9 +79,9 @@ namespace Emby.AniDbMetaStructure.JsonApi
             Func<string, ICustomJsonSerialiser, HttpResponseInfo, Either<TFailedRequest, Response<TResponseData>>>
                 responseHandler, HttpResponseInfo response)
         {
-            var responseContent = this.GetStreamText(response.Content);
+            string responseContent = this.GetStreamText(response.Content);
 
-            this.log.Debug(response.StatusCode != HttpStatusCode.OK
+            this.logger.LogDebug(response.StatusCode != HttpStatusCode.OK
                 ? $"Request failed (http {response.StatusCode}): '{responseContent}'"
                 : $"Response: {responseContent}");
 

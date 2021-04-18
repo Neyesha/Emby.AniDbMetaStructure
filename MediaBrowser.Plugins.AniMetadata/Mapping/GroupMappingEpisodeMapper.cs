@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using Emby.AniDbMetaStructure.AniDb;
+﻿using Emby.AniDbMetaStructure.AniDb;
 using Emby.AniDbMetaStructure.AniDb.SeriesData;
 using Emby.AniDbMetaStructure.TvDb;
 using Emby.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Emby.AniDbMetaStructure.Mapping
 {
@@ -14,12 +14,12 @@ namespace Emby.AniDbMetaStructure.Mapping
     internal class GroupMappingEpisodeMapper : IGroupMappingEpisodeMapper
     {
         private readonly IAniDbClient aniDbClient;
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly ITvDbClient tvDbClient;
 
-        public GroupMappingEpisodeMapper(ITvDbClient tvDbClient, IAniDbClient aniDbClient, ILogManager logManager)
+        public GroupMappingEpisodeMapper(ITvDbClient tvDbClient, IAniDbClient aniDbClient, ILogger logger)
         {
-            this.log = logManager.GetLogger(nameof(GroupMappingEpisodeMapper));
+            this.logger = logger;
             this.tvDbClient = tvDbClient;
             this.aniDbClient = aniDbClient;
         }
@@ -30,14 +30,14 @@ namespace Emby.AniDbMetaStructure.Mapping
             var episodeMapping =
                 episodeGroupMapping.EpisodeMappings?.FirstOrDefault(m => m.AniDbEpisodeIndex == aniDbEpisodeIndex);
 
-            var tvDbEpisodeIndex =
-                this.GetTvDbEpisodeIndex(aniDbEpisodeIndex, episodeGroupMapping.TvDbEpisodeIndexOffset,
+            int tvDbEpisodeIndex =
+                GetTvDbEpisodeIndex(aniDbEpisodeIndex, episodeGroupMapping.TvDbEpisodeIndexOffset,
                     episodeMapping);
 
-            return this.GetTvDbEpisodeAsync(tvDbSeriesId, episodeGroupMapping.TvDbSeasonIndex, tvDbEpisodeIndex)
+            return GetTvDbEpisodeAsync(tvDbSeriesId, episodeGroupMapping.TvDbSeasonIndex, tvDbEpisodeIndex)
                 .Map(tvDbEpisodeData =>
                 {
-                    this.log.Debug($"Found mapped TvDb episode: {tvDbEpisodeData}");
+                    this.logger.LogDebug($"Found mapped TvDb episode: {tvDbEpisodeData}");
 
                     return tvDbEpisodeData;
                 });
@@ -46,16 +46,16 @@ namespace Emby.AniDbMetaStructure.Mapping
         public OptionAsync<AniDbEpisodeData> MapTvDbEpisodeAsync(int tvDbEpisodeIndex,
             EpisodeGroupMapping episodeGroupMapping, int aniDbSeriesId)
         {
-            var episodeMapping = this.GetTvDbEpisodeMapping(tvDbEpisodeIndex, episodeGroupMapping);
+            var episodeMapping = GetTvDbEpisodeMapping(tvDbEpisodeIndex, episodeGroupMapping);
 
-            var aniDbEpisodeIndex =
-                this.GetAniDbEpisodeIndex(tvDbEpisodeIndex, episodeGroupMapping.TvDbEpisodeIndexOffset,
+            int aniDbEpisodeIndex =
+                GetAniDbEpisodeIndex(tvDbEpisodeIndex, episodeGroupMapping.TvDbEpisodeIndexOffset,
                     episodeMapping);
 
-            return this.GetAniDbEpisodeAsync(aniDbSeriesId, episodeGroupMapping.AniDbSeasonIndex, aniDbEpisodeIndex)
+            return GetAniDbEpisodeAsync(aniDbSeriesId, episodeGroupMapping.AniDbSeasonIndex, aniDbEpisodeIndex)
                 .Map(aniDbEpisodeData =>
                 {
-                    this.log.Debug(
+                    this.logger.LogDebug(
                         $"Found mapped AniDb episode: {aniDbEpisodeData}");
 
                     return aniDbEpisodeData;

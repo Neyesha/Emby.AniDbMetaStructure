@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.TvDb;
+﻿using Emby.AniDbMetaStructure.TvDb;
 using Emby.AniDbMetaStructure.TvDb.Data;
 using LanguageExt;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace Emby.AniDbMetaStructure.Mapping
 {
@@ -11,12 +11,12 @@ namespace Emby.AniDbMetaStructure.Mapping
     /// </summary>
     internal class DefaultSeasonEpisodeMapper : IDefaultSeasonEpisodeMapper
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly ITvDbClient tvDbClient;
 
-        public DefaultSeasonEpisodeMapper(ITvDbClient tvDbClient, ILogManager logManager)
+        public DefaultSeasonEpisodeMapper(ITvDbClient tvDbClient, ILogger logger)
         {
-            this.log = logManager.GetLogger(nameof(DefaultSeasonEpisodeMapper));
+            this.logger = logger;
             this.tvDbClient = tvDbClient;
         }
 
@@ -26,13 +26,13 @@ namespace Emby.AniDbMetaStructure.Mapping
             return seriesMapping.Ids.TvDbSeriesId.MatchAsync(tvDbSeriesId =>
                     seriesMapping.DefaultTvDbSeason.Match(
                         tvDbSeason =>
-                            this.MapEpisodeWithDefaultSeasonAsync(aniDbEpisodeIndex, tvDbSeriesId,
+                            MapEpisodeWithDefaultSeasonAsync(aniDbEpisodeIndex, tvDbSeriesId,
                                 seriesMapping.DefaultTvDbEpisodeIndexOffset, tvDbSeason.Index),
                         absoluteTvDbSeason =>
-                            this.MapEpisodeViaAbsoluteEpisodeIndexAsync(aniDbEpisodeIndex, tvDbSeriesId)),
+                            MapEpisodeViaAbsoluteEpisodeIndexAsync(aniDbEpisodeIndex, tvDbSeriesId)),
                 () =>
                 {
-                    this.log.Debug($"Failed to map AniDb episode {aniDbEpisodeIndex}");
+                    this.logger.LogDebug($"Failed to map AniDb episode {aniDbEpisodeIndex}");
                     return Option<TvDbEpisodeData>.None;
                 });
         }
@@ -40,14 +40,14 @@ namespace Emby.AniDbMetaStructure.Mapping
         private async Task<Option<TvDbEpisodeData>> MapEpisodeWithDefaultSeasonAsync(int aniDbEpisodeIndex,
             int tvDbSeriesId, int defaultTvDbEpisodeIndexOffset, int defaultTvDbSeasonIndex)
         {
-            var tvDbEpisodeIndex = aniDbEpisodeIndex + defaultTvDbEpisodeIndexOffset;
+            int tvDbEpisodeIndex = aniDbEpisodeIndex + defaultTvDbEpisodeIndexOffset;
 
             var tvDbEpisodeData =
                 await this.tvDbClient.GetEpisodeAsync(tvDbSeriesId, defaultTvDbSeasonIndex, tvDbEpisodeIndex);
 
             return tvDbEpisodeData.Match(d =>
             {
-                this.log.Debug(
+                this.logger.LogDebug(
                     $"Found mapped TvDb episode: {tvDbEpisodeData}");
 
                 return d;
@@ -60,7 +60,7 @@ namespace Emby.AniDbMetaStructure.Mapping
             return this.tvDbClient.GetEpisodeAsync(tvDbSeriesId, aniDbEpisodeIndex)
                 .MatchAsync(tvDbEpisodeData =>
                 {
-                    this.log.Debug(
+                    this.logger.LogDebug(
                         $"Found mapped TvDb episode via absolute episode index: {tvDbEpisodeData}");
 
                     return tvDbEpisodeData;

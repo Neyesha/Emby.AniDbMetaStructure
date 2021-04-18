@@ -3,17 +3,17 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Emby.AniDbMetaStructure.Files
 {
     public class XmlSerialiser : IXmlSerialiser
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
 
-        public XmlSerialiser(ILogManager logManager)
+        public XmlSerialiser(ILogger logger)
         {
-            this.log = logManager.GetLogger(nameof(XmlSerialiser));
+            this.logger = logger;
         }
 
         public T Deserialise<T>(string xml)
@@ -28,7 +28,7 @@ namespace Emby.AniDbMetaStructure.Files
                 }
                 catch (Exception ex)
                 {
-                    this.log.ErrorException($"Failed to deserialise content: '{xml}'", ex);
+                    this.logger.LogError($"Failed to deserialise content: '{xml}'", ex);
                     throw;
                 }
             }

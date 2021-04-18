@@ -1,38 +1,38 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Emby.AniDbMetaStructure.AniDb.SeriesData;
+﻿using Emby.AniDbMetaStructure.AniDb.SeriesData;
 using Emby.AniDbMetaStructure.Configuration;
 using LanguageExt;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Emby.AniDbMetaStructure.AniDb
 {
     internal class AniDbTitleSelector : IAniDbTitleSelector
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
 
-        public AniDbTitleSelector(ILogManager logManager)
+        public AniDbTitleSelector(ILogger logger)
         {
-            this.log = logManager.GetLogger(nameof(AniDbTitleSelector));
+            this.logger = logger;
         }
 
         public Option<ItemTitleData> SelectTitle(IEnumerable<ItemTitleData> titles, TitleType preferredTitleType,
             string metadataLanguage)
         {
-            this.log.Debug(
+            this.logger.LogDebug(
                 $"Selecting title from [{string.Join(", ", titles.Select(t => t.ToString()))}] available, preference for {preferredTitleType}, metadata language '{metadataLanguage}'");
 
-            var preferredTitle = this.FindPreferredTitle(titles, preferredTitleType, metadataLanguage);
+            var preferredTitle = FindPreferredTitle(titles, preferredTitleType, metadataLanguage);
 
             preferredTitle.Match(
-                t => this.log.Debug($"Found preferred title '{t.Title}'"),
+                t => this.logger.LogDebug($"Found preferred title '{t.Title}'"),
                 () =>
                 {
-                    var defaultTitle = this.FindDefaultTitle(titles);
+                    var defaultTitle = FindDefaultTitle(titles);
 
                     defaultTitle.Match(
-                        t => this.log.Debug($"Failed to find preferred title, falling back to default title '{t.Title}'"),
-                        () => this.log.Debug("Failed to find any title"));
+                        t => this.logger.LogDebug($"Failed to find preferred title, falling back to default title '{t.Title}'"),
+                        () => this.logger.LogDebug("Failed to find any title"));
 
                     preferredTitle = defaultTitle;
                 });
@@ -42,11 +42,11 @@ namespace Emby.AniDbMetaStructure.AniDb
 
         private Option<ItemTitleData> FindDefaultTitle(IEnumerable<ItemTitleData> titles)
         {
-            var title = this.FindTitle(titles, "x-jat");
+            var title = FindTitle(titles, "x-jat");
 
             title.Match(
                 t => { },
-                () => title = this.FindMainTitle(titles));
+                () => title = FindMainTitle(titles));
 
             return title;
         }
@@ -57,13 +57,13 @@ namespace Emby.AniDbMetaStructure.AniDb
             switch (preferredTitleType)
             {
                 case TitleType.Localized:
-                    return this.FindTitle(titles, metadataLanguage);
+                    return FindTitle(titles, metadataLanguage);
 
                 case TitleType.Japanese:
-                    return this.FindTitle(titles, "ja");
+                    return FindTitle(titles, "ja");
 
                 case TitleType.JapaneseRomaji:
-                    return this.FindTitle(titles, "x-jat");
+                    return FindTitle(titles, "x-jat");
             }
 
             return Option<ItemTitleData>.None;

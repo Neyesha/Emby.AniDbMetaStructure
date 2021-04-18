@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Emby.AniDbMetaStructure.Configuration;
 using Emby.AniDbMetaStructure.Files;
 using Emby.AniDbMetaStructure.Infrastructure;
 using Emby.AniDbMetaStructure.JsonApi;
 using Emby.AniDbMetaStructure.TvDb.Data;
+using Emby.AniDbMetaStructure.TvDb.Data.Mappers;
 using Emby.AniDbMetaStructure.TvDb.Requests;
 using LanguageExt;
 using MediaBrowser.Common.Configuration;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Model.Logging;
-using TvDbSharper.Dto;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using TvDbSharper;
-using AutoMapper;
-using Emby.AniDbMetaStructure.TvDb.Data.Mappers;
+using TvDbSharper.Dto;
 
 namespace Emby.AniDbMetaStructure.TvDb
 {
@@ -25,21 +24,21 @@ namespace Emby.AniDbMetaStructure.TvDb
     {
         private readonly IApplicationPaths applicationPaths;
         private readonly IFileCache fileCache;
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly TvDbSharper.ITvDbClient tvDbClient;
         private readonly IMapper dataMapper;
         private readonly ICustomJsonSerialiser jsonSerialiser;
 
         public TvDbClientV3(IJsonConnection jsonConnection, IFileCache fileCache, IApplicationPaths applicationPaths,
-            ILogManager logManager, ICustomJsonSerialiser jsonSerialiser, PluginConfiguration configuration)
+            ILogger logger, ICustomJsonSerialiser jsonSerialiser, PluginConfiguration configuration)
         {
-            this.log = logManager.GetLogger(nameof(TvDbClientV2));
+            this.logger = logger;
             this.fileCache = fileCache;
             this.applicationPaths = applicationPaths;
             this.jsonSerialiser = jsonSerialiser;
             this.tvDbClient = new TvDbClient();
             this.tvDbClient.Authentication.AuthenticateAsync(configuration.TvDbApiKey).GetAwaiter().GetResult();
-            this.dataMapper = this.CreateDataMapper();
+            this.dataMapper = CreateDataMapper();
         }
 
         private IMapper CreateDataMapper()
@@ -66,14 +65,14 @@ namespace Emby.AniDbMetaStructure.TvDb
 
         public async Task<Option<TvDbSeriesData>> GetSeriesAsync(int tvDbSeriesId)
         {
-            var localSeriesData = this.GetLocalTvDbSeriesData(tvDbSeriesId);
+            var localSeriesData = GetLocalTvDbSeriesData(tvDbSeriesId);
 
             var episodes = await localSeriesData.MatchAsync(e => e,
                 async () =>
                 {
-                    var seriesData = await this.RequestSeriesAsync(tvDbSeriesId);
+                    var seriesData = await RequestSeriesAsync(tvDbSeriesId);
 
-                    seriesData.Iter(this.SaveTvDbSeries);
+                    seriesData.Iter(SaveTvDbSeries);
 
                     return seriesData;
                 });
@@ -83,10 +82,10 @@ namespace Emby.AniDbMetaStructure.TvDb
 
         public async Task<Option<TvDbSeriesData>> FindSeriesAsync(string seriesName)
         {
-            var comparableName = GetComparableName(seriesName);
+            string comparableName = GetComparableName(seriesName);
 
             var response = await this.tvDbClient.Search.SearchSeriesByNameAsync(seriesName);
-            var data = this.ParseResponse<SeriesSearchResult[], SeriesSearchResult[]>(response);
+            var data = ParseResponse<SeriesSearchResult[], SeriesSearchResult[]>(response);
 
             return data.Match(
                             r =>
@@ -102,14 +101,14 @@ namespace Emby.AniDbMetaStructure.TvDb
                                         })
                                     .ThenBy(i => matchingSeries.IndexOf(i))
                                     .FirstOrDefault();
-                                
+
                                 if (bestResult != null)
                                 {
                                     try
                                     {
-                                        return this.GetSeriesAsync(bestResult.Id).GetAwaiter().GetResult();
+                                        return GetSeriesAsync(bestResult.Id).GetAwaiter().GetResult();
                                     }
-                                    catch(TvDbServerException)
+                                    catch (TvDbServerException)
                                     {
                                         //Do nothing
                                     }
@@ -133,11 +132,11 @@ namespace Emby.AniDbMetaStructure.TvDb
         {
             name = name.ToLower();
             var sb = new StringBuilder();
-            foreach (var c in name)
+            foreach (char c in name)
             {
-                if ((int)c >= 0x2B0 && (int)c <= 0x0333)
+                if (c >= 0x2B0 && c <= 0x0333)
                 {
-                    // skip char modifier and diacritics 
+                    // skip char modifier and diacritics
                 }
                 else if (Remove.IndexOf(c) > -1)
                 {
@@ -173,10 +172,10 @@ namespace Emby.AniDbMetaStructure.TvDb
 
         public Task<Option<List<TvDbEpisodeData>>> GetEpisodesAsync(int tvDbSeriesId)
         {
-            var localEpisodes = this.GetLocalTvDbEpisodeData(tvDbSeriesId).Map(e => e.ToList());
+            var localEpisodes = GetLocalTvDbEpisodeData(tvDbSeriesId).Map(e => e.ToList());
 
             var episodes = localEpisodes.Match(e => Task.FromResult((Option<List<TvDbEpisodeData>>)e),
-                () => this.RequestEpisodesAsync(tvDbSeriesId));
+                () => RequestEpisodesAsync(tvDbSeriesId));
 
             return episodes;
         }
@@ -184,7 +183,7 @@ namespace Emby.AniDbMetaStructure.TvDb
         public async Task<Option<TvDbEpisodeData>> GetEpisodeAsync(int tvDbSeriesId, int seasonIndex,
             int episodeIndex)
         {
-            var episodes = await this.GetEpisodesAsync(tvDbSeriesId);
+            var episodes = await GetEpisodesAsync(tvDbSeriesId);
 
             return episodes.Match(ec =>
                     ec.Find(e => e.AiredSeason == seasonIndex && e.AiredEpisodeNumber == episodeIndex),
@@ -193,7 +192,7 @@ namespace Emby.AniDbMetaStructure.TvDb
 
         public async Task<Option<TvDbEpisodeData>> GetEpisodeAsync(int tvDbSeriesId, int absoluteEpisodeIndex)
         {
-            var episodes = await this.GetEpisodesAsync(tvDbSeriesId);
+            var episodes = await GetEpisodesAsync(tvDbSeriesId);
 
             return episodes.Match(ec => ((IEnumerable<TvDbEpisodeData>)ec).Find(e =>
                     e.AbsoluteNumber.Match(index => index == absoluteEpisodeIndex, () => false)),
@@ -204,7 +203,7 @@ namespace Emby.AniDbMetaStructure.TvDb
         {
             var response = await this.tvDbClient.Series.GetAsync(tvDbSeriesId);
 
-            return this.ParseResponse<Series, TvDbSeriesData>(response).Match(
+            return ParseResponse<Series, TvDbSeriesData>(response).Match(
                 r => r.Data,
                 fr => Option<TvDbSeriesData>.None);
         }
@@ -214,7 +213,7 @@ namespace Emby.AniDbMetaStructure.TvDb
             if (response.Data == null && response.Errors?.InvalidFilters?.Any() == true || response.Errors?.InvalidLanguage?.Any() == true || response.Errors?.InvalidQueryParams?.Any() == true)
             {
                 return new FailedRequest(HttpStatusCode.OK, response.ToString());
-            }           
+            }
 
             // Perform mapping
             var data = this.dataMapper.Map<TResponseType, TResponseData>(response.Data);
@@ -239,7 +238,7 @@ namespace Emby.AniDbMetaStructure.TvDb
         private async Task<Option<List<TvDbEpisodeData>>> RequestEpisodesAsync(int tvDbSeriesId)
         {
             var response = await this.tvDbClient.Series.GetEpisodesAsync(tvDbSeriesId, 1);
-            var data = this.ParseResponse<EpisodeRecord[], TvDbEpisodeData[]>(response);
+            var data = ParseResponse<EpisodeRecord[], TvDbEpisodeData[]>(response);
 
             return await data.Match(async r =>
                 {
@@ -247,13 +246,13 @@ namespace Emby.AniDbMetaStructure.TvDb
 
                     if (response.Links.Last > 1)
                     {
-                        episodes = episodes.Concat(await this.RequestEpisodePagesAsync(tvDbSeriesId, 2, response.Links.Last ?? 2))
+                        episodes = episodes.Concat(await RequestEpisodePagesAsync(tvDbSeriesId, 2, response.Links.Last ?? 2))
                             .ToList();
                     }
 
-                    var episodeDetails = (await episodes.Map(e => e.Id).Map(this.RequestEpisodeDetailAsync)).Somes().ToList();
+                    var episodeDetails = (await episodes.Map(e => e.Id).Map(RequestEpisodeDetailAsync)).Somes().ToList();
 
-                    this.SaveTvDbEpisodes(tvDbSeriesId, episodeDetails);
+                    SaveTvDbEpisodes(tvDbSeriesId, episodeDetails);
 
                     return (Option<List<TvDbEpisodeData>>)episodeDetails.ToList();
                 },
@@ -263,7 +262,7 @@ namespace Emby.AniDbMetaStructure.TvDb
         private async Task<Option<TvDbEpisodeData>> RequestEpisodeDetailAsync(int episodeId)
         {
             var response = await this.tvDbClient.Episodes.GetAsync(episodeId);
-            var data = this.ParseResponse<EpisodeRecord, TvDbEpisodeData>(response);
+            var data = ParseResponse<EpisodeRecord, TvDbEpisodeData>(response);
 
             return data.Match(r => r.Data,
                 fr => null);
@@ -288,11 +287,11 @@ namespace Emby.AniDbMetaStructure.TvDb
         {
             var episodeData = new List<TvDbEpisodeData>();
 
-            for (var i = startPageIndex; i <= endPageIndex; i++)
+            for (int i = startPageIndex; i <= endPageIndex; i++)
             {
                 var response = await this.tvDbClient.Series.GetEpisodesAsync(tvDbSeriesId, i);
-                var data = this.ParseResponse<EpisodeRecord[], TvDbEpisodeData[]>(response);
-                var dataList = data.RightToList().Select( d => d.Data);
+                var data = ParseResponse<EpisodeRecord[], TvDbEpisodeData[]>(response);
+                var dataList = data.RightToList().Select(d => d.Data);
                 dataList.Iter(e => episodeData.AddRange(e));
             }
 
@@ -304,7 +303,7 @@ namespace Emby.AniDbMetaStructure.TvDb
             var request = new GetEpisodesRequest(tvDbSeriesId, pageIndex);
 
             var response = await this.tvDbClient.Series.GetEpisodesAsync(tvDbSeriesId, pageIndex);
-            var data = this.ParseResponse<EpisodeRecord[], TvDbEpisodeData[]>(response);
+            var data = ParseResponse<EpisodeRecord[], TvDbEpisodeData[]>(response);
 
             return data.Match(r => r.Data.ToList(),
                 fr => Option<List<TvDbEpisodeData>>.None);

@@ -1,30 +1,29 @@
-﻿using System;
+﻿using LanguageExt;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using LanguageExt;
-using MediaBrowser.Model.Logging;
 
 namespace Emby.AniDbMetaStructure.AniDb.Titles
 {
     internal class SeriesTitleCache : ISeriesTitleCache
     {
         private readonly IAniDbDataCache aniDbDataCache;
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly ITitleNormaliser titleNormaliser;
         private readonly Lazy<IDictionary<string, TitleListItemData>> titles;
 
-        public SeriesTitleCache(IAniDbDataCache aniDbDataCache, ITitleNormaliser titleNormaliser,
-            ILogManager logManager)
+        public SeriesTitleCache(IAniDbDataCache aniDbDataCache, ITitleNormaliser titleNormaliser, ILogger logger)
         {
             this.aniDbDataCache = aniDbDataCache;
             this.titleNormaliser = titleNormaliser;
-            this.log = logManager.GetLogger(nameof(SeriesTitleCache));
-            this.titles = new Lazy<IDictionary<string, TitleListItemData>>(this.GetTitles);
+            this.logger = logger;
+            this.titles = new Lazy<IDictionary<string, TitleListItemData>>(GetTitles);
         }
 
         public Option<TitleListItemData> FindSeriesByTitle(string title)
         {
-            var match = this.FindExactTitleMatch(title).Match(t => t, () => this.FindComparableMatch(title));
+            var match = FindExactTitleMatch(title).Match(t => t, () => FindComparableMatch(title));
 
             return match;
         }
@@ -35,8 +34,8 @@ namespace Emby.AniDbMetaStructure.AniDb.Titles
 
             Option<TitleListItemData> foundTitle = match;
 
-            foundTitle.Match(t => this.log.Debug($"Found exact title match for '{title}'"),
-                () => this.log.Debug($"Failed to find exact title match for '{title}'"));
+            foundTitle.Match(t => this.logger.LogDebug($"Found exact title match for '{title}'"),
+                () => this.logger.LogDebug($"Failed to find exact title match for '{title}'"));
 
             return foundTitle;
         }
@@ -49,8 +48,8 @@ namespace Emby.AniDbMetaStructure.AniDb.Titles
 
             Option<TitleListItemData> foundTitle = match;
 
-            foundTitle.Match(t => this.log.Debug($"Found comparable title match for '{title}'"),
-                () => this.log.Debug($"Failed to find comparable title match for '{title}'"));
+            foundTitle.Match(t => this.logger.LogDebug($"Found comparable title match for '{title}'"),
+                () => this.logger.LogDebug($"Failed to find comparable title match for '{title}'"));
 
             return foundTitle;
         }
@@ -68,8 +67,8 @@ namespace Emby.AniDbMetaStructure.AniDb.Titles
 
             foreach (var titlesAgainstItem in titlesAgainstItems)
             {
-                this.AddIfMissing(titles, titlesAgainstItem.Title, titlesAgainstItem.Item);
-                this.AddIfMissing(titles, titlesAgainstItem.ComparableTitle, titlesAgainstItem.Item);
+                AddIfMissing(titles, titlesAgainstItem.Title, titlesAgainstItem.Item);
+                AddIfMissing(titles, titlesAgainstItem.ComparableTitle, titlesAgainstItem.Item);
             }
 
             return titles;

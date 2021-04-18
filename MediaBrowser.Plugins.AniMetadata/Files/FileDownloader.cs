@@ -5,20 +5,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using Emby.AniDbMetaStructure.Infrastructure;
 using MediaBrowser.Common.Net;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Emby.AniDbMetaStructure.Files
 {
     internal class FileDownloader : IFileDownloader
     {
         private readonly IHttpClient httpClient;
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly IRateLimiter requestLimiter;
 
-        public FileDownloader(IRateLimiters rateLimiters, IHttpClient httpClient, ILogManager logManager)
+        public FileDownloader(IRateLimiters rateLimiters, IHttpClient httpClient, ILogger logger)
         {
             this.httpClient = httpClient;
-            this.log = logManager.GetLogger(nameof(FileDownloader));
+            this.logger = logger;
             this.requestLimiter = rateLimiters.AniDb;
         }
 
@@ -73,7 +73,7 @@ namespace Emby.AniDbMetaStructure.Files
             {
                 
 
-                this.log.Debug($"Saving {text.Length} characters to {fileSpec.LocalPath}");
+                this.logger.LogDebug($"Saving {text.Length} characters to {fileSpec.LocalPath}");
 
                 text = text.Replace("&#x0;", string.Empty);
 

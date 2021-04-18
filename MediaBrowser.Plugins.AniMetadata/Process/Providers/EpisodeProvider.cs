@@ -1,27 +1,26 @@
-﻿using System;
+﻿using Emby.AniDbMetaStructure.Infrastructure;
+using MediaBrowser.Controller.Entities.TV;
+using MediaBrowser.Controller.Providers;
+using MediaBrowser.Model.Providers;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.AniDbMetaStructure.Infrastructure;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Controller.Entities.TV;
-using MediaBrowser.Controller.Providers;
-using MediaBrowser.Model.Logging;
-using MediaBrowser.Model.Providers;
 using static LanguageExt.Prelude;
 
 namespace Emby.AniDbMetaStructure.Process.Providers
 {
     internal class EpisodeProvider
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly IMediaItemProcessor mediaItemProcessor;
 
-        public EpisodeProvider(ILogManager logManager, IMediaItemProcessor mediaItemProcessor)
+        public EpisodeProvider(ILogger logger, IMediaItemProcessor mediaItemProcessor)
         {
             this.mediaItemProcessor = mediaItemProcessor;
-            this.log = logManager.GetLogger(nameof(EpisodeProvider));
+            this.logger = logger;
         }
 
         public int Order => -1;
@@ -44,12 +43,12 @@ namespace Emby.AniDbMetaStructure.Process.Providers
         {
             var metadataResult = Try(() =>
                 {
-                    var result = this.mediaItemProcessor.GetResultAsync(info, MediaItemTypes.Episode, this.GetParentIds(info));
+                    var result = this.mediaItemProcessor.GetResultAsync(info, MediaItemTypes.Episode, GetParentIds(info));
 
                     return result.Map(either =>
                         either.Match(r =>
                             {
-                                this.log.Info($"Found data for episode '{info.Name}': '{r.EmbyMetadataResult.Item.Name}'");
+                                this.logger.LogInformation($"Found data for episode '{info.Name}': '{r.EmbyMetadataResult.Item.Name}'");
 
                                 info.IndexNumber = null;
                                 info.ParentIndexNumber = null;
@@ -60,17 +59,17 @@ namespace Emby.AniDbMetaStructure.Process.Providers
                             },
                             failure =>
                             {
-                                this.log.Error($"Failed to get data for episode '{info.Name}': {failure.Reason}");
+                                this.logger.LogError($"Failed to get data for episode '{info.Name}': {failure.Reason}");
 
-                                return this.EmptyMetadataResult;
+                                return EmptyMetadataResult;
                             })
                     );
                 })
                 .IfFail(e =>
                 {
-                    this.log.ErrorException($"Failed to get data for episode '{info.Name}'", e);
+                    this.logger.LogError($"Failed to get data for episode '{info.Name}'", e);
 
-                    return this.EmptyMetadataResult.AsTask();
+                    return EmptyMetadataResult.AsTask();
                 });
 
             return metadataResult;
@@ -83,7 +82,7 @@ namespace Emby.AniDbMetaStructure.Process.Providers
 
         private IEnumerable<EmbyItemId> GetParentIds(EpisodeInfo info)
         {
-            this.log.Info($"ParentIds: '{info.SeriesProviderIds}'");
+            this.logger.LogInformation($"ParentIds: '{info.SeriesProviderIds}'");
             return info.SeriesProviderIds.Where(kv => int.TryParse(kv.Value, out _))
                 .Select(kv => new EmbyItemId(MediaItemTypes.Series, kv.Key, int.Parse(kv.Value)));
         }

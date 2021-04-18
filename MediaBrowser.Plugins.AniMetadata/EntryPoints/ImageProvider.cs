@@ -8,7 +8,7 @@ using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
 using MediaBrowser.Model.Providers;
 
 namespace Emby.AniDbMetaStructure.EntryPoints
@@ -17,11 +17,9 @@ namespace Emby.AniDbMetaStructure.EntryPoints
     {
         private readonly AniDbImageProvider imageProvider;
 
-        public ImageProvider(IApplicationHost applicationHost, ILogManager logManager)
+        public ImageProvider(IApplicationHost applicationHost, ILogger logger)
         {
-            var logger = logManager.GetLogger(nameof(ImageProvider));
-
-            logger.Info("Resolving...");
+            logger.LogInformation("Resolving...");
 
             this.imageProvider = DependencyConfiguration.Resolve<AniDbImageProvider>(applicationHost);
         }

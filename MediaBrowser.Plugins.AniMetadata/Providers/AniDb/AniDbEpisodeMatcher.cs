@@ -1,41 +1,41 @@
-using System.Collections.Generic;
-using System.Linq;
 using Emby.AniDbMetaStructure.AniDb.SeriesData;
 using Emby.AniDbMetaStructure.AniDb.Titles;
 using LanguageExt;
-using MediaBrowser.Model.Logging;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Emby.AniDbMetaStructure.Providers.AniDb
 {
     internal class AniDbEpisodeMatcher : IAniDbEpisodeMatcher
     {
-        private readonly ILogger log;
+        private readonly ILogger logger;
         private readonly ITitleNormaliser titleNormaliser;
 
-        public AniDbEpisodeMatcher(ITitleNormaliser titleNormaliser, ILogManager logManager)
+        public AniDbEpisodeMatcher(ITitleNormaliser titleNormaliser, ILogger logger)
         {
             this.titleNormaliser = titleNormaliser;
-            this.log = logManager.GetLogger(nameof(AniDbEpisodeMatcher));
+            this.logger = logger;
         }
 
         public Option<AniDbEpisodeData> FindEpisode(IEnumerable<AniDbEpisodeData> episodes, Option<int> seasonIndex,
             Option<int> episodeIndex, Option<string> title)
         {
             return episodeIndex.Match(
-                index => this.FindEpisodeByIndex(episodes, seasonIndex, index, title),
-                () => this.FindEpisodeByTitle(episodes, title, episodeIndex));
+                index => FindEpisodeByIndex(episodes, seasonIndex, index, title),
+                () => FindEpisodeByTitle(episodes, title, episodeIndex));
         }
 
         private Option<AniDbEpisodeData> FindEpisodeByIndex(IEnumerable<AniDbEpisodeData> episodes,
             Option<int> seasonIndex,
             int episodeIndex, Option<string> title)
         {
-            return seasonIndex.Match(si => this.FindEpisodeByIndexes(episodes, si, episodeIndex),
+            return seasonIndex.Match(si => FindEpisodeByIndexes(episodes, si, episodeIndex),
                 () =>
                 {
-                    this.log.Debug("No season index specified, searching by title");
+                    this.logger.LogDebug("No season index specified, searching by title");
 
-                    return this.FindEpisodeByTitle(episodes, title, episodeIndex);
+                    return FindEpisodeByTitle(episodes, title, episodeIndex);
                 });
         }
 
@@ -55,20 +55,20 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
         {
             return title.Match(t =>
                 {
-                    this.log.Debug($"Searching by title '{t}'");
+                    this.logger.LogDebug($"Searching by title '{t}'");
 
-                    return this.FindEpisodeByTitle(episodes, t)
+                    return FindEpisodeByTitle(episodes, t)
                         .Match(d => d,
                             () =>
                             {
                                 return episodeIndex.Match(index =>
                                 {
-                                    this.log.Debug(
+                                    this.logger.LogDebug(
                                         $"No episode with matching title found for episode index {episodeIndex}, defaulting to season 1");
-                                    return this.FindEpisodeByIndexes(episodes, 1, index);
+                                    return FindEpisodeByIndexes(episodes, 1, index);
                                 }, () =>
                                 {
-                                    this.log.Info($"Failed to find episode data");
+                                    this.logger.LogInformation($"Failed to find episode data");
                                     return Option<AniDbEpisodeData>.None;
                                 });
                             });
@@ -77,13 +77,13 @@ namespace Emby.AniDbMetaStructure.Providers.AniDb
                 {
                     return episodeIndex.Match(index =>
                     {
-                        this.log.Debug(
+                        this.logger.LogDebug(
                             $"No title specified for episode index {episodeIndex}, defaulting to season 1");
 
-                        return this.FindEpisodeByIndexes(episodes, 1, index);
+                        return FindEpisodeByIndexes(episodes, 1, index);
                     }, () =>
                     {
-                        this.log.Info($"Failed to find episode data");
+                        this.logger.LogInformation($"Failed to find episode data");
                         return Option<AniDbEpisodeData>.None;
                     });
                 });
