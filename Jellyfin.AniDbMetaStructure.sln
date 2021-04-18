@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emby.AniDbMetaStructure.Tests", "MediaBrowser.Plugins.AniMetadata.Tests\Emby.AniDbMetaStructure.Tests.csproj", "{1CCB770B-F66F-46C5-84C0-8998795FAEFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jellyfin.AniDbMetaStructure.Tests", "MediaBrowser.Plugins.AniMetadata.Tests\Jellyfin.AniDbMetaStructure.Tests.csproj", "{1CCB770B-F66F-46C5-84C0-8998795FAEFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emby.AniDbMetaStructure", "MediaBrowser.Plugins.AniMetadata\Emby.AniDbMetaStructure.csproj", "{BAD2DB2B-9089-4BAD-8A7A-D9FEB435D6BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jellyfin.AniDbMetaStructure", "MediaBrowser.Plugins.AniMetadata\Jellyfin.AniDbMetaStructure.csproj", "{BAD2DB2B-9089-4BAD-8A7A-D9FEB435D6BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

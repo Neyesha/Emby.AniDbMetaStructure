@@ -1,10 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp5.0</TargetFrameworks>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <DebugType>Full</DebugType>
     <Version>1.0.1</Version>
+    <PackageId>Jellyfin.AniDbMetaStructure</PackageId>
+    <Authors>Jellyfin.AniDbMetaStructure</Authors>
+    <Company>Jellyfin.AniDbMetaStructure</Company>
+    <Product>Jellyfin.AniDbMetaStructure</Product>
+    <AssemblyName>Jellyfin.AniDbMetaStructure</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,18 +19,21 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="ILRepack" Version="2.0.18" />
+    <PackageReference Include="Jellyfin.Common" Version="10.7.2" />
+    <PackageReference Include="Jellyfin.Controller" Version="10.7.2" />
+    <PackageReference Include="Jellyfin.Data" Version="10.7.2" />
+    <PackageReference Include="Jellyfin.Model" Version="10.7.2" />
     <PackageReference Include="languageext.core" Version="2.1.32" />
-    <PackageReference Include="mediabrowser.server.core" Version="4.6.0.35-beta" />
     <PackageReference Include="newtonsoft.json" Version="12.0.3" />
     <PackageReference Include="simpleinjector" Version="4.10.2" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="TvDbSharper" Version="3.2.2" />
     <PackageReference Include="Xem.Api" Version="0.1.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp5.0'">
     <PackageReference Include="System.Security.Permissions">
       <Version>4.7.0</Version>
     </PackageReference>
