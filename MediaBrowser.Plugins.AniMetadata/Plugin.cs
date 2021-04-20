@@ -5,15 +5,17 @@ using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace Jellyfin.AniDbMetaStructure
 {
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer) : base(
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, ILogger logger) : base(
             applicationPaths, xmlSerializer)
         {
             Instance = this;
+            Logger = logger;
         }
 
         public override Guid Id => new Guid("77780029-0ab8-4c7a-ad47-4f0187f13301");
@@ -23,6 +25,7 @@ namespace Jellyfin.AniDbMetaStructure
         public override string Description => "Combines data from AniDb and TvDb to identify anime";
 
         public static Plugin Instance { get; private set; }
+        public ILogger Logger { get; }
 
         public IEnumerable<PluginPageInfo> GetPages()
         {
