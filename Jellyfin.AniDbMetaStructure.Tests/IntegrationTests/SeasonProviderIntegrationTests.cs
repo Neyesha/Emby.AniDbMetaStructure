@@ -102,7 +102,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
             var result = await seasonEntryPoint.GetMetadata(seasonInfo, CancellationToken.None);
 
             result.HasMetadata.Should().BeTrue();
-            result.Item.Name.Should().BeEquivalentTo("Season 2");
+            result.Item.Name.Should().BeEquivalentTo("Fullmetal Panic? Fumoffu");
         }
     }
 }

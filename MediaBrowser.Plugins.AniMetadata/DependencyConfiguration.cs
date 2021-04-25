@@ -73,7 +73,7 @@ namespace Jellyfin.AniDbMetaStructure
             container.Register<PersonImageProvider>();
             container.Register<PersonProvider>();
             container.Register<SeriesProviderEntryPoint>();
-
+            container.RegisterInstance(new HttpClient());
             container.Register<AniDbImageProvider>();
             container.Register<AniDbPersonImageProvider>();
             container.Register<AniDbPersonProvider>();
