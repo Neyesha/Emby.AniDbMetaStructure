@@ -100,6 +100,7 @@ namespace Jellyfin.AniDbMetaStructure
             container.Register<IMediaItemProcessor, MediaItemProcessor>();
             container.Register<IMediaItemBuilder, MediaItemBuilder>();
             container.Register<ISources, Sources>();
+            container.RegisterInstance(Plugin.Instance.Logger);
 
             container.Register<IAniDbSource, AniDbSource>();
             container.Register<ITvDbSource, TvDbSource>();
