@@ -63,8 +63,7 @@ namespace Jellyfin.AniDbMetaStructure
         private static void SetUpAniMetadataDependencies(Container container, IApplicationHost applicationHost)
         {
             container.Register<ILogger>(() => {
-                var a = LoggerFactory.Create((builder) => { }).CreateLogger("AniDbMetaStructure");
-                return a;
+                return LoggerFactory.Create((builder) => { }).CreateLogger("AniDbMetaStructure");
             }, Lifestyle.Singleton);
 
             container.Register<ImageProvider>();
