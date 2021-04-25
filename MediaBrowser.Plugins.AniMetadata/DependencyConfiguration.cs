@@ -67,8 +67,6 @@ namespace Jellyfin.AniDbMetaStructure
                 return LoggerFactory.Create((builder) => { }).CreateLogger("AniDbMetaStructure");
             }, Lifestyle.Singleton);
 
-            container.RegisterInstance<HttpClient>(new HttpClient());
-
             container.Register<ImageProvider>();
             container.Register<PersonImageProvider>();
             container.Register<PersonProvider>();
