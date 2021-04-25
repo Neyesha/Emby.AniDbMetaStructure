@@ -57,7 +57,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
             series.Should().BeEquivalentTo(new TvDbSeriesData(80675, "Mobile Suit Gundam 00",
                 new DateTime(2007, 10, 6), "Tokyo Broadcasting System", 30,
                 AirDay.Saturday, "6:00 PM", 9.4f, new string[] { },
-                new[] { "Animation", "Drama", "Science-Fiction" },
+                new[] { "Anime", "Drama", "Science Fiction" },
                 "2307 AD.\r\nAs fossil fuels became exhausted, humanity found a new energy source to change their situation: A large-scale solar power system with three enormous orbiting elevators. However, only a few large countries and their allies reaped the benefits.\r\nThree superpowers had ownership of the three orbiting elevators: The Union, based in the United States Of America, The People`s Reform League, made up of China, Russia, and India, and Europe`s AEU. The superpowers continue playing a large zero-sum game for their own dignity and respective prosperity. Even though it is the 24th century, humanity has yet to become one.\r\nIn this world where war has no end, a private militia appears advocating the eradication of war through force. Each possessing a mobile suit Gundam, they are Celestial Being. The armed intervention by the Gundams against all acts of war begins."));
         }
 
@@ -95,7 +95,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
                 .Should().BeEquivalentTo(new TvDbEpisodeData(340368, "Celestial Being", 1L, 1, 1, 1496255818,
                     new DateTime(2007, 10, 6),
                     "Celestial Being, a private army dedicated to eradicating war, begins demonstrating the powers of their new \"MS-GUNDAM\" suits by interrupting the public demonstration of AEU's latest Mobile Suit, the AEU Enact and by protecting the Human Reform League's Space Elevator, \"Tenchu\" from being attacked by terrorists when their mobile suits had attempted to launch rockets on the \"Tenchu\", earning a news appearance from various TV news channels where Celestial Being's goals were publicly stated by Aeoria Schenberg.",
-                    8.2f, 5));
+                    8.2f, 139));
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
 
             series.Should().BeEquivalentTo(new TvDbSeriesData(80675, "Mobile Suit Gundam 00",
                 new DateTime(2007, 10, 6), "Tokyo Broadcasting System", 30, AirDay.Saturday, "6:00 PM",
-                9.4f, new string[] { }, new[] { "Animation", "Drama", "Science-Fiction" },
+                9.4f, new string[] { }, new[] { "Anime", "Drama", "Science Fiction" },
                 "2307 AD.\r\nAs fossil fuels became exhausted, humanity found a new energy source to change their situation: A large-scale solar power system with three enormous orbiting elevators. However, only a few large countries and their allies reaped the benefits.\r\nThree superpowers had ownership of the three orbiting elevators: The Union, based in the United States Of America, The People`s Reform League, made up of China, Russia, and India, and Europe`s AEU. The superpowers continue playing a large zero-sum game for their own dignity and respective prosperity. Even though it is the 24th century, humanity has yet to become one.\r\nIn this world where war has no end, a private militia appears advocating the eradication of war through force. Each possessing a mobile suit Gundam, they are Celestial Being. The armed intervention by the Gundams against all acts of war begins."));
         }
 
@@ -137,7 +137,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
             series.Should().BeEquivalentTo(new TvDbSeriesData(80675, "Mobile Suit Gundam 00",
                 new DateTime(2007, 10, 6), "Tokyo Broadcasting System", 30,
                 AirDay.Saturday, "6:00 PM", 9.4f, new string[] { },
-                new[] { "Animation", "Drama", "Science Fiction" },
+                new[] { "Anime", "Drama", "Science Fiction" },
                 "2307 AD.\r\nAs fossil fuels became exhausted, humanity found a new energy source to change their situation: A large-scale solar power system with three enormous orbiting elevators. However, only a few large countries and their allies reaped the benefits.\r\nThree superpowers had ownership of the three orbiting elevators: The Union, based in the United States Of America, The People`s Reform League, made up of China, Russia, and India, and Europe`s AEU. The superpowers continue playing a large zero-sum game for their own dignity and respective prosperity. Even though it is the 24th century, humanity has yet to become one.\r\nIn this world where war has no end, a private militia appears advocating the eradication of war through force. Each possessing a mobile suit Gundam, they are Celestial Being. The armed intervention by the Gundams against all acts of war begins."));
         }
 
@@ -150,7 +150,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
                     TvDbApiKey = Secrets.TvDbApiKey
                 });
 
-            var seriesResult = await client.FindSeriesAsync("NotASeries");
+            var seriesResult = await client.FindSeriesAsync("NotASeriesNameThatWorks");
 
             seriesResult.IsSome.Should().BeFalse();
         }
@@ -195,7 +195,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.IntegrationTests
 
             series.Should().BeEquivalentTo(new TvDbSeriesData(80675, "Mobile Suit Gundam 00",
                 new DateTime(2007, 10, 6), "Tokyo Broadcasting System", 30, AirDay.Saturday, "6:00 PM",
-                9.4f, new string[] { }, new[] { "Animation", "Drama", "Science Fiction" },
+                9.4f, new string[] { }, new[] { "Anime", "Drama", "Science Fiction" },
                 "2307 AD.\r\nAs fossil fuels became exhausted, humanity found a new energy source to change their situation: A large-scale solar power system with three enormous orbiting elevators. However, only a few large countries and their allies reaped the benefits.\r\nThree superpowers had ownership of the three orbiting elevators: The Union, based in the United States Of America, The People`s Reform League, made up of China, Russia, and India, and Europe`s AEU. The superpowers continue playing a large zero-sum game for their own dignity and respective prosperity. Even though it is the 24th century, humanity has yet to become one.\r\nIn this world where war has no end, a private militia appears advocating the eradication of war through force. Each possessing a mobile suit Gundam, they are Celestial Being. The armed intervention by the Gundams against all acts of war begins."));
         }
     }

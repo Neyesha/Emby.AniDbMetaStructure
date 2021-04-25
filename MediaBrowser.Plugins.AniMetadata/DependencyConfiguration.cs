@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using Jellyfin.AniDbMetaStructure.AniDb;
 using Jellyfin.AniDbMetaStructure.AniDb.Titles;
@@ -65,6 +66,8 @@ namespace Jellyfin.AniDbMetaStructure
             container.Register<ILogger>(() => {
                 return LoggerFactory.Create((builder) => { }).CreateLogger("AniDbMetaStructure");
             }, Lifestyle.Singleton);
+
+            container.RegisterInstance<HttpClient>(new HttpClient());
 
             container.Register<ImageProvider>();
             container.Register<PersonImageProvider>();
