@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using LanguageExt;
+using Newtonsoft.Json;
 
 namespace Jellyfin.AniDbMetaStructure.Files
 {
@@ -43,7 +44,7 @@ namespace Jellyfin.AniDbMetaStructure.Files
                 await this.DownloadFileAsync(fileSpec, cancellationToken);
             }
 
-            return this.serializer.Deserialise<T>(File.ReadAllText(cacheFile.FullName));
+            return DeserializeFileContent<T>(File.ReadAllText(cacheFile.FullName), cacheFile.FullName);
         }
 
         public void SaveFile<T>(ILocalFileSpec<T> fileSpec, T data) where T : class
@@ -89,6 +90,16 @@ namespace Jellyfin.AniDbMetaStructure.Files
         {
             return !cacheFile.Exists ||
                 cacheFile.LastWriteTime < DateTime.Now.AddDays(-7);
+        }
+
+        private T DeserializeFileContent<T>(string content, string fileName)
+        {
+            if(fileName.EndsWith("json"))
+            {
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+
+            return this.serializer.Deserialise<T>(content);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Jellyfin.AniDbMetaStructure.Mapping
 
         public string Url => string.Empty;
 
-        public string LocalPath => Path.Combine(this.rootPath, "xem-anidb-anime-list.xml");
+        public string LocalPath => Path.Combine(this.rootPath, "xem-anidb-anime-list.json");
 
         public bool IsGZipped => false;
 
