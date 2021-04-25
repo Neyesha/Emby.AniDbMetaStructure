@@ -17,10 +17,8 @@ namespace Jellyfin.AniDbMetaStructure.EntryPoints
     {
         private readonly AniDbImageProvider imageProvider;
 
-        public ImageProvider(IApplicationHost applicationHost, ILogger logger)
+        public ImageProvider(IApplicationHost applicationHost)
         {
-            logger.LogInformation("Resolving...");
-
             this.imageProvider = DependencyConfiguration.Resolve<AniDbImageProvider>(applicationHost);
         }
 
