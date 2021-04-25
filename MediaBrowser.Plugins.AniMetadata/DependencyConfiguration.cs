@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using Jellyfin.AniDbMetaStructure.AniDb;
 using Jellyfin.AniDbMetaStructure.AniDb.Titles;
@@ -70,7 +71,7 @@ namespace Jellyfin.AniDbMetaStructure
             container.Register<PersonImageProvider>();
             container.Register<PersonProvider>();
             container.Register<SeriesProviderEntryPoint>();
-
+            container.RegisterInstance(new HttpClient());
             container.Register<AniDbImageProvider>();
             container.Register<AniDbPersonImageProvider>();
             container.Register<AniDbPersonProvider>();
