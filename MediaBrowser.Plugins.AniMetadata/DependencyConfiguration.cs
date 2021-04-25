@@ -18,6 +18,7 @@ using Jellyfin.AniDbMetaStructure.Providers.AniDb;
 using Jellyfin.AniDbMetaStructure.SourceDataLoaders;
 using Jellyfin.AniDbMetaStructure.TvDb;
 using MediaBrowser.Common;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SimpleInjector;
 using Xem.Api;
@@ -61,6 +62,8 @@ namespace Jellyfin.AniDbMetaStructure
 
         private static void SetUpAniMetadataDependencies(Container container, IApplicationHost applicationHost)
         {
+            container.RegisterInstance<ILogger>(LoggerFactory.Create((builder) => { }).CreateLogger("AniDbMetaStructure"));
+
             container.Register<ImageProvider>();
             container.Register<PersonImageProvider>();
             container.Register<PersonProvider>();
@@ -100,7 +103,6 @@ namespace Jellyfin.AniDbMetaStructure
             container.Register<IMediaItemProcessor, MediaItemProcessor>();
             container.Register<IMediaItemBuilder, MediaItemBuilder>();
             container.Register<ISources, Sources>();
-            container.RegisterInstance(Plugin.Instance.Logger);
 
             container.Register<IAniDbSource, AniDbSource>();
             container.Register<ITvDbSource, TvDbSource>();

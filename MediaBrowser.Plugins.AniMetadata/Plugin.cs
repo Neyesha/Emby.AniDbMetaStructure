@@ -11,11 +11,10 @@ namespace Jellyfin.AniDbMetaStructure
 {
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, ILogger logger) : base(
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer) : base(
             applicationPaths, xmlSerializer)
         {
             Instance = this;
-            Logger = logger;
         }
 
         public override Guid Id => new Guid("77780029-0ab8-4c7a-ad47-4f0187f13301");
@@ -25,6 +24,7 @@ namespace Jellyfin.AniDbMetaStructure
         public override string Description => "Combines data from AniDb and TvDb to identify anime";
 
         public static Plugin Instance { get; private set; }
+
         public ILogger Logger { get; }
 
         public IEnumerable<PluginPageInfo> GetPages()
@@ -34,7 +34,7 @@ namespace Jellyfin.AniDbMetaStructure
                 new PluginPageInfo
                 {
                     Name = "AniDbMetaStructure",
-                    EmbeddedResourcePath = "Emby.AniDbMetaStructure.Configuration.ConfigPage.html"
+                    EmbeddedResourcePath = "Jellyfin.AniDbMetaStructure.Configuration.ConfigPage.html"
                 }
             };
         }
