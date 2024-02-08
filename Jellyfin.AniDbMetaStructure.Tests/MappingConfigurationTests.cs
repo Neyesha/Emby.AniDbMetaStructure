@@ -33,7 +33,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
 
             mappingConfiguration.GetEpisodeMappings(0, false, false, TitleType.Localized, "en")
                 .Should()
-                .BeEquivalentTo(propertyMappingA, propertyMappingB);
+                .BeEquivalentTo(new[] { propertyMappingA, propertyMappingB });
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
 
             mappingConfiguration.GetSeasonMappings(1, true, TitleType.Localized, "en")
                 .Should()
-                .BeEquivalentTo(propertyMappingA, propertyMappingB);
+                .BeEquivalentTo(new[] { propertyMappingA, propertyMappingB });
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
 
             mappingConfiguration.GetSeriesMappings(1, true, false, TitleType.Localized, "en")
                 .Should()
-                .BeEquivalentTo(propertyMappingA, propertyMappingB);
+                .BeEquivalentTo(new[] { propertyMappingA, propertyMappingB });
         }
     }
 }

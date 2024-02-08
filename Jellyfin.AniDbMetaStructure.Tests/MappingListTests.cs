@@ -103,7 +103,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
             var result = await this.mappingList.GetSeriesMappingsFromTvDb(56, TestProcessResultContext.Instance);
 
             result.IsRight.Should().BeTrue();
-            result.IfRight(r => r.Select(m => m.Ids.AniDbSeriesId).Should().BeEquivalentTo(5));
+            result.IfRight(r => r.Select(m => m.Ids.AniDbSeriesId).Should().BeEquivalentTo(new[] { 5 }));
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
             var result = await this.mappingList.GetSeriesMappingsFromTvDb(56, TestProcessResultContext.Instance);
 
             result.IsRight.Should().BeTrue();
-            result.IfRight(r => r.Select(m => m.Ids.AniDbSeriesId).Should().BeEquivalentTo(12, 42));
+            result.IfRight(r => r.Select(m => m.Ids.AniDbSeriesId).Should().BeEquivalentTo(new[] { 12, 42 }));
         }
 
         [Test]

@@ -82,7 +82,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
             var episodes = await tvDbClient.GetEpisodesAsync(4);
 
             episodes.IsSome.Should().BeTrue();
-            episodes.ValueUnsafe().Should().BeEquivalentTo(episodeDetail);
+            episodes.ValueUnsafe().Should().BeEquivalentTo(new[] { episodeDetail });
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
             var episodes = await tvDbClient.GetEpisodesAsync(4);
 
             episodes.IsSome.Should().BeTrue();
-            episodes.ValueUnsafe().Should().BeEquivalentTo(episode);
+            episodes.ValueUnsafe().Should().BeEquivalentTo(new[] { episode });
         }
 
         [Test]
@@ -235,7 +235,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests
             var episodes = await tvDbClient.GetEpisodesAsync(4);
 
             episodes.IsSome.Should().BeTrue();
-            episodes.ValueUnsafe().Should().BeEquivalentTo(page1EpisodeDetail, page2EpisodeDetail);
+            episodes.ValueUnsafe().Should().BeEquivalentTo(new[] { page1EpisodeDetail, page2EpisodeDetail });
         }
 
         [Test]

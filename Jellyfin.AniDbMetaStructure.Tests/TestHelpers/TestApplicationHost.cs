@@ -2,6 +2,7 @@
 using MediaBrowser.Common;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Model.Serialization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
@@ -50,11 +51,6 @@ namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
             throw new NotImplementedException();
         }
 
-        public IReadOnlyCollection<T> GetExports<T>(CreationDelegate defaultFunc, bool manageLifetime = true)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Assembly> GetApiPluginAssemblies()
         {
             throw new NotImplementedException();
@@ -82,6 +78,16 @@ namespace Jellyfin.AniDbMetaStructure.Tests.TestHelpers
         }
 
         public object CreateInstance(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IReadOnlyCollection<T> GetExports<T>(CreationDelegateFactory defaultFunc, bool manageLifetime = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Init(IServiceCollection serviceCollection)
         {
             throw new NotImplementedException();
         }

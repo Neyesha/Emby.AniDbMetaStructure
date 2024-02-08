@@ -17,7 +17,7 @@ namespace Jellyfin.AniDbMetaStructure
             Instance = this;
         }
 
-        public override Guid Id => new Guid("77780029-0ab8-4c7a-ad47-4f0187f13301");
+        public override Guid Id => new("77780029-0ab8-4c7a-ad47-4f0187f13301");
 
         public override string Name => "AniDbMetaStructure";
 

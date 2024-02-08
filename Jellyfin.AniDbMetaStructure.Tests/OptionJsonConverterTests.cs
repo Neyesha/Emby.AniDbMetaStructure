@@ -87,8 +87,8 @@ namespace Jellyfin.AniDbMetaStructure.Tests
                         },
                         new GetEpisodesRequest.PageLinks(1, 1, Option<int>.None, Option<int>.None)),
                     o => o.Excluding(i =>
-                        i.SelectedMemberInfo.Name == "Value" &&
-                        i.SelectedMemberInfo.DeclaringType == typeof(Option<int>)));
+                        i.Name == "Value" &&
+                        i.DeclaringType == typeof(Option<int>)));
         }
 
         [Test]
