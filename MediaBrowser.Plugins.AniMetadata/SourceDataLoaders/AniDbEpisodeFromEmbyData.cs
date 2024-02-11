@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
-    ///     Loads episode data from AniDb based on the data provided by Emby
+    ///     Loads episode data from AniDb based on the data provided by Jellyfin
     /// </summary>
-    internal class AniDbEpisodeFromEmbyData : IJellyfinSourceDataLoader
+    internal class AniDbEpisodeFromJellyfinData : IJellyfinSourceDataLoader
     {
         private readonly IAniDbEpisodeMatcher aniDbEpisodeMatcher;
         private readonly ISources sources;
         private readonly IMappingList mappingList;
 
-        public AniDbEpisodeFromEmbyData(ISources sources, IAniDbEpisodeMatcher aniDbEpisodeMatcher, IMappingList mappingList)
+        public AniDbEpisodeFromJellyfinData(ISources sources, IAniDbEpisodeMatcher aniDbEpisodeMatcher, IMappingList mappingList)
         {
             this.sources = sources;
             this.aniDbEpisodeMatcher = aniDbEpisodeMatcher;
@@ -33,35 +33,35 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Episode;
         }
 
-        public async Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
+        public async Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData JellyfinItemData)
         {
-            var resultContext = new ProcessResultContext(nameof(AniDbEpisodeFromEmbyData), embyItemData.Identifier.Name,
-                embyItemData.ItemType);
+            var resultContext = new ProcessResultContext(nameof(AniDbEpisodeFromJellyfinData), JellyfinItemData.Identifier.Name,
+                JellyfinItemData.ItemType);
 
-            if (embyItemData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).IsNone)
+            if (JellyfinItemData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).IsNone)
             {
-                var tvDbSeriesId = embyItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb)
+                var tvDbSeriesId = JellyfinItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb)
                     .ToEither(resultContext.Failed("Failed to find TvDb series Id"));
 
-                if (tvDbSeriesId.IsRight && embyItemData.Identifier.ParentIndex.IsSome)
+                if (tvDbSeriesId.IsRight && JellyfinItemData.Identifier.ParentIndex.IsSome)
                 {
-                    var aniDbSeriesId = await tvDbSeriesId.BindAsync(id => MapSeriesDataAsync(id, embyItemData.Identifier.ParentIndex.Single(), resultContext));
+                    var aniDbSeriesId = await tvDbSeriesId.BindAsync(id => MapSeriesDataAsync(id, JellyfinItemData.Identifier.ParentIndex.Single(), resultContext));
                     aniDbSeriesId.IfRight((anidbId) =>
                     {
-                        var updatedParentIds = embyItemData.ParentIds.Concat(new List<JellyfinItemId> { new JellyfinItemId(MediaItemTypes.Series, this.sources.AniDb.Name, anidbId) });
-                        embyItemData = new JellyfinItemData(embyItemData.ItemType, embyItemData.Identifier, embyItemData.ExistingIds, embyItemData.Language, updatedParentIds);
+                        var updatedParentIds = JellyfinItemData.ParentIds.Concat(new List<JellyfinItemId> { new JellyfinItemId(MediaItemTypes.Series, this.sources.AniDb.Name, anidbId) });
+                        JellyfinItemData = new JellyfinItemData(JellyfinItemData.ItemType, JellyfinItemData.Identifier, JellyfinItemData.ExistingIds, JellyfinItemData.Language, updatedParentIds);
                     });
 
                 }
             }
 
-            return await this.sources.AniDb.GetSeriesData(embyItemData, resultContext)
-                .BindAsync(seriesData => GetAniDbEpisodeData(seriesData, embyItemData, resultContext))
+            return await this.sources.AniDb.GetSeriesData(JellyfinItemData, resultContext)
+                .BindAsync(seriesData => GetAniDbEpisodeData(seriesData, JellyfinItemData, resultContext))
                 .BindAsync(episodeData =>
                 {
-                    var title = this.sources.AniDb.SelectTitle(episodeData.Titles, embyItemData.Language, resultContext);
+                    var title = this.sources.AniDb.SelectTitle(episodeData.Titles, JellyfinItemData.Language, resultContext);
 
-                    return title.Map(t => CreateSourceData(episodeData, t, embyItemData.Identifier.ParentIndex.Single()));
+                    return title.Map(t => CreateSourceData(episodeData, t, JellyfinItemData.Identifier.ParentIndex.Single()));
                 });
         }
 
@@ -81,12 +81,12 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
         }
 
         private Either<ProcessFailedResult, AniDbEpisodeData> GetAniDbEpisodeData(AniDbSeriesData aniDbSeriesData,
-            IJellyfinItemData embyItemData,
+            IJellyfinItemData JellyfinItemData,
             ProcessResultContext resultContext)
         {
             return this.aniDbEpisodeMatcher.FindEpisode(aniDbSeriesData.Episodes,
-                    embyItemData.Identifier.ParentIndex,
-                    embyItemData.Identifier.Index, embyItemData.Identifier.Name)
+                    JellyfinItemData.Identifier.ParentIndex,
+                    JellyfinItemData.Identifier.Index, JellyfinItemData.Identifier.Name)
                 .ToEither(resultContext.Failed("Failed to find episode in AniDb"));
         }
 

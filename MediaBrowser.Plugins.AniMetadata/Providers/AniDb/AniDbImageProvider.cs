@@ -48,10 +48,10 @@ namespace Jellyfin.AniDbMetaStructure.Providers.AniDb
         {
             var imageInfos = new List<RemoteImageInfo>();
 
-            var embySeries = GetEmbySeries(item);
+            var JellyfinSeries = GetJellyfinSeries(item);
 
             var aniDbSeries =
-                await embySeries.Match(GetAniDbSeriesAsync, () => Task.FromResult(Option<AniDbSeriesData>.None));
+                await JellyfinSeries.Match(GetAniDbSeriesAsync, () => Task.FromResult(Option<AniDbSeriesData>.None));
 
             aniDbSeries
                 .Match(s =>
@@ -83,14 +83,14 @@ namespace Jellyfin.AniDbMetaStructure.Providers.AniDb
                 .ConfigureAwait(false);
         }
 
-        private Option<Series> GetEmbySeries(BaseItem item)
+        private Option<Series> GetJellyfinSeries(BaseItem item)
         {
             return item as Series ?? (item as Season)?.Series;
         }
 
-        private Task<Option<AniDbSeriesData>> GetAniDbSeriesAsync(Series embySeries)
+        private Task<Option<AniDbSeriesData>> GetAniDbSeriesAsync(Series JellyfinSeries)
         {
-            return this.aniDbClient.GetSeriesAsync(embySeries.ProviderIds.GetOrDefault(SourceNames.AniDb));
+            return this.aniDbClient.GetSeriesAsync(JellyfinSeries.ProviderIds.GetOrDefault(SourceNames.AniDb));
         }
 
         private Option<string> GetImageUrl(string imageFileName)

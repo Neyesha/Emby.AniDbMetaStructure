@@ -22,11 +22,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [SetUp]
         public void Setup()
         {
-            this.embyData = Substitute.For<IJellyfinItemData>();
-            this.embyData.Identifier.Returns(new ItemIdentifier(0, 0, "Name"));
+            this.JellyfinData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinData.Identifier.Returns(new ItemIdentifier(0, 0, "Name"));
 
             this.mediaItem = Substitute.For<IMediaItem>();
-            this.mediaItem.EmbyData.Returns(this.embyData);
+            this.mediaItem.JellyfinData.Returns(this.JellyfinData);
             this.mediaItem.GetDataFromSource(this.aniDbSource).Returns(Option<ISourceData>.Some(this.aniDbSourceData));
             this.mediaItem.ItemType.Returns(MediaItemTypes.Episode);
 
@@ -43,7 +43,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.aniDbSourceData = Substitute.For<ISourceData<AniDbEpisodeData>>();
             this.aniDbSourceData.Id.Returns(Option<int>.Some(3));
 
-            this.embyData.GetParentId(MediaItemTypes.Series, this.aniDbSource).Returns(Option<int>.Some(3));
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.aniDbSource).Returns(Option<int>.Some(3));
 
             this.episodeMapper = Substitute.For<IEpisodeMapper>();
 
@@ -56,7 +56,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         private IMediaItem mediaItem;
         private IAniDbSource aniDbSource;
         private ISourceData<AniDbEpisodeData> aniDbSourceData;
-        private IJellyfinItemData embyData;
+        private IJellyfinItemData JellyfinData;
         private IEpisodeMapper episodeMapper;
 
         private ISeriesMapping SetUpSeriesMapping(int aniDbSeriesId, int tvDbSeriesId)
@@ -76,8 +76,8 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
             seriesData.Id = id;
 
-            this.embyData.GetParentId(MediaItemTypes.Series, this.aniDbSource).Returns(id);
-            this.aniDbSource.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>()).Returns(seriesData);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.aniDbSource).Returns(id);
+            this.aniDbSource.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>()).Returns(seriesData);
 
             return seriesData;
         }
@@ -206,7 +206,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             SetUpAniDbEpisodeData(33);
 
             this.aniDbSource.ClearSubstitute();
-            this.aniDbSource.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
+            this.aniDbSource.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(Left<ProcessFailedResult, AniDbSeriesData>(new ProcessFailedResult(string.Empty, string.Empty,
                     MediaItemTypes.Series,
                     "Failed")));

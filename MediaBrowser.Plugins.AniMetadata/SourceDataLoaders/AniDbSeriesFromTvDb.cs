@@ -30,10 +30,10 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             var IdentifierOnlySourceData = tvDbIdentifierOnlySourceData.Data;
 
             var resultContext = new ProcessResultContext(nameof(AniDbSeriesFromTvDb),
-                mediaItem.EmbyData.Identifier.Name,
+                mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
-            var tvDbSeriesId = mediaItem.EmbyData.GetParentId(MediaItemTypes.Series, this.sources.TvDb)
+            var tvDbSeriesId = mediaItem.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.TvDb)
                 .ToEither(resultContext.Failed("Failed to find TvDb series Id"));
 
             var aniDbSeriesId = tvDbSeriesId.BindAsync(id => MapSeriesDataAsync(id, IdentifierOnlySourceData, resultContext));
@@ -42,9 +42,9 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
                 .BindAsync(id => this.sources.AniDb.GetSeriesData(id, resultContext))
                 .BindAsync(s =>
                 {
-                    var title = this.sources.AniDb.SelectTitle(s.Titles, mediaItem.EmbyData.Language, resultContext);
+                    var title = this.sources.AniDb.SelectTitle(s.Titles, mediaItem.JellyfinData.Language, resultContext);
 
-                    return title.Map(t => CreateSourceData(s, mediaItem.EmbyData, t));
+                    return title.Map(t => CreateSourceData(s, mediaItem.JellyfinData, t));
                 });
         }
 
@@ -63,10 +63,10 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return seriesMapping.MapAsync(sm => sm.Ids.AniDbSeriesId);
         }
 
-        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData embyItemData, string title)
+        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData JellyfinItemData, string title)
         {
             return new SourceData<AniDbSeriesData>(this.sources.AniDb, seriesData.Id,
-                new ItemIdentifier(embyItemData.Identifier.Index, Option<int>.None, title), seriesData);
+                new ItemIdentifier(JellyfinItemData.Identifier.Index, Option<int>.None, title), seriesData);
         }
     }
 }

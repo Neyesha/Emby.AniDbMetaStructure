@@ -25,11 +25,11 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
         public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IMediaItem mediaItem, object sourceData)
         {
             var resultContext = new ProcessResultContext(nameof(TvDbSeasonFromAniDb),
-                mediaItem.EmbyData.Identifier.Name,
+                mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
-            return mediaItem.EmbyData.Identifier.Index
-                .ToEither(resultContext.Failed("No season index provided by Emby"))
+            return mediaItem.JellyfinData.Identifier.Index
+                .ToEither(resultContext.Failed("No season index provided by Jellyfin"))
                 .Map(CreateSourceData)
                 .AsTask();
         }

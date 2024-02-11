@@ -13,22 +13,22 @@ using NUnit.Framework;
 namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 {
     [TestFixture]
-    public class AniDbEpisodeFromEmbyDataTets
+    public class AniDbEpisodeFromJellyfinDataTets
     {
         [SetUp]
         public void Setup()
         {
             this.sources = Substitute.For<ISources>();
 
-            this.embyItemData = Substitute.For<IJellyfinItemData>();
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
-            this.embyItemData.Language.Returns("en");
+            this.JellyfinItemData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
+            this.JellyfinItemData.Language.Returns("en");
 
             var aniDbSource = Substitute.For<IAniDbSource>();
             this.sources.AniDb.Returns(aniDbSource);
 
             this.mediaItem = Substitute.For<IMediaItem>();
-            this.mediaItem.EmbyData.Returns(this.embyItemData);
+            this.mediaItem.JellyfinData.Returns(this.JellyfinItemData);
             this.mediaItem.ItemType.Returns(MediaItemTypes.Episode);
 
             this.aniDbEpisodeMatcher = Substitute.For<IAniDbEpisodeMatcher>();
@@ -56,7 +56,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         private ISources sources;
         private IAniDbEpisodeMatcher aniDbEpisodeMatcher;
         private IMediaItem mediaItem;
-        private IJellyfinItemData embyItemData;
+        private IJellyfinItemData JellyfinItemData;
         private AniDbSeriesData aniDbSeriesData;
         private AniDbEpisodeData aniDbEpisodeData;
         private IMappingList mappingList;
@@ -64,7 +64,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_CorrectItemType_IsTrue()
         {
-            var loader = new AniDbEpisodeFromEmbyData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
+            var loader = new AniDbEpisodeFromJellyfinData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
 
             loader.CanLoadFrom(MediaItemTypes.Episode).Should().BeTrue();
         }
@@ -72,7 +72,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_Null_IsFalse()
         {
-            var loader = new AniDbEpisodeFromEmbyData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
+            var loader = new AniDbEpisodeFromJellyfinData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
 
             loader.CanLoadFrom(null).Should().BeFalse();
         }
@@ -80,7 +80,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_WrongItemType_IsFalse()
         {
-            var loader = new AniDbEpisodeFromEmbyData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
+            var loader = new AniDbEpisodeFromJellyfinData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
 
             loader.CanLoadFrom(MediaItemTypes.Season).Should().BeFalse();
         }
@@ -88,7 +88,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_CreatesSourceData()
         {
-            this.sources.AniDb.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
+            this.sources.AniDb.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(this.aniDbSeriesData);
 
             this.aniDbEpisodeMatcher.FindEpisode(this.aniDbSeriesData.Episodes, 1, 67, "Name")
@@ -97,9 +97,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources.AniDb.SelectTitle(this.aniDbEpisodeData.Titles, "en", Arg.Any<ProcessResultContext>())
                 .Returns("Title");
 
-            var loader = new AniDbEpisodeFromEmbyData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
+            var loader = new AniDbEpisodeFromJellyfinData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(sd => sd.Data.Should().Be(this.aniDbEpisodeData));
@@ -110,12 +110,12 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoFoundEpisode_Fails()
         {
-            this.sources.AniDb.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
+            this.sources.AniDb.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(this.aniDbSeriesData);
 
-            var loader = new AniDbEpisodeFromEmbyData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
+            var loader = new AniDbEpisodeFromJellyfinData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("Failed to find episode in AniDb"));
@@ -124,12 +124,12 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoSeriesData_Fails()
         {
-            this.sources.AniDb.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
+            this.sources.AniDb.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(new ProcessFailedResult(string.Empty, string.Empty, MediaItemTypes.Episode, "FailedSeriesData"));
 
-            var loader = new AniDbEpisodeFromEmbyData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
+            var loader = new AniDbEpisodeFromJellyfinData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("FailedSeriesData"));
@@ -138,7 +138,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoTitle_Fails()
         {
-            this.sources.AniDb.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
+            this.sources.AniDb.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(this.aniDbSeriesData);
 
             this.aniDbEpisodeMatcher.FindEpisode(this.aniDbSeriesData.Episodes, 1, 67, "Name")
@@ -147,9 +147,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources.AniDb.SelectTitle(this.aniDbEpisodeData.Titles, "en", Arg.Any<ProcessResultContext>())
                 .Returns(new ProcessFailedResult(string.Empty, string.Empty, MediaItemTypes.Episode, "FailedTitle"));
 
-            var loader = new AniDbEpisodeFromEmbyData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
+            var loader = new AniDbEpisodeFromJellyfinData(this.sources, this.aniDbEpisodeMatcher, this.mappingList);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("FailedTitle"));

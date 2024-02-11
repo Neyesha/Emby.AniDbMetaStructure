@@ -13,7 +13,7 @@ using static LanguageExt.Prelude;
 
 namespace Jellyfin.AniDbMetaStructure.Process
 {
-    internal class MediaItemType<TEmbyItem> : IMediaItemType<TEmbyItem> where TEmbyItem : BaseItem, new()
+    internal class MediaItemType<TJellyfinItem> : IMediaItemType<TJellyfinItem> where TJellyfinItem : BaseItem, new()
     {
         private readonly string name;
         private readonly Func<IPluginConfiguration, string, IPropertyMappingCollection> propertyMappingsFactory;
@@ -25,19 +25,19 @@ namespace Jellyfin.AniDbMetaStructure.Process
             this.propertyMappingsFactory = propertyMappingsFactory;
         }
 
-        public Either<ProcessFailedResult, IMetadataFoundResult<TEmbyItem>> CreateMetadataFoundResult(
+        public Either<ProcessFailedResult, IMetadataFoundResult<TJellyfinItem>> CreateMetadataFoundResult(
             IPluginConfiguration pluginConfiguration, IMediaItem mediaItem, ILogger logger)
         {
-            var resultContext = new ProcessResultContext("PropertyMapping", mediaItem.EmbyData.Identifier.Name,
+            var resultContext = new ProcessResultContext("PropertyMapping", mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
-            var metadataResult = new MetadataResult<TEmbyItem>
+            var metadataResult = new MetadataResult<TJellyfinItem>
             {
-                Item = new TEmbyItem(),
+                Item = new TJellyfinItem(),
                 HasMetadata = true
             };
 
-            var propertyMappings = this.propertyMappingsFactory(pluginConfiguration, mediaItem.EmbyData.Language);
+            var propertyMappings = this.propertyMappingsFactory(pluginConfiguration, mediaItem.JellyfinData.Language);
             var sourceData = mediaItem.GetAllSourceData().ToList();
 
             var mediaItemMetadata = sourceData.Select(sd => sd.GetData<object>()).Somes();
@@ -46,7 +46,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
 
             metadataResult = UpdateProviderIds(metadataResult, sourceData);
 
-            var mappedMetadataResult = Option<MetadataResult<TEmbyItem>>.Some(metadataResult);
+            var mappedMetadataResult = Option<MetadataResult<TJellyfinItem>>.Some(metadataResult);
 
             return mappedMetadataResult.ToEither(resultContext.Failed("Property mapping returned no data"))
                 .Bind(m => mediaItem.GetDataFromSource(pluginConfiguration.LibraryStructureSource(mediaItem.ItemType))
@@ -54,14 +54,14 @@ namespace Jellyfin.AniDbMetaStructure.Process
                     .Bind(sd => SetIdentity(sd, m, propertyMappings, pluginConfiguration.LibraryStructureSource(mediaItem.ItemType).Name,
                         resultContext)))
                 .Match(r => string.IsNullOrWhiteSpace(r.Item.Name)
-                        ? Left<ProcessFailedResult, MetadataResult<TEmbyItem>>(
+                        ? Left<ProcessFailedResult, MetadataResult<TJellyfinItem>>(
                             resultContext.Failed("Property mapping failed for the Name property"))
-                        : Right<ProcessFailedResult, MetadataResult<TEmbyItem>>(r),
+                        : Right<ProcessFailedResult, MetadataResult<TJellyfinItem>>(r),
                     failure => failure)
-                .Map(r => (IMetadataFoundResult<TEmbyItem>)new MetadataFoundResult<TEmbyItem>(mediaItem, r));
+                .Map(r => (IMetadataFoundResult<TJellyfinItem>)new MetadataFoundResult<TJellyfinItem>(mediaItem, r));
         }
 
-        private MetadataResult<TEmbyItem> UpdateProviderIds(MetadataResult<TEmbyItem> metadataResult,
+        private MetadataResult<TJellyfinItem> UpdateProviderIds(MetadataResult<TJellyfinItem> metadataResult,
             IEnumerable<ISourceData> sourceData)
         {
             return sourceData
@@ -86,18 +86,18 @@ namespace Jellyfin.AniDbMetaStructure.Process
                 });
         }
 
-        private Either<ProcessFailedResult, MetadataResult<TEmbyItem>> SetIdentity(ISourceData librarySourceData,
-            MetadataResult<TEmbyItem> target, IPropertyMappingCollection propertyMappings,
+        private Either<ProcessFailedResult, MetadataResult<TJellyfinItem>> SetIdentity(ISourceData librarySourceData,
+            MetadataResult<TJellyfinItem> target, IPropertyMappingCollection propertyMappings,
             SourceName librarySourceName, ProcessResultContext resultContext)
         {
             return SetIndexes(librarySourceData, target)
                 .Bind(r => SetName(librarySourceData.Data, r, propertyMappings, librarySourceName, resultContext));
         }
 
-        private Either<ProcessFailedResult, MetadataResult<TEmbyItem>> SetIndexes(ISourceData librarySourceData,
-            MetadataResult<TEmbyItem> target)
+        private Either<ProcessFailedResult, MetadataResult<TJellyfinItem>> SetIndexes(ISourceData librarySourceData,
+            MetadataResult<TJellyfinItem> target)
         {
-            return Right<ProcessFailedResult, MetadataResult<TEmbyItem>>(target)
+            return Right<ProcessFailedResult, MetadataResult<TJellyfinItem>>(target)
                 .Map(r => librarySourceData.Identifier.Index
                     .Map(index =>
                     {
@@ -111,8 +111,8 @@ namespace Jellyfin.AniDbMetaStructure.Process
                     }, () => r2), () => r));
         }
 
-        private Either<ProcessFailedResult, MetadataResult<TEmbyItem>> SetName(object source,
-            MetadataResult<TEmbyItem> target, IPropertyMappingCollection propertyMappings,
+        private Either<ProcessFailedResult, MetadataResult<TJellyfinItem>> SetName(object source,
+            MetadataResult<TJellyfinItem> target, IPropertyMappingCollection propertyMappings,
             SourceName librarySourceName, ProcessResultContext resultContext)
         {
             return Option<IPropertyMapping>.Some(propertyMappings.FirstOrDefault(m =>

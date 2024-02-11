@@ -23,15 +23,15 @@ namespace Jellyfin.AniDbMetaStructure.Process
             this.logger = logger;
         }
 
-        public Task<Either<ProcessFailedResult, IMetadataFoundResult<TEmbyItem>>> GetResultAsync<TEmbyItem>(
-            ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType, IEnumerable<JellyfinItemId> parentIds)
-            where TEmbyItem : BaseItem
+        public Task<Either<ProcessFailedResult, IMetadataFoundResult<TJellyfinItem>>> GetResultAsync<TJellyfinItem>(
+            ItemLookupInfo JellyfinInfo, IMediaItemType<TJellyfinItem> itemType, IEnumerable<JellyfinItemId> parentIds)
+            where TJellyfinItem : BaseItem
         {
-            var embyItemData = ToEmbyItemData(embyInfo, itemType, parentIds);
+            var JellyfinItemData = ToJellyfinItemData(JellyfinInfo, itemType, parentIds);
 
-            this.logger.LogDebug($"Finding metadata for {embyItemData}");
+            this.logger.LogDebug($"Finding metadata for {JellyfinItemData}");
 
-            var mediaItem = this.mediaItemBuilder.Identify(embyItemData, itemType);
+            var mediaItem = this.mediaItemBuilder.Identify(JellyfinItemData, itemType);
 
             var fullyRecognisedMediaItem = mediaItem.BindAsync(this.mediaItemBuilder.BuildMediaItem);
 
@@ -40,21 +40,21 @@ namespace Jellyfin.AniDbMetaStructure.Process
                 .MapAsync(r =>
                 {
                     this.logger.LogDebug(
-                        $"Created metadata with provider Ids: {string.Join(", ", r.EmbyMetadataResult.Item.ProviderIds.Select(kvp => $"{kvp.Key}: {kvp.Value}"))}");
+                        $"Created metadata with provider Ids: {string.Join(", ", r.JellyfinMetadataResult.Item.ProviderIds.Select(kvp => $"{kvp.Key}: {kvp.Value}"))}");
                     return r;
                 });
         }
 
-        private JellyfinItemData ToEmbyItemData<TEmbyItem>(ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType,
+        private JellyfinItemData ToJellyfinItemData<TJellyfinItem>(ItemLookupInfo JellyfinInfo, IMediaItemType<TJellyfinItem> itemType,
             IEnumerable<JellyfinItemId> parentIds)
-            where TEmbyItem : BaseItem
+            where TJellyfinItem : BaseItem
         {
-            var existingIds = embyInfo.ProviderIds.Where(v => int.TryParse(v.Value, out _))
+            var existingIds = JellyfinInfo.ProviderIds.Where(v => int.TryParse(v.Value, out _))
                 .ToDictionary(k => k.Key, v => int.Parse(v.Value));
 
             return new JellyfinItemData(itemType,
-                new ItemIdentifier(embyInfo.IndexNumber.ToOption(), embyInfo.ParentIndexNumber.ToOption(),
-                    embyInfo.Name), existingIds, embyInfo.MetadataLanguage, parentIds);
+                new ItemIdentifier(JellyfinInfo.IndexNumber.ToOption(), JellyfinInfo.ParentIndexNumber.ToOption(),
+                    JellyfinInfo.Name), existingIds, JellyfinInfo.MetadataLanguage, parentIds);
         }
     }
 }

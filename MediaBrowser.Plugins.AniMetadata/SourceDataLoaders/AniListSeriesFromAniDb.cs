@@ -42,7 +42,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
         public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IMediaItem mediaItem, object sourceData)
         {
             var resultContext = new ProcessResultContext(nameof(AniListSeriesFromAniDb),
-                mediaItem.EmbyData.Identifier.Name,
+                mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
             var aniDbSeriesData = (ISourceData<AniDbSeriesData>)sourceData;
@@ -68,7 +68,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
         private Either<ProcessFailedResult, ISourceData> CreateSourceDataWithTitle(IMediaItem mediaItem,
             AniListSeriesData seriesData, ProcessResultContext resultContext)
         {
-            return this.sources.AniList.SelectTitle(seriesData.Title, mediaItem.EmbyData.Language, resultContext)
+            return this.sources.AniList.SelectTitle(seriesData.Title, mediaItem.JellyfinData.Language, resultContext)
                 .Map(t => CreateSourceData(seriesData, t));
         }
 

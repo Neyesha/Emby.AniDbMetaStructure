@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
-    ///     Loads series data from AniDb based on the data provided by Emby
+    ///     Loads series data from AniDb based on the data provided by Jellyfin
     /// </summary>
-    internal class AniDbSeriesFromEmbyData : IJellyfinSourceDataLoader
+    internal class AniDbSeriesFromJellyfinData : IJellyfinSourceDataLoader
     {
         private readonly IAniDbClient aniDbClient;
         private readonly ISources sources;
 
-        public AniDbSeriesFromEmbyData(IAniDbClient aniDbClient, ISources sources)
+        public AniDbSeriesFromJellyfinData(IAniDbClient aniDbClient, ISources sources)
         {
             this.aniDbClient = aniDbClient;
             this.sources = sources;
@@ -28,25 +28,25 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Series;
         }
 
-        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
+        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData JellyfinItemData)
         {
-            var resultContext = new ProcessResultContext(nameof(AniDbSeriesFromEmbyData), embyItemData.Identifier.Name,
-                embyItemData.ItemType);
+            var resultContext = new ProcessResultContext(nameof(AniDbSeriesFromJellyfinData), JellyfinItemData.Identifier.Name,
+                JellyfinItemData.ItemType);
 
-            return this.aniDbClient.FindSeriesAsync(embyItemData.Identifier.Name)
+            return this.aniDbClient.FindSeriesAsync(JellyfinItemData.Identifier.Name)
                 .ToEitherAsync(resultContext.Failed("Failed to find series in AniDb"))
                 .BindAsync(s =>
                 {
-                    var title = this.sources.AniDb.SelectTitle(s.Titles, embyItemData.Language, resultContext);
+                    var title = this.sources.AniDb.SelectTitle(s.Titles, JellyfinItemData.Language, resultContext);
 
-                    return title.Map(t => CreateSourceData(s, embyItemData, t));
+                    return title.Map(t => CreateSourceData(s, JellyfinItemData, t));
                 });
         }
 
-        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData embyItemData, string title)
+        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData JellyfinItemData, string title)
         {
             return new SourceData<AniDbSeriesData>(this.sources.AniDb, seriesData.Id,
-                new ItemIdentifier(embyItemData.Identifier.Index, Option<int>.None, title), seriesData);
+                new ItemIdentifier(JellyfinItemData.Identifier.Index, Option<int>.None, title), seriesData);
         }
     }
 }

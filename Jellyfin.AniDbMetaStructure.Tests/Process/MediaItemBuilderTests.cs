@@ -32,7 +32,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
 
         internal static class Data
         {
-            public static JellyfinItemData FileEmbyItemData()
+            public static JellyfinItemData FileJellyfinItemData()
             {
                 return new JellyfinItemData(MediaItemTypes.Series, new ItemIdentifier(1, 2, "name"), null, "en",
                     Enumerable.Empty<JellyfinItemId>());
@@ -75,16 +75,16 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public async Task FileData_UsesFileSourceLoader()
             {
-                var data = Data.FileEmbyItemData();
+                var data = Data.FileJellyfinItemData();
                 var sourceData = Substitute.For<ISourceData>();
                 var source = TestSources.AniDbSource;
                 sourceData.Source.Returns(source);
-                var embySourceDataLoader = Substitute.For<IJellyfinSourceDataLoader>();
-                embySourceDataLoader.LoadFrom(data).Returns(Right<ProcessFailedResult, ISourceData>(sourceData));
+                var JellyfinSourceDataLoader = Substitute.For<IJellyfinSourceDataLoader>();
+                JellyfinSourceDataLoader.LoadFrom(data).Returns(Right<ProcessFailedResult, ISourceData>(sourceData));
 
                 var fileStructureSource = Substitute.For<ISource>();
                 fileStructureSource.GetJellyfinSourceDataLoader(MediaItemTypes.Series)
-                    .Returns(Right<ProcessFailedResult, IJellyfinSourceDataLoader>(embySourceDataLoader));
+                    .Returns(Right<ProcessFailedResult, IJellyfinSourceDataLoader>(JellyfinSourceDataLoader));
 
                 this.PluginConfiguration.FileStructureSource(MediaItemTypes.Series).Returns(fileStructureSource);
 
@@ -92,7 +92,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
 
                 result.IsRight.Should().BeTrue();
                 fileStructureSource.Received(1).GetJellyfinSourceDataLoader(MediaItemTypes.Series);
-                await embySourceDataLoader.Received(1).LoadFrom(data);
+                await JellyfinSourceDataLoader.Received(1).LoadFrom(data);
             }
 
             [Test]
@@ -102,12 +102,12 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
                 var sourceData = Substitute.For<ISourceData>();
                 var source = TestSources.AniDbSource;
                 sourceData.Source.Returns(source);
-                var embySourceDataLoader = Substitute.For<IJellyfinSourceDataLoader>();
-                embySourceDataLoader.LoadFrom(data).Returns(Right<ProcessFailedResult, ISourceData>(sourceData));
+                var JellyfinSourceDataLoader = Substitute.For<IJellyfinSourceDataLoader>();
+                JellyfinSourceDataLoader.LoadFrom(data).Returns(Right<ProcessFailedResult, ISourceData>(sourceData));
 
                 var libraryStructureSource = Substitute.For<ISource>();
                 libraryStructureSource.GetJellyfinSourceDataLoader(MediaItemTypes.Series)
-                    .Returns(Right<ProcessFailedResult, IJellyfinSourceDataLoader>(embySourceDataLoader));
+                    .Returns(Right<ProcessFailedResult, IJellyfinSourceDataLoader>(JellyfinSourceDataLoader));
 
                 this.PluginConfiguration.LibraryStructureSource(MediaItemTypes.Series).Returns(libraryStructureSource);
 
@@ -115,7 +115,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
 
                 result.IsRight.Should().BeTrue();
                 libraryStructureSource.Received(1).GetJellyfinSourceDataLoader(MediaItemTypes.Series);
-                await embySourceDataLoader.Received(1).LoadFrom(data);
+                await JellyfinSourceDataLoader.Received(1).LoadFrom(data);
             }
         }
     }

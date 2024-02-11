@@ -9,22 +9,22 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
 {
     internal class TvDbSource : ITvDbSource
     {
-        private readonly IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders;
+        private readonly IEnumerable<IJellyfinSourceDataLoader> JellyfinSourceDataLoaders;
         private readonly ITvDbClient tvDbClient;
 
-        public TvDbSource(ITvDbClient tvDbClient, IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders)
+        public TvDbSource(ITvDbClient tvDbClient, IEnumerable<IJellyfinSourceDataLoader> JellyfinSourceDataLoaders)
         {
             this.tvDbClient = tvDbClient;
-            this.embySourceDataLoaders = embySourceDataLoaders;
+            this.JellyfinSourceDataLoaders = JellyfinSourceDataLoaders;
         }
 
         public SourceName Name => SourceNames.TvDb;
 
         public Either<ProcessFailedResult, IJellyfinSourceDataLoader> GetJellyfinSourceDataLoader(IMediaItemType mediaItemType)
         {
-            return this.embySourceDataLoaders.Find(l => l.SourceName == this.Name && l.CanLoadFrom(mediaItemType))
+            return this.JellyfinSourceDataLoaders.Find(l => l.SourceName == this.Name && l.CanLoadFrom(mediaItemType))
                 .ToEither(new ProcessFailedResult(this.Name, string.Empty, mediaItemType,
-                    "No Emby source data loader for this source and media item type"));
+                    "No Jellyfin source data loader for this source and media item type"));
         }
 
         public bool ShouldUsePlaceholderSourceData(IMediaItemType mediaItemType)
@@ -32,19 +32,19 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
             return false;
         }
 
-        public Task<Either<ProcessFailedResult, TvDbSeriesData>> GetSeriesData(IJellyfinItemData embyItemData,
+        public Task<Either<ProcessFailedResult, TvDbSeriesData>> GetSeriesData(IJellyfinItemData JellyfinItemData,
             ProcessResultContext resultContext)
         {
             Task<Either<ProcessFailedResult, int>> seriesId;
 
-            if (embyItemData.ItemType == MediaItemTypes.Series)
+            if (JellyfinItemData.ItemType == MediaItemTypes.Series)
             {
-                seriesId = embyItemData.GetExistingId(this.Name)
+                seriesId = JellyfinItemData.GetExistingId(this.Name)
                     .ToEitherAsync(resultContext.Failed("No TvDb Id found on this series"));
             }
             else
             {
-                seriesId = embyItemData.GetParentId(MediaItemTypes.Series, this)
+                seriesId = JellyfinItemData.GetParentId(MediaItemTypes.Series, this)
                     .ToEitherAsync(resultContext.Failed("No TvDb Id found on parent series"));
             }
 

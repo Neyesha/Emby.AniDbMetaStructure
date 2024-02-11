@@ -25,22 +25,22 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
         public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IMediaItem mediaItem, object sourceData)
         {
             var resultContext = new ProcessResultContext(nameof(AniDbSeriesFromAniDbEpisode),
-                mediaItem.EmbyData.Identifier.Name,
+                mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
-            return this.sources.AniDb.GetSeriesData(mediaItem.EmbyData, resultContext)
+            return this.sources.AniDb.GetSeriesData(mediaItem.JellyfinData, resultContext)
                 .BindAsync(s =>
                 {
-                    var title = this.sources.AniDb.SelectTitle(s.Titles, mediaItem.EmbyData.Language, resultContext);
+                    var title = this.sources.AniDb.SelectTitle(s.Titles, mediaItem.JellyfinData.Language, resultContext);
 
-                    return title.Map(t => CreateSourceData(s, mediaItem.EmbyData, t));
+                    return title.Map(t => CreateSourceData(s, mediaItem.JellyfinData, t));
                 });
         }
 
-        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData embyItemData, string title)
+        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData JellyfinItemData, string title)
         {
             return new SourceData<AniDbSeriesData>(this.sources.AniDb.ForAdditionalData(), seriesData.Id,
-                new ItemIdentifier(embyItemData.Identifier.Index, Option<int>.None, title), seriesData);
+                new ItemIdentifier(JellyfinItemData.Identifier.Index, Option<int>.None, title), seriesData);
         }
     }
 }

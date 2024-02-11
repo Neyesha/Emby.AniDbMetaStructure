@@ -4,7 +4,7 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
 
-namespace Jellyfin.AniDbMetaStructure.EmbyExternalIds
+namespace Jellyfin.AniDbMetaStructure.JellyfinExternalIds
 {
     public class AniDbSeriesExternalId : IExternalId
     {

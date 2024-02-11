@@ -14,30 +14,30 @@ namespace Jellyfin.AniDbMetaStructure.Process
         /// <summary>
         ///     Create a new <see cref="MediaItem" />
         /// </summary>
-        /// <param name="embyData">The name of the item as originally provided by Emby</param>
+        /// <param name="JellyfinData">The name of the item as originally provided by Jellyfin</param>
         /// <param name="itemType">The type of the media item</param>
         /// <param name="sourceData">The metadata from the source used to initially identify this media item</param>
-        public MediaItem(IJellyfinItemData embyData, IMediaItemType itemType, ISourceData sourceData)
+        public MediaItem(IJellyfinItemData JellyfinData, IMediaItemType itemType, ISourceData sourceData)
         {
             if (sourceData == null)
             {
                 throw new ArgumentNullException(nameof(sourceData));
             }
 
-            this.EmbyData = embyData ?? throw new ArgumentNullException(nameof(embyData));
+            this.JellyfinData = JellyfinData ?? throw new ArgumentNullException(nameof(JellyfinData));
             this.ItemType = itemType;
 
             this.sourceData = ImmutableDictionary<string, ISourceData>.Empty.Add(sourceData.Source.Name, sourceData);
         }
 
-        private MediaItem(IJellyfinItemData embyData, IMediaItemType itemType, ImmutableDictionary<string, ISourceData> sourceData)
+        private MediaItem(IJellyfinItemData JellyfinData, IMediaItemType itemType, ImmutableDictionary<string, ISourceData> sourceData)
         {
-            this.EmbyData = embyData;
+            this.JellyfinData = JellyfinData;
             this.ItemType = itemType;
             this.sourceData = sourceData;
         }
 
-        public IJellyfinItemData EmbyData { get; }
+        public IJellyfinItemData JellyfinData { get; }
 
         public IMediaItemType ItemType { get; }
 
@@ -55,7 +55,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
             }
 
             return Right<ProcessFailedResult, IMediaItem>(
-                new MediaItem(this.EmbyData, this.ItemType, this.sourceData.Add(sourceData.Source.Name, sourceData)));
+                new MediaItem(this.JellyfinData, this.ItemType, this.sourceData.Add(sourceData.Source.Name, sourceData)));
         }
 
         public IEnumerable<ISourceData> GetAllSourceData()

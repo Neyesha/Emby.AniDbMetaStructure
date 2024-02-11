@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 {
     [TestFixture]
-    public class TvDbSeasonFromEmbyDataTests
+    public class TvDbSeasonFromJellyfinDataTests
     {
         [SetUp]
         public void Setup()
@@ -20,17 +20,17 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources = Substitute.For<ISources>();
             this.sources.TvDb.Returns(tvDbSource);
 
-            this.embyItemData = Substitute.For<IJellyfinItemData>();
-            this.embyItemData.Language.Returns("en");
+            this.JellyfinItemData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinItemData.Language.Returns("en");
         }
 
         private ISources sources;
-        private IJellyfinItemData embyItemData;
+        private IJellyfinItemData JellyfinItemData;
 
         [Test]
         public void CanLoadFrom_CorrectItemType_IsTrue()
         {
-            var loader = new TvDbSeasonFromEmbyData(this.sources);
+            var loader = new TvDbSeasonFromJellyfinData(this.sources);
 
             loader.CanLoadFrom(MediaItemTypes.Season).Should().BeTrue();
         }
@@ -38,7 +38,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_Null_IsFalse()
         {
-            var loader = new TvDbSeasonFromEmbyData(this.sources);
+            var loader = new TvDbSeasonFromJellyfinData(this.sources);
 
             loader.CanLoadFrom(null).Should().BeFalse();
         }
@@ -46,7 +46,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_WrongItemType_IsFalse()
         {
-            var loader = new TvDbSeasonFromEmbyData(this.sources);
+            var loader = new TvDbSeasonFromJellyfinData(this.sources);
 
             loader.CanLoadFrom(MediaItemTypes.Series).Should().BeFalse();
         }
@@ -54,11 +54,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_ReturnsIdentifierOnlySourceData()
         {
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(67, Option<int>.None, "Name"));
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(67, Option<int>.None, "Name"));
 
-            var loader = new TvDbSeasonFromEmbyData(this.sources);
+            var loader = new TvDbSeasonFromJellyfinData(this.sources);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(r => r.Data.Should().Be(r));

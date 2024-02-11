@@ -9,14 +9,14 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
     internal class AniListSource : IAniListSource
     {
         private readonly IAniListNameSelector aniListNameSelector;
-        private readonly IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders;
+        private readonly IEnumerable<IJellyfinSourceDataLoader> JellyfinSourceDataLoaders;
         private readonly ITitlePreferenceConfiguration titlePreferenceConfiguration;
 
         public AniListSource(ITitlePreferenceConfiguration titlePreferenceConfiguration,
-            IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders, IAniListNameSelector aniListNameSelector)
+            IEnumerable<IJellyfinSourceDataLoader> JellyfinSourceDataLoaders, IAniListNameSelector aniListNameSelector)
         {
             this.titlePreferenceConfiguration = titlePreferenceConfiguration;
-            this.embySourceDataLoaders = embySourceDataLoaders;
+            this.JellyfinSourceDataLoaders = JellyfinSourceDataLoaders;
             this.aniListNameSelector = aniListNameSelector;
         }
 
@@ -24,9 +24,9 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
 
         public Either<ProcessFailedResult, IJellyfinSourceDataLoader> GetJellyfinSourceDataLoader(IMediaItemType mediaItemType)
         {
-            return this.embySourceDataLoaders.Find(l => l.SourceName == Name && l.CanLoadFrom(mediaItemType))
+            return this.JellyfinSourceDataLoaders.Find(l => l.SourceName == Name && l.CanLoadFrom(mediaItemType))
                 .ToEither(new ProcessFailedResult(Name, string.Empty, mediaItemType,
-                    "No Emby source data loader for this source and media item type"));
+                    "No Jellyfin source data loader for this source and media item type"));
         }
 
         public bool ShouldUsePlaceholderSourceData(IMediaItemType mediaItemType)

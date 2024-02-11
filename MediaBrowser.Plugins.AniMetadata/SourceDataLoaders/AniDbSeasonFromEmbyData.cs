@@ -6,13 +6,13 @@ using LanguageExt;
 namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
-    ///     Loads season data from AniDb based on the data provided by Emby
+    ///     Loads season data from AniDb based on the data provided by Jellyfin
     /// </summary>
-    internal class AniDbSeasonFromEmbyData : IJellyfinSourceDataLoader
+    internal class AniDbSeasonFromJellyfinData : IJellyfinSourceDataLoader
     {
         private readonly ISources sources;
 
-        public AniDbSeasonFromEmbyData(ISources sources)
+        public AniDbSeasonFromJellyfinData(ISources sources)
         {
             this.sources = sources;
         }
@@ -24,19 +24,19 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Season;
         }
 
-        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
+        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData JellyfinItemData)
         {
-            var resultContext = new ProcessResultContext(nameof(AniDbSeasonFromEmbyData), embyItemData.Identifier.Name,
-                embyItemData.ItemType);
+            var resultContext = new ProcessResultContext(nameof(AniDbSeasonFromJellyfinData), JellyfinItemData.Identifier.Name,
+                JellyfinItemData.ItemType);
 
-            var aniDbSeries = this.sources.AniDb.GetSeriesData(embyItemData, resultContext);
+            var aniDbSeries = this.sources.AniDb.GetSeriesData(JellyfinItemData, resultContext);
 
             return aniDbSeries.BindAsync(series =>
-                    this.sources.AniDb.SelectTitle(series.Titles, embyItemData.Language, resultContext))
-                .MapAsync(seriesTitle => new ItemIdentifier(embyItemData.Identifier.Index.IfNone(1),
-                    embyItemData.Identifier.ParentIndex, seriesTitle))
+                    this.sources.AniDb.SelectTitle(series.Titles, JellyfinItemData.Language, resultContext))
+                .MapAsync(seriesTitle => new ItemIdentifier(JellyfinItemData.Identifier.Index.IfNone(1),
+                    JellyfinItemData.Identifier.ParentIndex, seriesTitle))
                 .MapAsync(itemIdentifier =>
-                    (ISourceData)new IdentifierOnlySourceData(this.sources.AniDb, Option<int>.None, itemIdentifier, embyItemData.ItemType));
+                    (ISourceData)new IdentifierOnlySourceData(this.sources.AniDb, Option<int>.None, itemIdentifier, JellyfinItemData.ItemType));
         }
     }
 }

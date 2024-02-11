@@ -24,18 +24,18 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 
         public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IMediaItem mediaItem, object sourceData)
         {
-            var resultContext = new ProcessResultContext(nameof(TvDbSeriesFromEmbyData),
-                mediaItem.EmbyData.Identifier.Name,
-                mediaItem.EmbyData.ItemType);
+            var resultContext = new ProcessResultContext(nameof(TvDbSeriesFromJellyfinData),
+                mediaItem.JellyfinData.Identifier.Name,
+                mediaItem.JellyfinData.ItemType);
 
-            return this.sources.TvDb.GetSeriesData(mediaItem.EmbyData, resultContext)
-                .MapAsync(s => this.CreateSourceData(s, mediaItem.EmbyData));
+            return this.sources.TvDb.GetSeriesData(mediaItem.JellyfinData, resultContext)
+                .MapAsync(s => this.CreateSourceData(s, mediaItem.JellyfinData));
         }
 
-        private ISourceData CreateSourceData(TvDbSeriesData seriesData, IJellyfinItemData embyItemData)
+        private ISourceData CreateSourceData(TvDbSeriesData seriesData, IJellyfinItemData JellyfinItemData)
         {
             return new SourceData<TvDbSeriesData>(this.sources.TvDb.ForAdditionalData(), seriesData.Id,
-                new ItemIdentifier(embyItemData.Identifier.Index, Option<int>.None, seriesData.SeriesName), seriesData);
+                new ItemIdentifier(JellyfinItemData.Identifier.Index, Option<int>.None, seriesData.SeriesName), seriesData);
         }
     }
 }

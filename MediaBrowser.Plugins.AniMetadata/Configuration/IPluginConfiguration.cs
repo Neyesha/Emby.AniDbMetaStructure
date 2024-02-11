@@ -35,7 +35,7 @@ namespace Jellyfin.AniDbMetaStructure.Configuration
         IPropertyMappingCollection GetSeriesMetadataMapping(string metadataLanguage);
 
         /// <summary>
-        ///     The source to use to structure the Emby library
+        ///     The source to use to structure the Jellyfin library
         /// </summary>
         ISource LibraryStructureSource(IMediaItemType itemType);
     }

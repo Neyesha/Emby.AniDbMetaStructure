@@ -33,10 +33,10 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
         {
             var aniDbEpisodeData = ((ISourceData<AniDbEpisodeData>)sourceData).Data;
 
-            var resultContext = new ProcessResultContext(nameof(TvDbEpisodeFromAniDb), mediaItem.EmbyData.Identifier.Name,
+            var resultContext = new ProcessResultContext(nameof(TvDbEpisodeFromAniDb), mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
-            var aniDbSeriesData = this.sources.AniDb.GetSeriesData(mediaItem.EmbyData, resultContext);
+            var aniDbSeriesData = this.sources.AniDb.GetSeriesData(mediaItem.JellyfinData, resultContext);
 
             var tvDbEpisodeData =
                 aniDbSeriesData.BindAsync(

@@ -13,13 +13,13 @@ using NUnit.Framework;
 namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 {
     [TestFixture]
-    public class AniDbSeriesFromEmbyDataTests
+    public class AniDbSeriesFromJellyfinDataTests
     {
         [SetUp]
         public void Setup()
         {
             this.aniDbSource = Substitute.For<IAniDbSource>();
-            this.aniDbSource.GetSeriesData(this.embyItemData, Arg.Any<ProcessResultContext>())
+            this.aniDbSource.GetSeriesData(this.JellyfinItemData, Arg.Any<ProcessResultContext>())
                 .Returns(x => this.aniDbSeriesData);
 
             this.sources = Substitute.For<ISources>();
@@ -27,23 +27,23 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
             this.aniDbClient = Substitute.For<IAniDbClient>();
 
-            this.embyItemData = Substitute.For<IJellyfinItemData>();
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
-            this.embyItemData.Language.Returns("en");
+            this.JellyfinItemData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
+            this.JellyfinItemData.Language.Returns("en");
 
             this.aniDbSeriesData = new AniDbSeriesData().WithStandardData();
         }
 
         private ISources sources;
         private IAniDbClient aniDbClient;
-        private IJellyfinItemData embyItemData;
+        private IJellyfinItemData JellyfinItemData;
         private AniDbSeriesData aniDbSeriesData;
         private IAniDbSource aniDbSource;
 
         [Test]
         public void CanLoadFrom_CorrectItemType_IsTrue()
         {
-            var loader = new AniDbSeriesFromEmbyData(this.aniDbClient, this.sources);
+            var loader = new AniDbSeriesFromJellyfinData(this.aniDbClient, this.sources);
 
             loader.CanLoadFrom(MediaItemTypes.Series).Should().BeTrue();
         }
@@ -51,7 +51,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_Null_IsFalse()
         {
-            var loader = new AniDbSeriesFromEmbyData(this.aniDbClient, this.sources);
+            var loader = new AniDbSeriesFromJellyfinData(this.aniDbClient, this.sources);
 
             loader.CanLoadFrom(null).Should().BeFalse();
         }
@@ -59,7 +59,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_WrongItemType_IsFalse()
         {
-            var loader = new AniDbSeriesFromEmbyData(this.aniDbClient, this.sources);
+            var loader = new AniDbSeriesFromJellyfinData(this.aniDbClient, this.sources);
 
             loader.CanLoadFrom(MediaItemTypes.Season).Should().BeFalse();
         }
@@ -71,9 +71,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources.AniDb.SelectTitle(this.aniDbSeriesData.Titles, "en", Arg.Any<ProcessResultContext>())
                 .Returns("Title");
 
-            var loader = new AniDbSeriesFromEmbyData(this.aniDbClient, this.sources);
+            var loader = new AniDbSeriesFromJellyfinData(this.aniDbClient, this.sources);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(sd => sd.Data.Should().Be(this.aniDbSeriesData));
@@ -85,9 +85,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoMatchingSeries_Fails()
         {
-            var loader = new AniDbSeriesFromEmbyData(this.aniDbClient, this.sources);
+            var loader = new AniDbSeriesFromJellyfinData(this.aniDbClient, this.sources);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("Failed to find series in AniDb"));
@@ -100,9 +100,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources.AniDb.SelectTitle(this.aniDbSeriesData.Titles, "en", Arg.Any<ProcessResultContext>())
                 .Returns(new ProcessFailedResult(string.Empty, string.Empty, MediaItemTypes.Series, "FailedTitle"));
 
-            var loader = new AniDbSeriesFromEmbyData(this.aniDbClient, this.sources);
+            var loader = new AniDbSeriesFromJellyfinData(this.aniDbClient, this.sources);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("FailedTitle"));

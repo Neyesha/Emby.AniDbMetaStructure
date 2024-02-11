@@ -36,7 +36,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         private AniDbSource aniDbSource;
         private IList<IJellyfinSourceDataLoader> loaders;
 
-        private JellyfinItemData EmbyItemData(string name, int? parentAniDbSeriesId)
+        private JellyfinItemData JellyfinItemData(string name, int? parentAniDbSeriesId)
         {
             var parentIds = new List<JellyfinItemId>();
 
@@ -58,7 +58,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
 
         [Test]
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
-        public void GetEmbySourceDataLoader_MatchingLoader_ReturnsLoader(IMediaItemType mediaItemType)
+        public void GetJellyfinSourceDataLoader_MatchingLoader_ReturnsLoader(IMediaItemType mediaItemType)
         {
             var loader = Substitute.For<IJellyfinSourceDataLoader>();
             loader.SourceName.Returns(SourceNames.AniDb);
@@ -74,7 +74,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
 
         [Test]
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
-        public void GetEmbySourceDataLoader_NoMatchingLoader_ReturnsFailed(IMediaItemType mediaItemType)
+        public void GetJellyfinSourceDataLoader_NoMatchingLoader_ReturnsFailed(IMediaItemType mediaItemType)
         {
             var sourceMismatch = Substitute.For<IJellyfinSourceDataLoader>();
             sourceMismatch.SourceName.Returns(SourceNames.TvDb);
@@ -90,15 +90,15 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
             var result = this.aniDbSource.GetJellyfinSourceDataLoader(mediaItemType);
 
             result.IsLeft.Should().BeTrue();
-            result.IfLeft(f => f.Reason.Should().Be("No Emby source data loader for this source and media item type"));
+            result.IfLeft(f => f.Reason.Should().Be("No Jellyfin source data loader for this source and media item type"));
         }
 
         [Test]
         public async Task GetSeriesData_NoAniDbIdOnParent_ReturnsFailed()
         {
-            var embyItemData = EmbyItemData("Name", null);
+            var jellyfinItemData = JellyfinItemData("Name", null);
 
-            var result = await this.aniDbSource.GetSeriesData(embyItemData, new ProcessResultContext(string.Empty, string.Empty, null));
+            var result = await this.aniDbSource.GetSeriesData(jellyfinItemData, new ProcessResultContext(string.Empty, string.Empty, null));
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("No AniDb Id found on parent series"));
@@ -107,11 +107,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_NoSeriesLoaded_ReturnsFailed()
         {
-            var embyItemData = EmbyItemData("Name", 56);
+            var jellyfinItemData = JellyfinItemData("Name", 56);
 
             this.aniDbClient.GetSeriesAsync(56).Returns(Option<AniDbSeriesData>.None);
 
-            var result = await this.aniDbSource.GetSeriesData(embyItemData, new ProcessResultContext(string.Empty, string.Empty, null));
+            var result = await this.aniDbSource.GetSeriesData(jellyfinItemData, new ProcessResultContext(string.Empty, string.Empty, null));
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("Failed to load parent series with AniDb Id '56'"));
@@ -120,13 +120,13 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_ReturnsSeries()
         {
-            var embyItemData = EmbyItemData("Name", 56);
+            var jellyfinItemData = JellyfinItemData("Name", 56);
 
             var seriesData = new AniDbSeriesData();
 
             this.aniDbClient.GetSeriesAsync(56).Returns(Option<AniDbSeriesData>.Some(seriesData));
 
-            var result = await this.aniDbSource.GetSeriesData(embyItemData, new ProcessResultContext(string.Empty, string.Empty, null));
+            var result = await this.aniDbSource.GetSeriesData(jellyfinItemData, new ProcessResultContext(string.Empty, string.Empty, null));
 
             result.IsRight.Should().BeTrue();
             result.IfRight(r => r.Should().BeSameAs(seriesData));

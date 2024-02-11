@@ -12,15 +12,15 @@ using static LanguageExt.Prelude;
 namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
-    ///     Loads episode data from TvDb based on the data provided by Emby
+    ///     Loads episode data from TvDb based on the data provided by Jellyfin
     /// </summary>
-    internal class TvDbEpisodeFromEmbyData : IJellyfinSourceDataLoader
+    internal class TvDbEpisodeFromJellyfinData : IJellyfinSourceDataLoader
     {
         private readonly ISources sources;
         private readonly ITitleNormaliser titleNormaliser;
         private readonly ITvDbClient tvDbClient;
 
-        public TvDbEpisodeFromEmbyData(ISources sources, ITvDbClient tvDbClient, ITitleNormaliser titleNormaliser)
+        public TvDbEpisodeFromJellyfinData(ISources sources, ITvDbClient tvDbClient, ITitleNormaliser titleNormaliser)
         {
             this.sources = sources;
             this.tvDbClient = tvDbClient;
@@ -34,18 +34,18 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Episode;
         }
 
-        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
+        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData JellyfinItemData)
         {
-            var resultContext = new ProcessResultContext(nameof(TvDbEpisodeFromEmbyData), embyItemData.Identifier.Name,
-                embyItemData.ItemType);
+            var resultContext = new ProcessResultContext(nameof(TvDbEpisodeFromJellyfinData), JellyfinItemData.Identifier.Name,
+                JellyfinItemData.ItemType);
 
-            var seriesId = embyItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb);
+            var seriesId = JellyfinItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb);
 
             return seriesId.ToEitherAsync(resultContext.Failed("No TvDb Id found on parent series"))
                 .BindAsync(id => this.tvDbClient.GetEpisodesAsync(id)
                     .ToEitherAsync(resultContext.Failed($"Failed to load parent series with TvDb Id '{id}'")))
-                .BindAsync(episodes => this.FindEpisode(episodes, embyItemData.Identifier.Name,
-                    embyItemData.Identifier.Index, embyItemData.Identifier.ParentIndex, resultContext))
+                .BindAsync(episodes => this.FindEpisode(episodes, JellyfinItemData.Identifier.Name,
+                    JellyfinItemData.Identifier.Index, JellyfinItemData.Identifier.ParentIndex, resultContext))
                 .MapAsync(this.CreateSourceData);
         }
 

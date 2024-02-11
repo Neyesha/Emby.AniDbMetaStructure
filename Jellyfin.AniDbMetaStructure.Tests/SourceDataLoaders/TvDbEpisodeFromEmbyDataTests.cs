@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 {
     [TestFixture]
-    public class TvDbEpisodeFromEmbyDataTests
+    public class TvDbEpisodeFromJellyfinDataTests
     {
         [SetUp]
         public void Setup()
@@ -24,12 +24,12 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             var tvDbSource = Substitute.For<ITvDbSource>();
             this.sources.TvDb.Returns(tvDbSource);
 
-            this.embyItemData = Substitute.For<IJellyfinItemData>();
-            this.embyItemData.Language.Returns("en");
-            this.embyItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(22);
+            this.JellyfinItemData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinItemData.Language.Returns("en");
+            this.JellyfinItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(22);
 
             this.mediaItem = Substitute.For<IMediaItem>();
-            this.mediaItem.EmbyData.Returns(this.embyItemData);
+            this.mediaItem.JellyfinData.Returns(this.JellyfinItemData);
             this.mediaItem.ItemType.Returns(MediaItemTypes.Episode);
 
             this.tvDbClient = Substitute.For<ITvDbClient>();
@@ -38,14 +38,14 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
         private ISources sources;
         private IMediaItem mediaItem;
-        private IJellyfinItemData embyItemData;
+        private IJellyfinItemData JellyfinItemData;
         private ITvDbClient tvDbClient;
         private ITitleNormaliser titleNormaliser;
 
         [Test]
         public void CanLoadFrom_CorrectItemType_IsTrue()
         {
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
             loader.CanLoadFrom(MediaItemTypes.Episode).Should().BeTrue();
         }
@@ -53,7 +53,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_Null_IsFalse()
         {
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
             loader.CanLoadFrom(null).Should().BeFalse();
         }
@@ -61,7 +61,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public void CanLoadFrom_WrongItemType_IsFalse()
         {
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
             loader.CanLoadFrom(MediaItemTypes.Season).Should().BeFalse();
         }
@@ -69,11 +69,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoSeriesId_Fails()
         {
-            this.embyItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(Option<int>.None);
+            this.JellyfinItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(Option<int>.None);
 
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("No TvDb Id found on parent series"));
@@ -82,11 +82,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_EpisodeLoadFail_Fails()
         {
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(4, 1, "Name"));
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(4, 1, "Name"));
             
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("Failed to load parent series with TvDb Id '22'"));
@@ -95,7 +95,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoMatchingEpisode_Fails()
         {
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(4, 1, "Name"));
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(4, 1, "Name"));
 
             this.tvDbClient.GetEpisodesAsync(22)
                 .Returns(new[]
@@ -104,9 +104,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
                     TvDbTestData.Episode(1, 4, 2, name: "NonMatch2")
                 }.ToList());
 
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("Failed to find TvDb episode"));
@@ -117,7 +117,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         {
             var expected = TvDbTestData.Episode(1, 4, 2, name: "Match");
 
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(4, 2, "Name"));
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(4, 2, "Name"));
 
             this.tvDbClient.GetEpisodesAsync(22)
                 .Returns(new[]
@@ -126,9 +126,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
                     expected
                 }.ToList());
 
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(sd => sd.Data.Should().Be(expected));
@@ -141,7 +141,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         {
             var expected = TvDbTestData.Episode(1, 4, 1, name: "Match");
 
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(4, Option<int>.None, "Name"));
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(4, Option<int>.None, "Name"));
 
             this.tvDbClient.GetEpisodesAsync(22)
                 .Returns(new[]
@@ -150,9 +150,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
                     expected
                 }.ToList());
 
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(sd => sd.Data.Should().Be(expected));
@@ -165,7 +165,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         {
             var expected = TvDbTestData.Episode(1, 6, 1, name: "Match");
 
-            this.embyItemData.Identifier.Returns(new ItemIdentifier(4, 2, "Match"));
+            this.JellyfinItemData.Identifier.Returns(new ItemIdentifier(4, 2, "Match"));
 
             this.tvDbClient.GetEpisodesAsync(22)
                 .Returns(new[]
@@ -174,9 +174,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
                     expected
                 }.ToList());
 
-            var loader = new TvDbEpisodeFromEmbyData(this.sources, this.tvDbClient, this.titleNormaliser);
+            var loader = new TvDbEpisodeFromJellyfinData(this.sources, this.tvDbClient, this.titleNormaliser);
 
-            var result = await loader.LoadFrom(this.embyItemData);
+            var result = await loader.LoadFrom(this.JellyfinItemData);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(sd => sd.Data.Should().Be(expected));

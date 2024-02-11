@@ -3,11 +3,11 @@ using MediaBrowser.Controller.Providers;
 
 namespace Jellyfin.AniDbMetaStructure.Process
 {
-    internal class MetadataFoundResult<TEmbyItem> : IMetadataFoundResult<TEmbyItem> where TEmbyItem : BaseItem
+    internal class MetadataFoundResult<TJellyfinItem> : IMetadataFoundResult<TJellyfinItem> where TJellyfinItem : BaseItem
     {
-        public MetadataFoundResult(IMediaItem mediaItem, MetadataResult<TEmbyItem> metadataResult)
+        public MetadataFoundResult(IMediaItem mediaItem, MetadataResult<TJellyfinItem> metadataResult)
         {
-            this.EmbyMetadataResult = metadataResult;
+            this.JellyfinMetadataResult = metadataResult;
             this.MediaItem = mediaItem;
         }
 
@@ -17,8 +17,8 @@ namespace Jellyfin.AniDbMetaStructure.Process
         public IMediaItem MediaItem { get; }
 
         /// <summary>
-        ///     The result that can be passed back to Emby cast to the expected type
+        ///     The result that can be passed back to Jellyfin cast to the expected type
         /// </summary>
-        public MetadataResult<TEmbyItem> EmbyMetadataResult { get; }
+        public MetadataResult<TJellyfinItem> JellyfinMetadataResult { get; }
     }
 }

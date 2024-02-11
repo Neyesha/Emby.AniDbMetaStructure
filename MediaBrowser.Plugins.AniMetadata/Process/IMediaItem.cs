@@ -6,9 +6,9 @@ namespace Jellyfin.AniDbMetaStructure.Process
     internal interface IMediaItem
     {
         /// <summary>
-        ///     The data for this item supplied by Emby at the start of the process
+        ///     The data for this item supplied by Jellyfin at the start of the process
         /// </summary>
-        IJellyfinItemData EmbyData { get; }
+        IJellyfinItemData JellyfinData { get; }
         
         IMediaItemType ItemType { get; }
 

@@ -21,7 +21,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         private IEpisodeMapper episodeMapper;
         private ISources sources;
         private IMappingList mappingList;
-        private IJellyfinItemData embyData;
+        private IJellyfinItemData JellyfinData;
         private IMediaItem mediaItem;
         private ISourceData<TvDbEpisodeData> tvDbSourceData;
         private ProcessFailedResult noMappingResult;
@@ -33,9 +33,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources = Substitute.For<ISources>();
             this.mappingList = Substitute.For<IMappingList>();
 
-            this.embyData = Substitute.For<IJellyfinItemData>();
-            this.embyData.Identifier.Returns(new ItemIdentifier(67, 53, "Name"));
-            this.embyData.Language.Returns("en");
+            this.JellyfinData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinData.Identifier.Returns(new ItemIdentifier(67, 53, "Name"));
+            this.JellyfinData.Language.Returns("en");
 
             var aniDbSource = Substitute.For<IAniDbSource>();
             this.sources.AniDb.Returns(aniDbSource);
@@ -46,7 +46,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.tvDbSourceData = Substitute.For<ISourceData<TvDbEpisodeData>>();
 
             this.mediaItem = Substitute.For<IMediaItem>();
-            this.mediaItem.EmbyData.Returns(this.embyData);
+            this.mediaItem.JellyfinData.Returns(this.JellyfinData);
             this.mediaItem.ItemType.Returns(MediaItemTypes.Episode);
 
             this.SetUpTvDbEpisodeData(56, 67, 53);
@@ -60,8 +60,8 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         {
             var seriesData = TvDbTestData.Series(id);
             
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(id);
-            this.sources.TvDb.GetSeriesData(this.embyData, Arg.Any<ProcessResultContext>()).Returns(seriesData);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(id);
+            this.sources.TvDb.GetSeriesData(this.JellyfinData, Arg.Any<ProcessResultContext>()).Returns(seriesData);
 
             return seriesData;
         }
@@ -70,7 +70,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         {
             var episodeData = TvDbTestData.Episode(id, tvDbEpisodeIndex, tvDbSeasonIndex);
 
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(id);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(id);
             this.tvDbSourceData.Data.Returns(episodeData);
 
             return episodeData;
@@ -139,7 +139,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoTvDbSeriesData_Fails()
         {
-            this.sources.TvDb.GetSeriesData(this.embyData, Arg.Any<ProcessResultContext>())
+            this.sources.TvDb.GetSeriesData(this.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(new ProcessFailedResult(string.Empty, string.Empty, MediaItemTypes.Episode, "Failed"));
 
             var loader = new AniDbEpisodeFromTvDb(this.sources, this.mappingList, this.episodeMapper);
@@ -167,7 +167,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         public async Task LoadFrom_NoSeriesMapping_Fails()
         {
             this.SetUpTvDbSeriesData(53);
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
 
             var loader = new AniDbEpisodeFromTvDb(this.sources, this.mappingList, this.episodeMapper);
 
@@ -181,7 +181,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         public async Task LoadFrom_NoMatchingSeriesMappings_Fails()
         {
             this.SetUpTvDbSeriesData(53);
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
 
             var seriesMappings = new[]
             {
@@ -202,7 +202,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         public async Task LoadFrom_MultipleSeriesMappings_Fails()
         {
             this.SetUpTvDbSeriesData(53);
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
 
             var seriesMappings = new[]
             {
@@ -224,7 +224,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         public async Task LoadFrom_NoCorrespondingAniDbEpisode_Fails()
         {
             this.SetUpTvDbSeriesData(53);
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
 
             var seriesMapping = this.CreateSeriesMapping(53, 19);
 
@@ -245,7 +245,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         public async Task LoadFrom_NoSelectableTitle_Fails()
         {
             this.SetUpTvDbSeriesData(53);
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
 
             var seriesMapping = this.CreateSeriesMapping(53, 19);
 
@@ -271,7 +271,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         public async Task LoadFrom_ReturnsSourceDataWithSelectedTitle()
         {
             this.SetUpTvDbSeriesData(53);
-            this.embyData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.AniDb).Returns(19);
 
             var seriesMapping = this.CreateSeriesMapping(53, 19);
 

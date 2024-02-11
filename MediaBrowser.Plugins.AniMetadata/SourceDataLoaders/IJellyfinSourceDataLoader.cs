@@ -11,6 +11,6 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 
         bool CanLoadFrom(IMediaItemType mediaItemType);
 
-        Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData);
+        Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData JellyfinItemData);
     }
 }

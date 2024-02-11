@@ -7,13 +7,13 @@ using static LanguageExt.Prelude;
 namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
     /// <summary>
-    ///     Loads season data from TvDb based on the data provided by Emby
+    ///     Loads season data from TvDb based on the data provided by Jellyfin
     /// </summary>
-    internal class TvDbSeasonFromEmbyData : IJellyfinSourceDataLoader
+    internal class TvDbSeasonFromJellyfinData : IJellyfinSourceDataLoader
     {
         private readonly ISources sources;
 
-        public TvDbSeasonFromEmbyData(ISources sources)
+        public TvDbSeasonFromJellyfinData(ISources sources)
         {
             this.sources = sources;
         }
@@ -25,12 +25,12 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Season;
         }
 
-        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
+        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData JellyfinItemData)
         {
-            var seasonIdentifier = embyItemData.Identifier;
+            var seasonIdentifier = JellyfinItemData.Identifier;
 
             return Right<ProcessFailedResult, ISourceData>(new IdentifierOnlySourceData(this.sources.TvDb, Option<int>.None,
-                    seasonIdentifier, embyItemData.ItemType))
+                    seasonIdentifier, JellyfinItemData.ItemType))
                 .AsTask();
         }
     }

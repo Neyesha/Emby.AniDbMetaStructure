@@ -66,7 +66,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
             [TestCase("Exclude", "excLude", true)]
             [TestCase("Exclude", "Exclude1", false)]
             [TestCase("Exclude1", "Exclude", false)]
-            public async Task EmbyTitleInExcludeList_LogsSkip(string name, string excludedName,
+            public async Task JellyfinTitleInExcludeList_LogsSkip(string name, string excludedName,
                 bool isExcluded)
             {
                 this.seriesInfo.Name = name;
@@ -90,7 +90,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
             [TestCase("Exclude", "excLude", true)]
             [TestCase("Exclude", "Exclude1", false)]
             [TestCase("Exclude1", "Exclude", false)]
-            public async Task EmbyTitleInExcludeList_ReturnsNoMetadata(string name, string excludedName,
+            public async Task JellyfinTitleInExcludeList_ReturnsNoMetadata(string name, string excludedName,
                 bool isExcluded)
             {
                 var metadataResult = new MetadataResult<Series>

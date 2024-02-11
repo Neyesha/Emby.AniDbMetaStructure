@@ -24,16 +24,16 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources = Substitute.For<ISources>();
             this.sources.TvDb.Returns(this.tvDbSource);
 
-            var embyItemData = Substitute.For<IJellyfinItemData>();
-            embyItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
-            embyItemData.Language.Returns("en");
+            var JellyfinItemData = Substitute.For<IJellyfinItemData>();
+            JellyfinItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
+            JellyfinItemData.Language.Returns("en");
 
             this.mediaItem = Substitute.For<IMediaItem>();
-            this.mediaItem.EmbyData.Returns(embyItemData);
+            this.mediaItem.JellyfinData.Returns(JellyfinItemData);
 
             this.tvDbSeriesData = TvDbTestData.Series(3, "Title");
 
-            this.tvDbSource.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
+            this.tvDbSource.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(this.tvDbSeriesData);
         }
 
@@ -87,7 +87,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [Test]
         public async Task LoadFrom_NoMatchingSeries_Fails()
         {
-            this.tvDbSource.GetSeriesData(this.mediaItem.EmbyData, Arg.Any<ProcessResultContext>())
+            this.tvDbSource.GetSeriesData(this.mediaItem.JellyfinData, Arg.Any<ProcessResultContext>())
                 .Returns(Left<ProcessFailedResult, TvDbSeriesData>(new ProcessFailedResult(string.Empty, string.Empty,
                     MediaItemTypes.Series, "Failed to find series in TvDb")));
 

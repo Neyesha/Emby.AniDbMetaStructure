@@ -33,21 +33,21 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
         {
             var tvDbSourceData = (ISourceData<TvDbEpisodeData>)sourceData;
 
-            var resultContext = new ProcessResultContext(nameof(AniDbEpisodeFromTvDb), mediaItem.EmbyData.Identifier.Name,
+            var resultContext = new ProcessResultContext(nameof(AniDbEpisodeFromTvDb), mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
-            var tvDbSeriesData = this.sources.TvDb.GetSeriesData(mediaItem.EmbyData, resultContext);
+            var tvDbSeriesData = this.sources.TvDb.GetSeriesData(mediaItem.JellyfinData, resultContext);
 
             var tvDbEpisodeData = tvDbSourceData.Data;
 
-            var aniDbSeriesId = mediaItem.EmbyData.GetParentId(MediaItemTypes.Series, this.sources.AniDb)
+            var aniDbSeriesId = mediaItem.JellyfinData.GetParentId(MediaItemTypes.Series, this.sources.AniDb)
                 .ToEither(resultContext.Failed("Failed to find AniDb series Id"));
 
             var aniDbEpisodeData = tvDbSeriesData.BindAsync(seriesData =>
                 aniDbSeriesId.BindAsync(id => MapEpisodeDataAsync(id, seriesData, tvDbEpisodeData, resultContext)));
 
             return aniDbEpisodeData.BindAsync(episodeData =>
-                this.sources.AniDb.SelectTitle(episodeData.Titles, mediaItem.EmbyData.Language, resultContext)
+                this.sources.AniDb.SelectTitle(episodeData.Titles, mediaItem.JellyfinData.Language, resultContext)
                     .Map(t => CreateSourceData(episodeData, t)));
         }
 

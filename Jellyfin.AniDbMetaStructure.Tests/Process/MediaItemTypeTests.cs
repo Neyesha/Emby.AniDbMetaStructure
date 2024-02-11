@@ -36,8 +36,8 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
 
             this.PluginConfiguration = Substitute.For<IPluginConfiguration>();
 
-            var embyItemData = Substitute.For<IJellyfinItemData>();
-            embyItemData.Language.Returns("en");
+            var JellyfinItemData = Substitute.For<IJellyfinItemData>();
+            JellyfinItemData.Language.Returns("en");
 
             this.Sources = new TestSources();
             var aniDbSourceData = new SourceData<AniDbSeriesData>(this.Sources.AniDb, 33, new ItemIdentifier(33, 1, "Name"),
@@ -46,7 +46,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             this.MediaItem = Substitute.For<IMediaItem>();
             this.MediaItem.GetAllSourceData().Returns(new ISourceData[] { aniDbSourceData });
             this.MediaItem.GetDataFromSource(null).ReturnsForAnyArgs(aniDbSourceData);
-            this.MediaItem.EmbyData.Returns(embyItemData);
+            this.MediaItem.JellyfinData.Returns(JellyfinItemData);
 
             this.MediaItemType = new MediaItemType<Series>("Series", (c, l) => this.PropertyMappings);
         }
@@ -94,8 +94,8 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
                 result.IsRight.Should().BeTrue();
                 result.IfRight(r =>
                 {
-                    r.EmbyMetadataResult.Item.ProviderIds.Should().ContainKey("SourceName");
-                    r.EmbyMetadataResult.Item.ProviderIds.Should().ContainValue("3");
+                    r.JellyfinMetadataResult.Item.ProviderIds.Should().ContainKey("SourceName");
+                    r.JellyfinMetadataResult.Item.ProviderIds.Should().ContainValue("3");
                 });
             }
 
@@ -141,7 +141,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
                 var result = this.MediaItemType.CreateMetadataFoundResult(this.PluginConfiguration, this.MediaItem, new ConsoleLogger());
 
                 result.IsRight.Should().BeTrue();
-                result.IfRight(r => r.EmbyMetadataResult.HasMetadata.Should().BeTrue());
+                result.IfRight(r => r.JellyfinMetadataResult.HasMetadata.Should().BeTrue());
             }
 
             [Test]
@@ -215,8 +215,8 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
                 result.IsRight.Should().BeTrue();
                 result.IfRight(r =>
                 {
-                    r.EmbyMetadataResult.Item.ProviderIds.Should().NotContainKey("SourceName");
-                    r.EmbyMetadataResult.Item.ProviderIds.Should().NotContainValue("3");
+                    r.JellyfinMetadataResult.Item.ProviderIds.Should().NotContainKey("SourceName");
+                    r.JellyfinMetadataResult.Item.ProviderIds.Should().NotContainValue("3");
                 });
             }
         }

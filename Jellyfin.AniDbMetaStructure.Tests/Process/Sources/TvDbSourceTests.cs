@@ -30,7 +30,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         private TvDbSource tvDbSource;
         private IList<IJellyfinSourceDataLoader> loaders;
 
-        private JellyfinItemData EmbyItemData(string name, int? parentTvDbSeriesId)
+        private JellyfinItemData JellyfinItemData(string name, int? parentTvDbSeriesId)
         {
             var parentIds = new List<JellyfinItemId>();
 
@@ -44,7 +44,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
                 null, "en", parentIds);
         }
 
-        private JellyfinItemData SeriesEmbyItemData(string name, int? tvDbSeriesId)
+        private JellyfinItemData SeriesJellyfinItemData(string name, int? tvDbSeriesId)
         {
             var existingIds = new Dictionary<string, int>();
 
@@ -66,7 +66,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
 
         [Test]
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
-        public void GetEmbySourceDataLoader_MatchingLoader_ReturnsLoader(IMediaItemType mediaItemType)
+        public void GetJellyfinSourceDataLoader_MatchingLoader_ReturnsLoader(IMediaItemType mediaItemType)
         {
             var loader = Substitute.For<IJellyfinSourceDataLoader>();
             loader.SourceName.Returns(SourceNames.TvDb);
@@ -82,7 +82,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
 
         [Test]
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
-        public void GetEmbySourceDataLoader_NoMatchingLoader_ReturnsFailed(IMediaItemType mediaItemType)
+        public void GetJellyfinSourceDataLoader_NoMatchingLoader_ReturnsFailed(IMediaItemType mediaItemType)
         {
             var sourceMismatch = Substitute.For<IJellyfinSourceDataLoader>();
             sourceMismatch.SourceName.Returns(SourceNames.AniDb);
@@ -98,15 +98,15 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
             var result = this.tvDbSource.GetJellyfinSourceDataLoader(mediaItemType);
 
             result.IsLeft.Should().BeTrue();
-            result.IfLeft(f => f.Reason.Should().Be("No Emby source data loader for this source and media item type"));
+            result.IfLeft(f => f.Reason.Should().Be("No Jellyfin source data loader for this source and media item type"));
         }
 
         [Test]
         public async Task GetSeriesData_SeriesMediaItem_NoExistingId_ReturnsFailed()
         {
-            var embyItemData = SeriesEmbyItemData("Name", null);
+            var JellyfinItemData = SeriesJellyfinItemData("Name", null);
 
-            var result = await this.tvDbSource.GetSeriesData(embyItemData, TestProcessResultContext.Instance);
+            var result = await this.tvDbSource.GetSeriesData(JellyfinItemData, TestProcessResultContext.Instance);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("No TvDb Id found on this series"));
@@ -115,11 +115,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_SeriesMediaItem_NoSeriesLoaded_ReturnsFailed()
         {
-            var embyItemData = SeriesEmbyItemData("Name", 56);
+            var JellyfinItemData = SeriesJellyfinItemData("Name", 56);
 
             this.tvDbClient.GetSeriesAsync(56).Returns(Option<TvDbSeriesData>.None);
 
-            var result = await this.tvDbSource.GetSeriesData(embyItemData, TestProcessResultContext.Instance);
+            var result = await this.tvDbSource.GetSeriesData(JellyfinItemData, TestProcessResultContext.Instance);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("Failed to load parent series with TvDb Id '56'"));
@@ -128,9 +128,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_NoTvDbIdOnParent_ReturnsFailed()
         {
-            var embyItemData = EmbyItemData("Name", null);
+            var jellyfinItemData = JellyfinItemData("Name", null);
 
-            var result = await this.tvDbSource.GetSeriesData(embyItemData, TestProcessResultContext.Instance);
+            var result = await this.tvDbSource.GetSeriesData(jellyfinItemData, TestProcessResultContext.Instance);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("No TvDb Id found on parent series"));
@@ -139,11 +139,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_NoSeriesLoaded_ReturnsFailed()
         {
-            var embyItemData = EmbyItemData("Name", 56);
+            var jellyfinItemData = JellyfinItemData("Name", 56);
 
             this.tvDbClient.GetSeriesAsync(56).Returns(Option<TvDbSeriesData>.None);
 
-            var result = await this.tvDbSource.GetSeriesData(embyItemData, TestProcessResultContext.Instance);
+            var result = await this.tvDbSource.GetSeriesData(jellyfinItemData, TestProcessResultContext.Instance);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("Failed to load parent series with TvDb Id '56'"));
@@ -152,13 +152,13 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_SeriesMediaItem_ReturnsSeries()
         {
-            var embyItemData = SeriesEmbyItemData("Name", 56);
+            var JellyfinItemData = SeriesJellyfinItemData("Name", 56);
 
             var seriesData = TvDbTestData.Series(56, "Name");
 
             this.tvDbClient.GetSeriesAsync(56).Returns(Option<TvDbSeriesData>.Some(seriesData));
 
-            var result = await this.tvDbSource.GetSeriesData(embyItemData, TestProcessResultContext.Instance);
+            var result = await this.tvDbSource.GetSeriesData(JellyfinItemData, TestProcessResultContext.Instance);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(r => r.Should().BeSameAs(seriesData));
@@ -167,13 +167,13 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [Test]
         public async Task GetSeriesData_ReturnsSeries()
         {
-            var embyItemData = EmbyItemData("Name", 56);
+            var jellyfinItemData = JellyfinItemData("Name", 56);
 
             var seriesData = TvDbTestData.Series(56, "Name");
 
             this.tvDbClient.GetSeriesAsync(56).Returns(Option<TvDbSeriesData>.Some(seriesData));
 
-            var result = await this.tvDbSource.GetSeriesData(embyItemData, TestProcessResultContext.Instance);
+            var result = await this.tvDbSource.GetSeriesData(jellyfinItemData, TestProcessResultContext.Instance);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(r => r.Should().BeSameAs(seriesData));

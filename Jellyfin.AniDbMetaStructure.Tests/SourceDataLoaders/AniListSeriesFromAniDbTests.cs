@@ -32,12 +32,12 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.titleNormaliser = Substitute.For<ITitleNormaliser>();
             this.titleNormaliser.GetNormalisedTitle(Arg.Any<string>()).Returns(x => $"Normalised{x.Arg<string>()}");
 
-            this.embyData = Substitute.For<IJellyfinItemData>();
-            this.embyData.Identifier.Returns(new ItemIdentifier(0, 0, "Name"));
-            this.embyData.Language.Returns("en");
+            this.JellyfinData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinData.Identifier.Returns(new ItemIdentifier(0, 0, "Name"));
+            this.JellyfinData.Language.Returns("en");
 
             this.mediaItem = Substitute.For<IMediaItem>();
-            this.mediaItem.EmbyData.Returns(this.embyData);
+            this.mediaItem.JellyfinData.Returns(this.JellyfinData);
             this.mediaItem.ItemType.Returns(MediaItemTypes.Series);
 
             this.aniDbTitles = new ItemTitleData[] { };
@@ -58,7 +58,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         private ITitleNormaliser titleNormaliser;
         private AniListSeriesFromAniDb loader;
         private IMediaItem mediaItem;
-        private IJellyfinItemData embyData;
+        private IJellyfinItemData JellyfinData;
         private ISourceData<AniDbSeriesData> aniDbSourceData;
         private ItemTitleData[] aniDbTitles;
         private IAnilistConfiguration aniListConfiguration;

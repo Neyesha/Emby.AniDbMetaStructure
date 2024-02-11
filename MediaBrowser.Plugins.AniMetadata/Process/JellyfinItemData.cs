@@ -23,7 +23,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
         public IMediaItemType ItemType { get; }
 
         /// <summary>
-        ///     The identifier provided by Emby
+        ///     The identifier provided by Jellyfin
         /// </summary>
         public IItemIdentifier Identifier { get; }
 
@@ -34,12 +34,12 @@ namespace Jellyfin.AniDbMetaStructure.Process
         public IEnumerable<JellyfinItemId> ParentIds { get; }
 
         /// <summary>
-        ///     True if this data came from the file system rather than the Emby library
+        ///     True if this data came from the file system rather than the Jellyfin library
         /// </summary>
         public bool IsFileData => !this.ExistingIds.Any();
 
         /// <summary>
-        ///     Get the id that already exists in Emby for a particular source
+        ///     Get the id that already exists in Jellyfin for a particular source
         /// </summary>
         public Option<int> GetExistingId(string sourceName)
         {

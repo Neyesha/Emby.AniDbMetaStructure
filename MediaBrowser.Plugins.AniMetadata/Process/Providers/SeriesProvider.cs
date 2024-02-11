@@ -61,14 +61,14 @@ namespace Jellyfin.AniDbMetaStructure.Process.Providers
                     return result.Map(either =>
                         either.Match(r =>
                             {
-                                this.logger.LogInformation($"Found data for series '{info.Name}': '{r.EmbyMetadataResult.Item.Name}'");
+                                this.logger.LogInformation($"Found data for series '{info.Name}': '{r.JellyfinMetadataResult.Item.Name}'");
 
                                 info.IndexNumber = null;
                                 info.ParentIndexNumber = null;
                                 info.Name = string.Empty;
                                 info.ProviderIds = new Dictionary<string, string>();
 
-                                return r.EmbyMetadataResult;
+                                return r.JellyfinMetadataResult;
                             },
                             failure =>
                             {

@@ -20,11 +20,11 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         [SetUp]
         public void Setup()
         {
-            this.embyData = Substitute.For<IJellyfinItemData>();
-            this.embyData.Identifier.Returns(new ItemIdentifier(0, 0, "Name"));
+            this.JellyfinData = Substitute.For<IJellyfinItemData>();
+            this.JellyfinData.Identifier.Returns(new ItemIdentifier(0, 0, "Name"));
 
             this.mediaItem = Substitute.For<IMediaItem>();
-            this.mediaItem.EmbyData.Returns(this.embyData);
+            this.mediaItem.JellyfinData.Returns(this.JellyfinData);
             this.mediaItem.ItemType.Returns(MediaItemTypes.Episode);
 
             this.mappingList = Substitute.For<IMappingList>();
@@ -39,7 +39,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
             this.aniDbSourceData = Substitute.For<ISourceData<AniDbSeriesData>>();
 
-            this.embyData.GetParentId(MediaItemTypes.Series, this.aniDbSource).Returns(Option<int>.Some(3));
+            this.JellyfinData.GetParentId(MediaItemTypes.Series, this.aniDbSource).Returns(Option<int>.Some(3));
 
             this.noMappingResult = new ProcessFailedResult(string.Empty, string.Empty, null, string.Empty);
             this.mappingList.GetSeriesMappingFromAniDb(Arg.Any<int>(), Arg.Any<ProcessResultContext>())
@@ -51,7 +51,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         private IMediaItem mediaItem;
         private IAniDbSource aniDbSource;
         private ISourceData<AniDbSeriesData> aniDbSourceData;
-        private IJellyfinItemData embyData;
+        private IJellyfinItemData JellyfinData;
         private ProcessFailedResult noMappingResult;
 
         private AniDbSeriesData CreateAniDbSeries(int id, string name)

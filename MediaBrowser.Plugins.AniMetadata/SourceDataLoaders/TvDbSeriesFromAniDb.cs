@@ -31,7 +31,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             var aniDbSourceData = (ISourceData<AniDbSeriesData>)sourceData;
 
             var resultContext = new ProcessResultContext(nameof(TvDbSeriesFromAniDb),
-                mediaItem.EmbyData.Identifier.Name,
+                mediaItem.JellyfinData.Identifier.Name,
                 mediaItem.ItemType);
 
             return aniDbSourceData.Id.ToEither(
