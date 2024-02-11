@@ -15,7 +15,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
         ///     Get the result containing the metadata for this media item, if any could be found
         /// </summary>
         Task<Either<ProcessFailedResult, IMetadataFoundResult<TEmbyItem>>> GetResultAsync<TEmbyItem>(
-            ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType, IEnumerable<EmbyItemId> parentIds)
+            ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType, IEnumerable<JellyfinItemId> parentIds)
             where TEmbyItem : BaseItem;
     }
 }

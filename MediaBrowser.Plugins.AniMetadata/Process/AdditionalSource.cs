@@ -21,9 +21,9 @@ namespace Jellyfin.AniDbMetaStructure.Process
 
         public SourceName Name { get; }
 
-        public Either<ProcessFailedResult, IEmbySourceDataLoader> GetEmbySourceDataLoader(IMediaItemType mediaItemType)
+        public Either<ProcessFailedResult, IJellyfinSourceDataLoader> GetJellyfinSourceDataLoader(IMediaItemType mediaItemType)
         {
-            return this.sourceImplementation.GetEmbySourceDataLoader(mediaItemType);
+            return this.sourceImplementation.GetJellyfinSourceDataLoader(mediaItemType);
         }
 
         public bool ShouldUsePlaceholderSourceData(IMediaItemType mediaItemType)

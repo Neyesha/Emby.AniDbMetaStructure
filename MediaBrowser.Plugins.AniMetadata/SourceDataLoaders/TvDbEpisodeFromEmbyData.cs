@@ -14,7 +14,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
     /// <summary>
     ///     Loads episode data from TvDb based on the data provided by Emby
     /// </summary>
-    internal class TvDbEpisodeFromEmbyData : IEmbySourceDataLoader
+    internal class TvDbEpisodeFromEmbyData : IJellyfinSourceDataLoader
     {
         private readonly ISources sources;
         private readonly ITitleNormaliser titleNormaliser;
@@ -34,7 +34,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Episode;
         }
 
-        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IEmbyItemData embyItemData)
+        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
         {
             var resultContext = new ProcessResultContext(nameof(TvDbEpisodeFromEmbyData), embyItemData.Identifier.Name,
                 embyItemData.ItemType);

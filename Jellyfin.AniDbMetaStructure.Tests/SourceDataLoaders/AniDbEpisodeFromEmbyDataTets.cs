@@ -20,7 +20,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         {
             this.sources = Substitute.For<ISources>();
 
-            this.embyItemData = Substitute.For<IEmbyItemData>();
+            this.embyItemData = Substitute.For<IJellyfinItemData>();
             this.embyItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
             this.embyItemData.Language.Returns("en");
 
@@ -56,7 +56,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         private ISources sources;
         private IAniDbEpisodeMatcher aniDbEpisodeMatcher;
         private IMediaItem mediaItem;
-        private IEmbyItemData embyItemData;
+        private IJellyfinItemData embyItemData;
         private AniDbSeriesData aniDbSeriesData;
         private AniDbEpisodeData aniDbEpisodeData;
         private IMappingList mappingList;

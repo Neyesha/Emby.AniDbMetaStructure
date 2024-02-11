@@ -8,7 +8,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
     /// <summary>
     ///     Loads season data from AniDb based on the data provided by Emby
     /// </summary>
-    internal class AniDbSeasonFromEmbyData : IEmbySourceDataLoader
+    internal class AniDbSeasonFromEmbyData : IJellyfinSourceDataLoader
     {
         private readonly ISources sources;
 
@@ -24,7 +24,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Season;
         }
 
-        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IEmbyItemData embyItemData)
+        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
         {
             var resultContext = new ProcessResultContext(nameof(AniDbSeasonFromEmbyData), embyItemData.Identifier.Name,
                 embyItemData.ItemType);

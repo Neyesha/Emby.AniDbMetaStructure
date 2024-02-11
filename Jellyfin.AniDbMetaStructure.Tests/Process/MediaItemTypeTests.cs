@@ -36,7 +36,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
 
             this.PluginConfiguration = Substitute.For<IPluginConfiguration>();
 
-            var embyItemData = Substitute.For<IEmbyItemData>();
+            var embyItemData = Substitute.For<IJellyfinItemData>();
             embyItemData.Language.Returns("en");
 
             this.Sources = new TestSources();

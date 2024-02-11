@@ -79,10 +79,10 @@ namespace Jellyfin.AniDbMetaStructure.Process.Providers
             throw new NotSupportedException();
         }
 
-        private IEnumerable<EmbyItemId> GetParentIds(SeasonInfo info)
+        private IEnumerable<JellyfinItemId> GetParentIds(SeasonInfo info)
         {
             return info.SeriesProviderIds.Where(kv => int.TryParse(kv.Value, out _))
-                .Select(kv => new EmbyItemId(MediaItemTypes.Series, kv.Key, int.Parse(kv.Value)));
+                .Select(kv => new JellyfinItemId(MediaItemTypes.Series, kv.Key, int.Parse(kv.Value)));
         }
     }
 }

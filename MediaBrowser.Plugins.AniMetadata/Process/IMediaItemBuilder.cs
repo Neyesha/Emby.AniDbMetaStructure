@@ -8,7 +8,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
         /// <summary>
         ///     Create a new <see cref="IMediaItem" /> by identifying the data provided by Emby
         /// </summary>
-        Task<Either<ProcessFailedResult, IMediaItem>> Identify(EmbyItemData embyItemData, IMediaItemType itemType);
+        Task<Either<ProcessFailedResult, IMediaItem>> Identify(JellyfinItemData embyItemData, IMediaItemType itemType);
 
         /// <summary>
         ///     Enhance a <see cref="IMediaItem" /> with metadata from all sources

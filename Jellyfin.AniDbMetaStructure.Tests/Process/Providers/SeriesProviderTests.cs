@@ -43,7 +43,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
                         "MediaItemName", MediaItemTypes.Series, "Failure reason"));
 
                 this.mediaItemProcessor = Substitute.For<IMediaItemProcessor>();
-                this.mediaItemProcessor.GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<EmbyItemId>())
+                this.mediaItemProcessor.GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<JellyfinItemId>())
                     .Returns(x => this.mediaItemProcessorResult);
 
                 this.logger = Substitute.For<ILogger>();
@@ -125,7 +125,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
             public async Task ExceptionThrown_LogsException()
             {
                 var exception = new Exception("Failed");
-                this.mediaItemProcessor.GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<EmbyItemId>())
+                this.mediaItemProcessor.GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<JellyfinItemId>())
                     .Throws(exception);
 
                 await this.seriesProvider.GetMetadata(this.seriesInfo, CancellationToken.None);
@@ -136,7 +136,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
             [Test]
             public async Task ExceptionThrown_ReturnsNoMetadata()
             {
-                this.mediaItemProcessor.GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<EmbyItemId>())
+                this.mediaItemProcessor.GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<JellyfinItemId>())
                     .Throws(new Exception("Failed"));
 
                 var result = await this.seriesProvider.GetMetadata(this.seriesInfo, CancellationToken.None);
@@ -177,7 +177,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
                 await this.seriesProvider.GetMetadata(this.seriesInfo, CancellationToken.None);
 
                 await this.mediaItemProcessor.Received(1)
-                    .GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<EmbyItemId>());
+                    .GetResultAsync(this.seriesInfo, MediaItemTypes.Series, Enumerable.Empty<JellyfinItemId>());
             }
 
             [Test]

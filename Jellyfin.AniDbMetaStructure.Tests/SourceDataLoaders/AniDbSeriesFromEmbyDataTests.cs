@@ -27,7 +27,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
             this.aniDbClient = Substitute.For<IAniDbClient>();
 
-            this.embyItemData = Substitute.For<IEmbyItemData>();
+            this.embyItemData = Substitute.For<IJellyfinItemData>();
             this.embyItemData.Identifier.Returns(new ItemIdentifier(67, 1, "Name"));
             this.embyItemData.Language.Returns("en");
 
@@ -36,7 +36,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
         private ISources sources;
         private IAniDbClient aniDbClient;
-        private IEmbyItemData embyItemData;
+        private IJellyfinItemData embyItemData;
         private AniDbSeriesData aniDbSeriesData;
         private IAniDbSource aniDbSource;
 

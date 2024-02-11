@@ -10,7 +10,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
     /// <summary>
     ///     Loads series data from AniDb based on the data provided by Emby
     /// </summary>
-    internal class AniDbSeriesFromEmbyData : IEmbySourceDataLoader
+    internal class AniDbSeriesFromEmbyData : IJellyfinSourceDataLoader
     {
         private readonly IAniDbClient aniDbClient;
         private readonly ISources sources;
@@ -28,7 +28,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return mediaItemType == MediaItemTypes.Series;
         }
 
-        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IEmbyItemData embyItemData)
+        public Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData)
         {
             var resultContext = new ProcessResultContext(nameof(AniDbSeriesFromEmbyData), embyItemData.Identifier.Name,
                 embyItemData.ItemType);
@@ -43,7 +43,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
                 });
         }
 
-        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IEmbyItemData embyItemData, string title)
+        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData embyItemData, string title)
         {
             return new SourceData<AniDbSeriesData>(this.sources.AniDb, seriesData.Id,
                 new ItemIdentifier(embyItemData.Identifier.Index, Option<int>.None, title), seriesData);

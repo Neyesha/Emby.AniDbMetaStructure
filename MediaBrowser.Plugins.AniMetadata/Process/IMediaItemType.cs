@@ -9,9 +9,9 @@ namespace Jellyfin.AniDbMetaStructure.Process
     {
     }
 
-    internal interface IMediaItemType<TEmbyItem> : IMediaItemType where TEmbyItem : BaseItem
+    internal interface IMediaItemType<TJellyfinItem> : IMediaItemType where TJellyfinItem : BaseItem
     {
-        Either<ProcessFailedResult, IMetadataFoundResult<TEmbyItem>> CreateMetadataFoundResult(
+        Either<ProcessFailedResult, IMetadataFoundResult<TJellyfinItem>> CreateMetadataFoundResult(
             IPluginConfiguration pluginConfiguration, IMediaItem mediaItem, ILogger logger);
     }
 }

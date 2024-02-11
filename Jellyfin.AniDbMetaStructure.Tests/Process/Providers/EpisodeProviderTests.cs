@@ -44,7 +44,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
 
                 this.mediaItemProcessor = Substitute.For<IMediaItemProcessor>();
                 this.mediaItemProcessor.GetResultAsync(this.episodeInfo, MediaItemTypes.Episode,
-                        Arg.Any<IEnumerable<EmbyItemId>>())
+                        Arg.Any<IEnumerable<JellyfinItemId>>())
                     .Returns(x => this.mediaItemProcessorResult);
 
                 this.logger = Substitute.For<ILogger>();
@@ -62,7 +62,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
             public async Task ExceptionThrown_LogsException()
             {
                 var exception = new Exception("Failed");
-                this.mediaItemProcessor.GetResultAsync(this.episodeInfo, MediaItemTypes.Episode, Arg.Any<IEnumerable<EmbyItemId>>())
+                this.mediaItemProcessor.GetResultAsync(this.episodeInfo, MediaItemTypes.Episode, Arg.Any<IEnumerable<JellyfinItemId>>())
                     .Throws(exception);
 
                 await this.episodeProvider.GetMetadata(this.episodeInfo, CancellationToken.None);
@@ -73,7 +73,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
             [Test]
             public async Task ExceptionThrown_ReturnsNoMetadata()
             {
-                this.mediaItemProcessor.GetResultAsync(this.episodeInfo, MediaItemTypes.Episode, Arg.Any<IEnumerable<EmbyItemId>>())
+                this.mediaItemProcessor.GetResultAsync(this.episodeInfo, MediaItemTypes.Episode, Arg.Any<IEnumerable<JellyfinItemId>>())
                     .Throws(new Exception("Failed"));
 
                 var result = await this.episodeProvider.GetMetadata(this.episodeInfo, CancellationToken.None);
@@ -119,7 +119,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Providers
                 await this.episodeProvider.GetMetadata(this.episodeInfo, CancellationToken.None);
 
                 await this.mediaItemProcessor.Received(1)
-                    .GetResultAsync(this.episodeInfo, MediaItemTypes.Episode, Arg.Is<IEnumerable<EmbyItemId>>(ids => ids.Count() == 1 &&
+                    .GetResultAsync(this.episodeInfo, MediaItemTypes.Episode, Arg.Is<IEnumerable<JellyfinItemId>>(ids => ids.Count() == 1 &&
                                                                                                                      ids.Single().Id == 929 &&
                                                                                                                      ids.Single().ItemType == MediaItemTypes.Series &&
                                                                                                                      ids.Single().SourceName == SourceNames.AniDb));

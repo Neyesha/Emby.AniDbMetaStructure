@@ -41,6 +41,6 @@
     </AssemblyAttribute>
   </ItemGroup>
   <PropertyGroup>
-  	<ILRepackTargetConfigurations>Debug;Release</ILRepackTargetConfigurations>
+  	<ILRepackTargetConfigurations>Release</ILRepackTargetConfigurations>
   </PropertyGroup>
 </Project>

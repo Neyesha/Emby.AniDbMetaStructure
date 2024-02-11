@@ -5,13 +5,13 @@ using LanguageExt;
 namespace Jellyfin.AniDbMetaStructure.Process
 {
     /// <summary>
-    ///     The data supplied by Emby for an item at the start of the process
+    ///     The data supplied by Jellyfin for an item at the start of the process
     /// </summary>
-    internal class EmbyItemData : IEmbyItemData
+    internal class JellyfinItemData : IJellyfinItemData
     {
 
-        public EmbyItemData(IMediaItemType itemType, IItemIdentifier identifier, IDictionary<string, int> existingIds,
-            string language, IEnumerable<EmbyItemId> parentIds)
+        public JellyfinItemData(IMediaItemType itemType, IItemIdentifier identifier, IDictionary<string, int> existingIds,
+            string language, IEnumerable<JellyfinItemId> parentIds)
         {
             this.ParentIds = parentIds;
             this.ItemType = itemType;
@@ -31,7 +31,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
 
         public string Language { get; }
 
-        public IEnumerable<EmbyItemId> ParentIds { get; }
+        public IEnumerable<JellyfinItemId> ParentIds { get; }
 
         /// <summary>
         ///     True if this data came from the file system rather than the Emby library

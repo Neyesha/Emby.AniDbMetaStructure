@@ -24,13 +24,13 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
             this.tvDbClient = Substitute.For<ITvDbClient>();
 
-            this.embyItemData = Substitute.For<IEmbyItemData>();
+            this.embyItemData = Substitute.For<IJellyfinItemData>();
             this.embyItemData.Identifier.Returns(new ItemIdentifier(2, 1, "SeriesName"));
         }
 
         private ITvDbClient tvDbClient;
         private ISources sources;
-        private IEmbyItemData embyItemData;
+        private IJellyfinItemData embyItemData;
 
         [Test]
         public void CanLoadFrom_CorrectItemType_IsTrue()

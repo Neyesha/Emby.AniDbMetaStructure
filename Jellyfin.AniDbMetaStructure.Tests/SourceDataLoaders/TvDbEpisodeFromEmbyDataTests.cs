@@ -24,7 +24,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             var tvDbSource = Substitute.For<ITvDbSource>();
             this.sources.TvDb.Returns(tvDbSource);
 
-            this.embyItemData = Substitute.For<IEmbyItemData>();
+            this.embyItemData = Substitute.For<IJellyfinItemData>();
             this.embyItemData.Language.Returns("en");
             this.embyItemData.GetParentId(MediaItemTypes.Series, this.sources.TvDb).Returns(22);
 
@@ -38,7 +38,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
 
         private ISources sources;
         private IMediaItem mediaItem;
-        private IEmbyItemData embyItemData;
+        private IJellyfinItemData embyItemData;
         private ITvDbClient tvDbClient;
         private ITitleNormaliser titleNormaliser;
 

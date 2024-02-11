@@ -6,7 +6,7 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
 {
     internal interface ITvDbSource : ISource
     {
-        Task<Either<ProcessFailedResult, TvDbSeriesData>> GetSeriesData(IEmbyItemData embyItemData,
+        Task<Either<ProcessFailedResult, TvDbSeriesData>> GetSeriesData(IJellyfinItemData embyItemData,
             ProcessResultContext resultContext);
 
         Task<Either<ProcessFailedResult, TvDbSeriesData>> GetSeriesData(int tvDbSeriesId,

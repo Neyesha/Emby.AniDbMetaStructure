@@ -63,7 +63,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
             return seriesMapping.MapAsync(sm => sm.Ids.AniDbSeriesId);
         }
 
-        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IEmbyItemData embyItemData, string title)
+        private ISourceData CreateSourceData(AniDbSeriesData seriesData, IJellyfinItemData embyItemData, string title)
         {
             return new SourceData<AniDbSeriesData>(this.sources.AniDb, seriesData.Id,
                 new ItemIdentifier(embyItemData.Identifier.Index, Option<int>.None, title), seriesData);

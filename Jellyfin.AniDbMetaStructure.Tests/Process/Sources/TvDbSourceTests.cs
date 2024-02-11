@@ -21,30 +21,30 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         public virtual void Setup()
         {
             this.tvDbClient = Substitute.For<ITvDbClient>();
-            this.loaders = new List<IEmbySourceDataLoader>();
+            this.loaders = new List<IJellyfinSourceDataLoader>();
 
             this.tvDbSource = new TvDbSource(this.tvDbClient, this.loaders);
         }
 
         private ITvDbClient tvDbClient;
         private TvDbSource tvDbSource;
-        private IList<IEmbySourceDataLoader> loaders;
+        private IList<IJellyfinSourceDataLoader> loaders;
 
-        private EmbyItemData EmbyItemData(string name, int? parentTvDbSeriesId)
+        private JellyfinItemData EmbyItemData(string name, int? parentTvDbSeriesId)
         {
-            var parentIds = new List<EmbyItemId>();
+            var parentIds = new List<JellyfinItemId>();
 
             if (parentTvDbSeriesId.HasValue)
             {
-                parentIds.Add(new EmbyItemId(MediaItemTypes.Series, SourceNames.TvDb, parentTvDbSeriesId.Value));
+                parentIds.Add(new JellyfinItemId(MediaItemTypes.Series, SourceNames.TvDb, parentTvDbSeriesId.Value));
             }
 
-            return new EmbyItemData(MediaItemTypes.Episode,
+            return new JellyfinItemData(MediaItemTypes.Episode,
                 new ItemIdentifier(Option<int>.None, Option<int>.None, name),
                 null, "en", parentIds);
         }
 
-        private EmbyItemData SeriesEmbyItemData(string name, int? tvDbSeriesId)
+        private JellyfinItemData SeriesEmbyItemData(string name, int? tvDbSeriesId)
         {
             var existingIds = new Dictionary<string, int>();
 
@@ -53,9 +53,9 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
                 existingIds.Add(SourceNames.TvDb, tvDbSeriesId.Value);
             }
 
-            return new EmbyItemData(MediaItemTypes.Series,
+            return new JellyfinItemData(MediaItemTypes.Series,
                 new ItemIdentifier(Option<int>.None, Option<int>.None, name),
-                existingIds, "en", new List<EmbyItemId>());
+                existingIds, "en", new List<JellyfinItemId>());
         }
 
         [Test]
@@ -68,13 +68,13 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
         public void GetEmbySourceDataLoader_MatchingLoader_ReturnsLoader(IMediaItemType mediaItemType)
         {
-            var loader = Substitute.For<IEmbySourceDataLoader>();
+            var loader = Substitute.For<IJellyfinSourceDataLoader>();
             loader.SourceName.Returns(SourceNames.TvDb);
             loader.CanLoadFrom(mediaItemType).Returns(true);
 
             this.loaders.Add(loader);
 
-            var result = this.tvDbSource.GetEmbySourceDataLoader(mediaItemType);
+            var result = this.tvDbSource.GetJellyfinSourceDataLoader(mediaItemType);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(r => r.Should().BeSameAs(loader));
@@ -84,18 +84,18 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
         public void GetEmbySourceDataLoader_NoMatchingLoader_ReturnsFailed(IMediaItemType mediaItemType)
         {
-            var sourceMismatch = Substitute.For<IEmbySourceDataLoader>();
+            var sourceMismatch = Substitute.For<IJellyfinSourceDataLoader>();
             sourceMismatch.SourceName.Returns(SourceNames.AniDb);
             sourceMismatch.CanLoadFrom(mediaItemType).Returns(true);
 
-            var cannotLoad = Substitute.For<IEmbySourceDataLoader>();
+            var cannotLoad = Substitute.For<IJellyfinSourceDataLoader>();
             cannotLoad.SourceName.Returns(SourceNames.TvDb);
             cannotLoad.CanLoadFrom(mediaItemType).Returns(false);
 
             this.loaders.Add(sourceMismatch);
             this.loaders.Add(cannotLoad);
 
-            var result = this.tvDbSource.GetEmbySourceDataLoader(mediaItemType);
+            var result = this.tvDbSource.GetJellyfinSourceDataLoader(mediaItemType);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("No Emby source data loader for this source and media item type"));

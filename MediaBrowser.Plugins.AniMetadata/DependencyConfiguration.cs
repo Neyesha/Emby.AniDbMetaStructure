@@ -122,7 +122,7 @@ namespace Jellyfin.AniDbMetaStructure
 
             RegisterCollection<ISource>(container);
             RegisterCollection<ISourceDataLoader>(container);
-            RegisterCollection<IEmbySourceDataLoader>(container);
+            RegisterCollection<IJellyfinSourceDataLoader>(container);
 
             container.Register<Func<IEnumerable<ISource>>>(() => container.GetInstance<IEnumerable<ISource>>);
 

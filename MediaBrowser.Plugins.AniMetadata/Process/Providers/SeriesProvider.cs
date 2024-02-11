@@ -56,7 +56,7 @@ namespace Jellyfin.AniDbMetaStructure.Process.Providers
                     }
 
                     var result =
-                        this.mediaItemProcessor.GetResultAsync(info, MediaItemTypes.Series, Enumerable.Empty<EmbyItemId>());
+                        this.mediaItemProcessor.GetResultAsync(info, MediaItemTypes.Series, Enumerable.Empty<JellyfinItemId>());
 
                     return result.Map(either =>
                         either.Match(r =>

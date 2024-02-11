@@ -32,7 +32,7 @@ namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
                 .MapAsync(s => this.CreateSourceData(s, mediaItem.EmbyData));
         }
 
-        private ISourceData CreateSourceData(TvDbSeriesData seriesData, IEmbyItemData embyItemData)
+        private ISourceData CreateSourceData(TvDbSeriesData seriesData, IJellyfinItemData embyItemData)
         {
             return new SourceData<TvDbSeriesData>(this.sources.TvDb.ForAdditionalData(), seriesData.Id,
                 new ItemIdentifier(embyItemData.Identifier.Index, Option<int>.None, seriesData.SeriesName), seriesData);

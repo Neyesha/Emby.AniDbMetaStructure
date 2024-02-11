@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Jellyfin.AniDbMetaStructure.Process
 {
-    internal interface IEmbyItemData
+    internal interface IJellyfinItemData
     {
         IDictionary<string, int> ExistingIds { get; }
 
@@ -15,7 +15,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
 
         string Language { get; }
 
-        IEnumerable<EmbyItemId> ParentIds { get; }
+        IEnumerable<JellyfinItemId> ParentIds { get; }
 
         Option<int> GetExistingId(string sourceName);
 

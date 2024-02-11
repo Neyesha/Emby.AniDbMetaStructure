@@ -38,7 +38,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public void AddsInitialData()
             {
-                var mediaItem = new MediaItem(Substitute.For<IEmbyItemData>(), MediaItemTypes.Series, this.SourceData);
+                var mediaItem = new MediaItem(Substitute.For<IJellyfinItemData>(), MediaItemTypes.Series, this.SourceData);
 
                 mediaItem.GetDataFromSource(this.Source).ValueUnsafe().Should().Be(this.SourceData);
             }
@@ -46,7 +46,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public void InitialisesItemType()
             {
-                var mediaItem = new MediaItem(Substitute.For<IEmbyItemData>(), MediaItemTypes.Series, this.SourceData);
+                var mediaItem = new MediaItem(Substitute.For<IJellyfinItemData>(), MediaItemTypes.Series, this.SourceData);
 
                 mediaItem.ItemType.Should().Be(MediaItemTypes.Series);
             }
@@ -54,7 +54,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public void NullData_ThrowsArgumentNullException()
             {
-                Action action = () => new MediaItem(Substitute.For<IEmbyItemData>(), MediaItemTypes.Series, null);
+                Action action = () => new MediaItem(Substitute.For<IJellyfinItemData>(), MediaItemTypes.Series, null);
 
                 action.Should().Throw<ArgumentNullException>();
             }
@@ -66,7 +66,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public void DoesNotModifyInstanceCalledOn()
             {
-                var mediaItem = new MediaItem(Substitute.For<IEmbyItemData>(), MediaItemTypes.Series, this.SourceData);
+                var mediaItem = new MediaItem(Substitute.For<IJellyfinItemData>(), MediaItemTypes.Series, this.SourceData);
 
                 mediaItem.AddData(this.SourceData2);
 
@@ -77,7 +77,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public void ExistingDataFromSource_ReturnsFailedResult()
             {
-                var mediaItem = new MediaItem(Substitute.For<IEmbyItemData>(), MediaItemTypes.Series, this.SourceData);
+                var mediaItem = new MediaItem(Substitute.For<IJellyfinItemData>(), MediaItemTypes.Series, this.SourceData);
 
                 var result = mediaItem.AddData(this.SourceData);
 
@@ -87,7 +87,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public void ReturnsMediaItemWithSourceDataAdded()
             {
-                var mediaItem = new MediaItem(Substitute.For<IEmbyItemData>(), MediaItemTypes.Series, this.SourceData);
+                var mediaItem = new MediaItem(Substitute.For<IJellyfinItemData>(), MediaItemTypes.Series, this.SourceData);
 
                 var mediaItem2 = mediaItem.AddData(this.SourceData2);
 
@@ -102,7 +102,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public void NoDataWithMatchingSource_ReturnsNone()
             {
-                var mediaItem = new MediaItem(Substitute.For<IEmbyItemData>(), MediaItemTypes.Series, this.SourceData);
+                var mediaItem = new MediaItem(Substitute.For<IJellyfinItemData>(), MediaItemTypes.Series, this.SourceData);
 
                 mediaItem.GetDataFromSource(this.Source2).IsNone.Should().BeTrue();
             }

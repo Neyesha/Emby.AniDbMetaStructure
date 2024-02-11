@@ -20,12 +20,12 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources = Substitute.For<ISources>();
             this.sources.TvDb.Returns(tvDbSource);
 
-            this.embyItemData = Substitute.For<IEmbyItemData>();
+            this.embyItemData = Substitute.For<IJellyfinItemData>();
             this.embyItemData.Language.Returns("en");
         }
 
         private ISources sources;
-        private IEmbyItemData embyItemData;
+        private IJellyfinItemData embyItemData;
 
         [Test]
         public void CanLoadFrom_CorrectItemType_IsTrue()

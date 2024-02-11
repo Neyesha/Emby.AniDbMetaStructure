@@ -9,10 +9,10 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
 {
     internal class TvDbSource : ITvDbSource
     {
-        private readonly IEnumerable<IEmbySourceDataLoader> embySourceDataLoaders;
+        private readonly IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders;
         private readonly ITvDbClient tvDbClient;
 
-        public TvDbSource(ITvDbClient tvDbClient, IEnumerable<IEmbySourceDataLoader> embySourceDataLoaders)
+        public TvDbSource(ITvDbClient tvDbClient, IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders)
         {
             this.tvDbClient = tvDbClient;
             this.embySourceDataLoaders = embySourceDataLoaders;
@@ -20,7 +20,7 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
 
         public SourceName Name => SourceNames.TvDb;
 
-        public Either<ProcessFailedResult, IEmbySourceDataLoader> GetEmbySourceDataLoader(IMediaItemType mediaItemType)
+        public Either<ProcessFailedResult, IJellyfinSourceDataLoader> GetJellyfinSourceDataLoader(IMediaItemType mediaItemType)
         {
             return this.embySourceDataLoaders.Find(l => l.SourceName == this.Name && l.CanLoadFrom(mediaItemType))
                 .ToEither(new ProcessFailedResult(this.Name, string.Empty, mediaItemType,
@@ -32,7 +32,7 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
             return false;
         }
 
-        public Task<Either<ProcessFailedResult, TvDbSeriesData>> GetSeriesData(IEmbyItemData embyItemData,
+        public Task<Either<ProcessFailedResult, TvDbSeriesData>> GetSeriesData(IJellyfinItemData embyItemData,
             ProcessResultContext resultContext)
         {
             Task<Either<ProcessFailedResult, int>> seriesId;

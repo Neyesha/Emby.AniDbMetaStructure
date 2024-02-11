@@ -5,12 +5,12 @@ using LanguageExt;
 
 namespace Jellyfin.AniDbMetaStructure.SourceDataLoaders
 {
-    internal interface IEmbySourceDataLoader
+    internal interface IJellyfinSourceDataLoader
     {
         SourceName SourceName { get; }
 
         bool CanLoadFrom(IMediaItemType mediaItemType);
 
-        Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IEmbyItemData embyItemData);
+        Task<Either<ProcessFailedResult, ISourceData>> LoadFrom(IJellyfinItemData embyItemData);
     }
 }

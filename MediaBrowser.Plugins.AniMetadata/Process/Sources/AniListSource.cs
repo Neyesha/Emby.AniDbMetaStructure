@@ -9,11 +9,11 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
     internal class AniListSource : IAniListSource
     {
         private readonly IAniListNameSelector aniListNameSelector;
-        private readonly IEnumerable<IEmbySourceDataLoader> embySourceDataLoaders;
+        private readonly IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders;
         private readonly ITitlePreferenceConfiguration titlePreferenceConfiguration;
 
         public AniListSource(ITitlePreferenceConfiguration titlePreferenceConfiguration,
-            IEnumerable<IEmbySourceDataLoader> embySourceDataLoaders, IAniListNameSelector aniListNameSelector)
+            IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders, IAniListNameSelector aniListNameSelector)
         {
             this.titlePreferenceConfiguration = titlePreferenceConfiguration;
             this.embySourceDataLoaders = embySourceDataLoaders;
@@ -22,7 +22,7 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
 
         public SourceName Name => SourceNames.AniList;
 
-        public Either<ProcessFailedResult, IEmbySourceDataLoader> GetEmbySourceDataLoader(IMediaItemType mediaItemType)
+        public Either<ProcessFailedResult, IJellyfinSourceDataLoader> GetJellyfinSourceDataLoader(IMediaItemType mediaItemType)
         {
             return this.embySourceDataLoaders.Find(l => l.SourceName == Name && l.CanLoadFrom(mediaItemType))
                 .ToEither(new ProcessFailedResult(Name, string.Empty, mediaItemType,

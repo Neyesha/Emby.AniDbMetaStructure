@@ -70,7 +70,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
                 this.mediaItem = Data.MediaItem();
                 this.embyInfo = Data.EmbyInfo();
 
-                this.MediaItemBuilder.Identify(Arg.Any<EmbyItemData>(), this.MediaItemType)
+                this.MediaItemBuilder.Identify(Arg.Any<JellyfinItemData>(), this.MediaItemType)
                     .Returns(Right<ProcessFailedResult, IMediaItem>(this.mediaItem));
             }
 
@@ -80,10 +80,10 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
             [Test]
             public async Task BuildsMediaItem()
             {
-                this.MediaItemBuilder.Identify(Arg.Any<EmbyItemData>(), this.MediaItemType)
+                this.MediaItemBuilder.Identify(Arg.Any<JellyfinItemData>(), this.MediaItemType)
                     .Returns(Right<ProcessFailedResult, IMediaItem>(this.mediaItem));
 
-                var result = await this.Processor.GetResultAsync(this.embyInfo, this.MediaItemType, Enumerable.Empty<EmbyItemId>());
+                var result = await this.Processor.GetResultAsync(this.embyInfo, this.MediaItemType, Enumerable.Empty<JellyfinItemId>());
 
                 result.IsRight.Should().BeTrue();
                 await this.MediaItemBuilder.Received(1).BuildMediaItem(this.mediaItem);
@@ -96,12 +96,12 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
                 var mediaItem = Data.MediaItem();
                 var builtMediaItem = Data.MediaItem();
 
-                this.MediaItemBuilder.Identify(Arg.Any<EmbyItemData>(), this.MediaItemType)
+                this.MediaItemBuilder.Identify(Arg.Any<JellyfinItemData>(), this.MediaItemType)
                     .Returns(Right<ProcessFailedResult, IMediaItem>(mediaItem));
                 this.MediaItemBuilder.BuildMediaItem(mediaItem)
                     .Returns(Right<ProcessFailedResult, IMediaItem>(builtMediaItem));
 
-                var result = await this.Processor.GetResultAsync(embyInfo, this.MediaItemType, Enumerable.Empty<EmbyItemId>());
+                var result = await this.Processor.GetResultAsync(embyInfo, this.MediaItemType, Enumerable.Empty<JellyfinItemId>());
 
                 result.IsRight.Should().BeTrue();
                 result.IfRight(r => r.MediaItem.Should().Be(builtMediaItem));
@@ -113,15 +113,15 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process
                 var embyInfo = Data.EmbyInfo();
                 var mediaItem = Data.MediaItem();
 
-                this.MediaItemBuilder.Identify(Arg.Any<EmbyItemData>(), this.MediaItemType)
+                this.MediaItemBuilder.Identify(Arg.Any<JellyfinItemData>(), this.MediaItemType)
                     .Returns(Right<ProcessFailedResult, IMediaItem>(mediaItem));
 
-                var result = await this.Processor.GetResultAsync(embyInfo, this.MediaItemType, Enumerable.Empty<EmbyItemId>());
+                var result = await this.Processor.GetResultAsync(embyInfo, this.MediaItemType, Enumerable.Empty<JellyfinItemId>());
 
                 result.IsRight.Should().BeTrue();
 
                 await this.MediaItemBuilder.Received(1)
-                    .Identify(Arg.Is<EmbyItemData>(d => d.Identifier.Index == 1 &&
+                    .Identify(Arg.Is<JellyfinItemData>(d => d.Identifier.Index == 1 &&
                                                              d.Identifier.ParentIndex == 2 &&
                                                              d.Identifier.Name == "name"), this.MediaItemType);
             }

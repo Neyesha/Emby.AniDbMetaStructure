@@ -17,7 +17,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
         /// <param name="embyData">The name of the item as originally provided by Emby</param>
         /// <param name="itemType">The type of the media item</param>
         /// <param name="sourceData">The metadata from the source used to initially identify this media item</param>
-        public MediaItem(IEmbyItemData embyData, IMediaItemType itemType, ISourceData sourceData)
+        public MediaItem(IJellyfinItemData embyData, IMediaItemType itemType, ISourceData sourceData)
         {
             if (sourceData == null)
             {
@@ -30,14 +30,14 @@ namespace Jellyfin.AniDbMetaStructure.Process
             this.sourceData = ImmutableDictionary<string, ISourceData>.Empty.Add(sourceData.Source.Name, sourceData);
         }
 
-        private MediaItem(IEmbyItemData embyData, IMediaItemType itemType, ImmutableDictionary<string, ISourceData> sourceData)
+        private MediaItem(IJellyfinItemData embyData, IMediaItemType itemType, ImmutableDictionary<string, ISourceData> sourceData)
         {
             this.EmbyData = embyData;
             this.ItemType = itemType;
             this.sourceData = sourceData;
         }
 
-        public IEmbyItemData EmbyData { get; }
+        public IJellyfinItemData EmbyData { get; }
 
         public IMediaItemType ItemType { get; }
 

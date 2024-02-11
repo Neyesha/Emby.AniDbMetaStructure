@@ -24,7 +24,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
             this.logger = logger;
         }
 
-        public Task<Either<ProcessFailedResult, IMediaItem>> Identify(EmbyItemData embyItemData,
+        public Task<Either<ProcessFailedResult, IMediaItem>> Identify(JellyfinItemData embyItemData,
             IMediaItemType itemType)
         {
             return IdentifyAsync(embyItemData, itemType).MapAsync(sd => (IMediaItem)new MediaItem(embyItemData, itemType, sd));
@@ -80,11 +80,11 @@ namespace Jellyfin.AniDbMetaStructure.Process
             }
         }
 
-        private Task<Either<ProcessFailedResult, ISourceData>> IdentifyAsync(EmbyItemData embyItemData, IMediaItemType itemType)
+        private Task<Either<ProcessFailedResult, ISourceData>> IdentifyAsync(JellyfinItemData embyItemData, IMediaItemType itemType)
         {
             var identifyingSource = this.pluginConfiguration.FileStructureSource(itemType);
 
-            return identifyingSource.GetEmbySourceDataLoader(embyItemData.ItemType)
+            return identifyingSource.GetJellyfinSourceDataLoader(embyItemData.ItemType)
                 .BindAsync(l => l.LoadFrom(embyItemData));
         }
     }

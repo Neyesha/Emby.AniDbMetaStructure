@@ -24,7 +24,7 @@ namespace Jellyfin.AniDbMetaStructure.Process
         }
 
         public Task<Either<ProcessFailedResult, IMetadataFoundResult<TEmbyItem>>> GetResultAsync<TEmbyItem>(
-            ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType, IEnumerable<EmbyItemId> parentIds)
+            ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType, IEnumerable<JellyfinItemId> parentIds)
             where TEmbyItem : BaseItem
         {
             var embyItemData = ToEmbyItemData(embyInfo, itemType, parentIds);
@@ -45,14 +45,14 @@ namespace Jellyfin.AniDbMetaStructure.Process
                 });
         }
 
-        private EmbyItemData ToEmbyItemData<TEmbyItem>(ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType,
-            IEnumerable<EmbyItemId> parentIds)
+        private JellyfinItemData ToEmbyItemData<TEmbyItem>(ItemLookupInfo embyInfo, IMediaItemType<TEmbyItem> itemType,
+            IEnumerable<JellyfinItemId> parentIds)
             where TEmbyItem : BaseItem
         {
             var existingIds = embyInfo.ProviderIds.Where(v => int.TryParse(v.Value, out _))
                 .ToDictionary(k => k.Key, v => int.Parse(v.Value));
 
-            return new EmbyItemData(itemType,
+            return new JellyfinItemData(itemType,
                 new ItemIdentifier(embyInfo.IndexNumber.ToOption(), embyInfo.ParentIndexNumber.ToOption(),
                     embyInfo.Name), existingIds, embyInfo.MetadataLanguage, parentIds);
         }

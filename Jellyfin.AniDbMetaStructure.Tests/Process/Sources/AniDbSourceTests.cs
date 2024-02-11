@@ -25,7 +25,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
             this.titleSelector = Substitute.For<IAniDbTitleSelector>();
 
             this.configuration.TitlePreference.Returns(TitleType.Localized);
-            this.loaders = new List<IEmbySourceDataLoader>();
+            this.loaders = new List<IJellyfinSourceDataLoader>();
 
             this.aniDbSource = new AniDbSource(this.aniDbClient, this.configuration, this.titleSelector, this.loaders);
         }
@@ -34,18 +34,18 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         private ITitlePreferenceConfiguration configuration;
         private IAniDbTitleSelector titleSelector;
         private AniDbSource aniDbSource;
-        private IList<IEmbySourceDataLoader> loaders;
+        private IList<IJellyfinSourceDataLoader> loaders;
 
-        private EmbyItemData EmbyItemData(string name, int? parentAniDbSeriesId)
+        private JellyfinItemData EmbyItemData(string name, int? parentAniDbSeriesId)
         {
-            var parentIds = new List<EmbyItemId>();
+            var parentIds = new List<JellyfinItemId>();
 
             if (parentAniDbSeriesId.HasValue)
             {
-                parentIds.Add(new EmbyItemId(MediaItemTypes.Series, SourceNames.AniDb, parentAniDbSeriesId.Value));
+                parentIds.Add(new JellyfinItemId(MediaItemTypes.Series, SourceNames.AniDb, parentAniDbSeriesId.Value));
             }
 
-            return new EmbyItemData(MediaItemTypes.Series,
+            return new JellyfinItemData(MediaItemTypes.Series,
                 new ItemIdentifier(Option<int>.None, Option<int>.None, name),
                 null, "en", parentIds);
         }
@@ -60,13 +60,13 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
         public void GetEmbySourceDataLoader_MatchingLoader_ReturnsLoader(IMediaItemType mediaItemType)
         {
-            var loader = Substitute.For<IEmbySourceDataLoader>();
+            var loader = Substitute.For<IJellyfinSourceDataLoader>();
             loader.SourceName.Returns(SourceNames.AniDb);
             loader.CanLoadFrom(mediaItemType).Returns(true);
 
             this.loaders.Add(loader);
 
-            var result = this.aniDbSource.GetEmbySourceDataLoader(mediaItemType);
+            var result = this.aniDbSource.GetJellyfinSourceDataLoader(mediaItemType);
 
             result.IsRight.Should().BeTrue();
             result.IfRight(r => r.Should().BeSameAs(loader));
@@ -76,18 +76,18 @@ namespace Jellyfin.AniDbMetaStructure.Tests.Process.Sources
         [TestCaseSource(typeof(MediaItemTypeTestCases))]
         public void GetEmbySourceDataLoader_NoMatchingLoader_ReturnsFailed(IMediaItemType mediaItemType)
         {
-            var sourceMismatch = Substitute.For<IEmbySourceDataLoader>();
+            var sourceMismatch = Substitute.For<IJellyfinSourceDataLoader>();
             sourceMismatch.SourceName.Returns(SourceNames.TvDb);
             sourceMismatch.CanLoadFrom(mediaItemType).Returns(true);
 
-            var cannotLoad = Substitute.For<IEmbySourceDataLoader>();
+            var cannotLoad = Substitute.For<IJellyfinSourceDataLoader>();
             cannotLoad.SourceName.Returns(SourceNames.AniDb);
             cannotLoad.CanLoadFrom(mediaItemType).Returns(false);
 
             this.loaders.Add(sourceMismatch);
             this.loaders.Add(cannotLoad);
 
-            var result = this.aniDbSource.GetEmbySourceDataLoader(mediaItemType);
+            var result = this.aniDbSource.GetJellyfinSourceDataLoader(mediaItemType);
 
             result.IsLeft.Should().BeTrue();
             result.IfLeft(f => f.Reason.Should().Be("No Emby source data loader for this source and media item type"));

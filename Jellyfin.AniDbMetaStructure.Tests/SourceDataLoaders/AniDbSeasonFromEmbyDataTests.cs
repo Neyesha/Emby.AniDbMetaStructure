@@ -21,7 +21,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
             this.sources = Substitute.For<ISources>();
             this.sources.AniDb.Returns(this.aniDbSource);
 
-            this.embyItemData = Substitute.For<IEmbyItemData>();
+            this.embyItemData = Substitute.For<IJellyfinItemData>();
             this.embyItemData.Language.Returns("en");
 
             this.aniDbSeriesTitles = new ItemTitleData[] { };
@@ -36,7 +36,7 @@ namespace Jellyfin.AniDbMetaStructure.Tests.SourceDataLoaders
         }
 
         private ISources sources;
-        private IEmbyItemData embyItemData;
+        private IJellyfinItemData embyItemData;
         private IAniDbSource aniDbSource;
         private ItemTitleData[] aniDbSeriesTitles;
 

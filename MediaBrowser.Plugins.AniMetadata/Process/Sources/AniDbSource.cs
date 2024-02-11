@@ -10,12 +10,12 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
     internal class AniDbSource : IAniDbSource
     {
         private readonly IAniDbClient aniDbClient;
-        private readonly IEnumerable<IEmbySourceDataLoader> embySourceDataLoaders;
+        private readonly IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders;
         private readonly ITitlePreferenceConfiguration titlePreferenceConfiguration;
         private readonly IAniDbTitleSelector titleSelector;
 
         public AniDbSource(IAniDbClient aniDbClient, ITitlePreferenceConfiguration titlePreferenceConfiguration,
-            IAniDbTitleSelector titleSelector, IEnumerable<IEmbySourceDataLoader> embySourceDataLoaders)
+            IAniDbTitleSelector titleSelector, IEnumerable<IJellyfinSourceDataLoader> embySourceDataLoaders)
         {
             this.aniDbClient = aniDbClient;
             this.titlePreferenceConfiguration = titlePreferenceConfiguration;
@@ -25,7 +25,7 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
 
         public SourceName Name => SourceNames.AniDb;
 
-        public Either<ProcessFailedResult, IEmbySourceDataLoader> GetEmbySourceDataLoader(IMediaItemType mediaItemType)
+        public Either<ProcessFailedResult, IJellyfinSourceDataLoader> GetJellyfinSourceDataLoader(IMediaItemType mediaItemType)
         {
             return this.embySourceDataLoaders.Find(l => l.SourceName == Name && l.CanLoadFrom(mediaItemType))
                 .ToEither(new ProcessFailedResult(Name, string.Empty, mediaItemType,
@@ -37,7 +37,7 @@ namespace Jellyfin.AniDbMetaStructure.Process.Sources
             return mediaItemType == MediaItemTypes.Series;
         }
 
-        public Task<Either<ProcessFailedResult, AniDbSeriesData>> GetSeriesData(IEmbyItemData embyItemData,
+        public Task<Either<ProcessFailedResult, AniDbSeriesData>> GetSeriesData(IJellyfinItemData embyItemData,
             ProcessResultContext resultContext)
         {
             return embyItemData.GetParentId(MediaItemTypes.Series, this)

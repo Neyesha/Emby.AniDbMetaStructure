@@ -1,8 +1,8 @@
 ﻿namespace Jellyfin.AniDbMetaStructure.Process
 {
-    internal class EmbyItemId
+    internal class JellyfinItemId
     {
-        public EmbyItemId(IMediaItemType itemType, string sourceName, int id)
+        public JellyfinItemId(IMediaItemType itemType, string sourceName, int id)
         {
             this.ItemType = itemType;
             this.SourceName = sourceName;
